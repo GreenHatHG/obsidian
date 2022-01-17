@@ -14,18 +14,6 @@
             "source": false
           }
         }
-      },
-      {
-        "id": "fdcfd17625df98f9",
-        "type": "leaf",
-        "state": {
-          "type": "markdown",
-          "state": {
-            "file": "simpread/simpread-02 牛市走了吗？.md",
-            "mode": "source",
-            "source": false
-          }
-        }
       }
     ],
     "direction": "vertical"
@@ -89,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "simpread/simpread-02 牛市走了吗？.md",
+                "file": "2022-01-18.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -106,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "simpread/simpread-02 牛市走了吗？.md"
+                "file": "2022-01-18.md"
               }
             }
           }
@@ -118,10 +106,10 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "fdcfd17625df98f9",
+  "active": "613f56b6785fd261",
   "lastOpenFiles": [
-    "simpread/simpread-02 牛市走了吗？.md",
     "2022-01-18.md",
+    "simpread/simpread-02 牛市走了吗？.md",
     "simpread/simpread-买保险？先确认预算很重要.md",
     "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-15.md",
