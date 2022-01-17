@@ -4,12 +4,24 @@
     "type": "split",
     "children": [
       {
+        "id": "613f56b6785fd261",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "2022-01-18.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      },
+      {
         "id": "fdcfd17625df98f9",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "2022-01-15.md",
+            "file": "simpread/simpread-02 牛市走了吗？.md",
             "mode": "source",
             "source": false
           }
@@ -61,7 +73,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 266.01499938964844
+    "width": 359.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -77,7 +89,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2022-01-15.md",
+                "file": "simpread/simpread-02 牛市走了吗？.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +106,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2022-01-15.md"
+                "file": "simpread/simpread-02 牛市走了吗？.md"
               }
             }
           }
@@ -108,15 +120,15 @@
   },
   "active": "fdcfd17625df98f9",
   "lastOpenFiles": [
+    "simpread/simpread-02 牛市走了吗？.md",
+    "2022-01-18.md",
+    "simpread/simpread-买保险？先确认预算很重要.md",
+    "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-15.md",
     "2022-01-16.md",
     "2022-01-17.md",
-    "2022-01-18.md",
-    "simpread-一个容易发生理赔的险种.md",
     "未命名.md",
     "未命名思维导图.md",
-    "simpread-买的保险不给赔，原因可能有哪些？.md",
-    "simpread-买了这两个险种，去医院看病都踏实了.md",
-    "simpread-买保险？先确认预算很重要.md"
+    "simpread/simpread-买的保险不给赔，原因可能有哪些？.md"
   ]
 }
