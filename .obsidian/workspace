@@ -1,0 +1,122 @@
+{
+  "main": {
+    "id": "4f1460879dcc3574",
+    "type": "split",
+    "children": [
+      {
+        "id": "fdcfd17625df98f9",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "2022-01-16.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "08bcb321a42a5fd0",
+    "type": "split",
+    "children": [
+      {
+        "id": "09b858f979240dc5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0436a92157475d93",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "a51dcbe2300b474c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fcd8c7a943ca14ba",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 266.01499938964844
+  },
+  "right": {
+    "id": "48bbb5adae5e378c",
+    "type": "split",
+    "children": [
+      {
+        "id": "072dd23b50cfa7d2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ebe9df932b9cbd23",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "2022-01-16.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "401a3b049e716221",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "2022-01-16.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "fdcfd17625df98f9",
+  "lastOpenFiles": [
+    "2022-01-16.md",
+    "2022-01-17.md",
+    "未命名.md",
+    "2022-01-15.md",
+    "simpread-一个容易发生理赔的险种.md",
+    "未命名思维导图.md",
+    "simpread-买的保险不给赔，原因可能有哪些？.md",
+    "simpread-买了这两个险种，去医院看病都踏实了.md",
+    "simpread-买保险？先确认预算很重要.md",
+    "simpread-一个被低估的险种.md"
+  ]
+}

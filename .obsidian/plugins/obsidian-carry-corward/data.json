@@ -1,0 +1,7 @@
+{
+  "linkText": "",
+  "copiedLinkText": "(see {{LINK}})",
+  "lineFormatFrom": "^\\s*",
+  "lineFormatTo": "{{LINK|📌}} ",
+  "removeLeadingWhitespace": true
+}
