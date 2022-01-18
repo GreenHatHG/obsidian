@@ -9,6 +9,18 @@
         "state": {
           "type": "markdown",
           "state": {
+            "file": "2022-01-15.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      },
+      {
+        "id": "87f591f98b3674c5",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
             "file": "保险.md",
             "mode": "source",
             "source": false
@@ -40,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "保费",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -106,17 +118,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "613f56b6785fd261",
+  "active": "87f591f98b3674c5",
   "lastOpenFiles": [
     "保险.md",
     "2022-01-15.md",
+    "simpread/simpread-买保险？先确认预算很重要.md",
+    "保费.md",
     "2022-01-18.md",
     "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
     "2022-01-16.md",
     "2022-01-17.md",
     "simpread/simpread-职场人担心的猝死，哪种保险可以赔？.md",
-    "simpread/simpread-02 牛市走了吗？.md",
-    "simpread/simpread-一个容易发生理赔的险种.md",
-    "simpread/simpread-买保险？先确认预算很重要.md"
+    "simpread/simpread-02 牛市走了吗？.md"
   ]
 }
