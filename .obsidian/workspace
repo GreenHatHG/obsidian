@@ -13,20 +13,19 @@
             "mode": "source",
             "source": false
           }
-        },
-        "group": "022fe1bd985d1b1f"
+        }
       },
       {
-        "id": "a7ac1cd93247b84a",
+        "id": "2f0a629ada4de200",
         "type": "split",
         "children": [
           {
-            "id": "d8cf09f9ddd5ad6e",
+            "id": "2e267963485578a1",
             "type": "leaf",
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "2022-01-15.md",
+                "file": "保险.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -49,12 +48,12 @@
                   "repelStrength": 10,
                   "linkStrength": 1,
                   "linkDistance": 250,
-                  "scale": 1.0000000000000004,
+                  "scale": 0.655498353494692,
                   "close": false
                 }
               }
             },
-            "group": "022fe1bd985d1b1f"
+            "group": "8213095097ce34d2"
           },
           {
             "id": "a0a567c9ddc5c72f",
@@ -66,7 +65,8 @@
                 "mode": "source",
                 "source": false
               }
-            }
+            },
+            "group": "8213095097ce34d2"
           }
         ],
         "direction": "horizontal"
@@ -96,7 +96,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "保费",
+                "query": "寿险",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -113,8 +113,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -166,13 +165,13 @@
   "lastOpenFiles": [
     "保险.md",
     "2022-01-15.md",
-    "双十法则.md",
-    "simpread/simpread-买保险？先确认预算很重要.md",
-    "2022-01-17.md",
+    "2022-01-16.md",
     "保费.md",
+    "simpread/simpread-买保险？先确认预算很重要.md",
+    "双十法则.md",
+    "2022-01-17.md",
     "保险预算.md",
     "2022-01-18.md",
-    "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
-    "2022-01-16.md"
+    "simpread/simpread-重疾险和医疗险傻傻分不清？.md"
   ]
 }
