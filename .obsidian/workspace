@@ -4,7 +4,7 @@
     "type": "split",
     "children": [
       {
-        "id": "613f56b6785fd261",
+        "id": "e87f0a1d5eae5ac4",
         "type": "leaf",
         "state": {
           "type": "markdown",
@@ -13,19 +13,44 @@
             "mode": "source",
             "source": false
           }
-        }
+        },
+        "group": "022fe1bd985d1b1f"
       },
       {
-        "id": "87f591f98b3674c5",
+        "id": "d8cf09f9ddd5ad6e",
         "type": "leaf",
         "state": {
-          "type": "markdown",
+          "type": "localgraph",
           "state": {
-            "file": "保险.md",
-            "mode": "source",
-            "source": false
+            "file": "2022-01-15.md",
+            "options": {
+              "collapse-filter": true,
+              "search": "",
+              "localJumps": 1,
+              "localBacklinks": true,
+              "localForelinks": true,
+              "localInterlinks": false,
+              "showTags": false,
+              "showAttachments": false,
+              "hideUnresolved": false,
+              "collapse-color-groups": true,
+              "colorGroups": [],
+              "collapse-display": true,
+              "showArrow": false,
+              "textFadeMultiplier": 0,
+              "nodeSizeMultiplier": 1,
+              "lineSizeMultiplier": 1,
+              "collapse-forces": true,
+              "centerStrength": 0.518713248970312,
+              "repelStrength": 10,
+              "linkStrength": 1,
+              "linkDistance": 250,
+              "scale": 1,
+              "close": false
+            }
           }
-        }
+        },
+        "group": "022fe1bd985d1b1f"
       }
     ],
     "direction": "vertical"
@@ -69,7 +94,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -89,14 +115,14 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "保险.md",
+                "file": "2022-01-15.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
                 "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
+                "unlinkedCollapsed": false
               }
             }
           },
@@ -106,29 +132,28 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "保险.md"
+                "file": "2022-01-15.md"
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
     "width": 300,
     "collapsed": true
   },
-  "active": "87f591f98b3674c5",
+  "active": "e87f0a1d5eae5ac4",
   "lastOpenFiles": [
-    "保险.md",
     "2022-01-15.md",
-    "simpread/simpread-买保险？先确认预算很重要.md",
+    "2022-01-17.md",
     "保费.md",
+    "simpread/simpread-买保险？先确认预算很重要.md",
+    "保险预算.md",
+    "保险.md",
     "2022-01-18.md",
     "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
     "2022-01-16.md",
-    "2022-01-17.md",
-    "simpread/simpread-职场人担心的猝死，哪种保险可以赔？.md",
-    "simpread/simpread-02 牛市走了吗？.md"
+    "simpread/simpread-职场人担心的猝死，哪种保险可以赔？.md"
   ]
 }
