@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "2022-01-17.md",
+            "file": "2022-01-16.md",
             "mode": "source",
             "source": false
           }
@@ -92,8 +92,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 307.01499938964844,
-    "collapsed": true
+    "width": 307.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -109,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "保险.md",
+                "file": "2022-01-16.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "保险.md"
+                "file": "2022-01-16.md"
               }
             }
           }
@@ -137,17 +136,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "5084933a6fc29369",
+  "active": "12b7fa481a3570fe",
   "lastOpenFiles": [
+    "2022-01-16.md",
     "保险.md",
     "2022-01-17.md",
-    "2022-01-18.md",
-    "2022-01-16.md",
+    "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-15.md",
+    "2022-01-18.md",
     "simpread/simpread-买的保险不给赔，原因可能有哪些？.md",
     "医疗险.md",
     "重疾险.md",
-    "保费.md",
-    "simpread/simpread-买保险？先确认预算很重要.md"
+    "保费.md"
   ]
 }
