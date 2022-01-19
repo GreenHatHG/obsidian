@@ -10,7 +10,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "2022-01-15.md",
+            "file": "2022-01-16.md",
             "mode": "source",
             "source": false
           }
@@ -97,8 +97,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 307.01499938964844,
-    "collapsed": true
+    "width": 307.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -142,14 +141,14 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "5084933a6fc29369",
+  "active": "a0a567c9ddc5c72f",
   "lastOpenFiles": [
     "保险.md",
+    "2022-01-16.md",
     "2022-01-15.md",
     "simpread/simpread-买的保险不给赔，原因可能有哪些？.md",
     "医疗险.md",
     "重疾险.md",
-    "2022-01-16.md",
     "保费.md",
     "simpread/simpread-买保险？先确认预算很重要.md",
     "双十法则.md",
