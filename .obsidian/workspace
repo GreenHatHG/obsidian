@@ -91,7 +91,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "保险.md",
+                "file": "2022-01-18.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,7 +108,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "保险.md"
+                "file": "2022-01-18.md"
               }
             }
           }
@@ -119,17 +119,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "5084933a6fc29369",
+  "active": "12b7fa481a3570fe",
   "lastOpenFiles": [
-    "保险.md",
     "2022-01-18.md",
+    "simpread/simpread-02 牛市走了吗？.md",
+    "保险.md",
     "2022-01-17.md",
     "2022-01-16.md",
     "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-15.md",
     "simpread/simpread-买的保险不给赔，原因可能有哪些？.md",
     "医疗险.md",
-    "重疾险.md",
-    "保费.md"
+    "重疾险.md"
   ]
 }
