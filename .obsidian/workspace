@@ -4,18 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "5cfd9ff663ef56f8",
-        "type": "leaf",
-        "state": {
-          "type": "markdown",
-          "state": {
-            "file": "simpread/simpread-一个被低估的险种.md",
-            "mode": "source",
-            "source": false
-          }
-        }
-      },
-      {
         "id": "6d3bff87234f53db",
         "type": "leaf",
         "state": {
@@ -50,7 +38,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "寿险",
+                "query": "早",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -67,7 +55,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -87,7 +76,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "simpread/simpread-一个被低估的险种.md",
+                "file": "保险.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +93,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "simpread/simpread-一个被低估的险种.md"
+                "file": "保险.md"
               }
             }
           }
@@ -115,17 +104,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "5cfd9ff663ef56f8",
+  "active": "6d3bff87234f53db",
   "lastOpenFiles": [
-    "simpread/simpread-一个被低估的险种.md",
     "保险.md",
+    "simpread/simpread-买了这两个险种，去医院看病都踏实了.md",
+    "2022-01-18.md",
+    "simpread/simpread-一个被低估的险种.md",
+    "simpread/simpread-职场人担心的猝死，哪种保险可以赔？.md",
+    "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
     "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-16.md",
     "2022-01-15.md",
-    "2022-01-18.md",
-    "simpread/simpread-买保险？先确认预算很重要.md",
-    "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
-    "不符合医院范围.md",
-    "simpread/simpread-02 牛市走了吗？.md"
+    "simpread/simpread-买保险？先确认预算很重要.md"
   ]
 }
