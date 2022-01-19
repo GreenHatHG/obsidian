@@ -24,6 +24,7 @@
           {
             "id": "a0a567c9ddc5c72f",
             "type": "leaf",
+            "dimension": 50.31914893617021,
             "pinned": true,
             "state": {
               "type": "mindmapView",
@@ -36,6 +37,7 @@
           {
             "id": "5084933a6fc29369",
             "type": "leaf",
+            "dimension": 49.68085106382979,
             "pinned": true,
             "state": {
               "type": "markdown",
@@ -141,7 +143,7 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "a0a567c9ddc5c72f",
+  "active": "5084933a6fc29369",
   "lastOpenFiles": [
     "保险.md",
     "2022-01-16.md",
