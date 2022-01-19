@@ -4,53 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "e87f0a1d5eae5ac4",
+        "id": "5084933a6fc29369",
         "type": "leaf",
-        "dimension": 52.02020202020202,
+        "pinned": true,
         "state": {
           "type": "markdown",
           "state": {
-            "file": "2022-01-16.md",
+            "file": "保险.md",
             "mode": "source",
             "source": false
-          }
-        }
-      },
-      {
-        "id": "36ca54c9e3387531",
-        "type": "split",
-        "dimension": 47.97979797979798,
-        "children": [
-          {
-            "id": "a0a567c9ddc5c72f",
-            "type": "leaf",
-            "dimension": 50.79702444208289,
-            "pinned": true,
-            "state": {
-              "type": "mindmapView",
-              "state": {
-                "file": "保险.md"
-              },
-              "pinned": true
-            }
           },
-          {
-            "id": "5084933a6fc29369",
-            "type": "leaf",
-            "dimension": 49.202975557917114,
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "保险.md",
-                "mode": "source",
-                "source": false
-              },
-              "pinned": true
-            }
-          }
-        ],
-        "direction": "horizontal"
+          "pinned": true
+        }
       }
     ],
     "direction": "vertical"
@@ -94,13 +59,11 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 307.01499938964844,
-    "collapsed": true
+    "width": 307.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -147,8 +110,8 @@
   "active": "5084933a6fc29369",
   "lastOpenFiles": [
     "保险.md",
-    "2022-01-16.md",
     "2022-01-15.md",
+    "2022-01-16.md",
     "simpread/simpread-买的保险不给赔，原因可能有哪些？.md",
     "医疗险.md",
     "重疾险.md",
