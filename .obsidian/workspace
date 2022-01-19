@@ -4,18 +4,47 @@
     "type": "split",
     "children": [
       {
-        "id": "5084933a6fc29369",
+        "id": "12b7fa481a3570fe",
         "type": "leaf",
-        "pinned": true,
         "state": {
           "type": "markdown",
           "state": {
-            "file": "保险.md",
+            "file": "2022-01-17.md",
             "mode": "source",
             "source": false
-          },
-          "pinned": true
+          }
         }
+      },
+      {
+        "id": "8020cd12bfa995d5",
+        "type": "split",
+        "children": [
+          {
+            "id": "f3105f47f3b43e15",
+            "type": "leaf",
+            "state": {
+              "type": "mindmapView",
+              "state": {
+                "file": "保险.md"
+              }
+            }
+          },
+          {
+            "id": "5084933a6fc29369",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "保险.md",
+                "mode": "source",
+                "source": false
+              },
+              "pinned": true
+            }
+          }
+        ],
+        "direction": "horizontal"
       }
     ],
     "direction": "vertical"
@@ -63,7 +92,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 307.01499938964844
+    "width": 307.01499938964844,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -110,14 +140,14 @@
   "active": "5084933a6fc29369",
   "lastOpenFiles": [
     "保险.md",
-    "2022-01-15.md",
+    "2022-01-17.md",
+    "2022-01-18.md",
     "2022-01-16.md",
+    "2022-01-15.md",
     "simpread/simpread-买的保险不给赔，原因可能有哪些？.md",
     "医疗险.md",
     "重疾险.md",
     "保费.md",
-    "simpread/simpread-买保险？先确认预算很重要.md",
-    "双十法则.md",
-    "2022-01-17.md"
+    "simpread/simpread-买保险？先确认预算很重要.md"
   ]
 }
