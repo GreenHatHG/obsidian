@@ -4,12 +4,14 @@
     "type": "split",
     "children": [
       {
-        "id": "6d3bff87234f53db",
+        "id": "a69da734e867d0f2",
         "type": "leaf",
         "state": {
-          "type": "mindmapView",
+          "type": "markdown",
           "state": {
-            "file": "保险.md"
+            "file": "保险.md",
+            "mode": "source",
+            "source": false
           }
         }
       }
@@ -38,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "早",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -55,8 +57,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -104,9 +105,10 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "6d3bff87234f53db",
+  "active": "a69da734e867d0f2",
   "lastOpenFiles": [
     "保险.md",
+    "2022-01-17.md",
     "simpread/simpread-买了这两个险种，去医院看病都踏实了.md",
     "2022-01-18.md",
     "simpread/simpread-一个被低估的险种.md",
@@ -114,7 +116,6 @@
     "simpread/simpread-重疾险和医疗险傻傻分不清？.md",
     "simpread/simpread-一个容易发生理赔的险种.md",
     "2022-01-16.md",
-    "2022-01-15.md",
-    "simpread/simpread-买保险？先确认预算很重要.md"
+    "2022-01-15.md"
   ]
 }
