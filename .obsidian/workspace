@@ -4,46 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "6a5446430d20e52f",
-        "type": "split",
-        "children": [
-          {
-            "id": "320f64dce4191e97",
-            "type": "leaf",
-            "dimension": 43.51063829787234,
-            "state": {
-              "type": "mindmapview",
-              "state": {
-                "file": "2022-01-20.md"
-              }
-            }
-          },
-          {
-            "id": "b48fbcc584dde008",
-            "type": "leaf",
-            "dimension": 56.48936170212766,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2022-01-20.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          }
-        ],
-        "direction": "horizontal"
-      },
-      {
-        "id": "55281fae99e93d96",
+        "id": "c6e49840961da66a",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "simpread/simpread-投资是一场赌博.md",
-            "mode": "source",
-            "source": false
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -92,8 +57,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 391.01499938964844,
-    "collapsed": true
+    "width": 391.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -109,7 +73,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2022-01-20.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -125,9 +88,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "2022-01-20.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -137,10 +98,10 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "b48fbcc584dde008",
+  "active": "c6e49840961da66a",
   "lastOpenFiles": [
-    "2022-01-20.md",
     "simpread/simpread-投资是一场赌博.md",
+    "2022-01-20.md",
     "保险.md",
     "2022-01-18.md",
     "2022-01-17.md",
