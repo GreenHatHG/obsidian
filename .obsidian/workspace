@@ -7,8 +7,12 @@
         "id": "c6e49840961da66a",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "MIT.824/l-raft2_zh.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -73,6 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "MIT.824/l-raft2_zh.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,7 +93,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "MIT.824/l-raft2_zh.md"
+              }
             }
           }
         ]
@@ -100,6 +107,7 @@
   },
   "active": "c6e49840961da66a",
   "lastOpenFiles": [
+    "MIT.824/l-raft2_zh.md",
     "simpread/simpread-投资是一场赌博.md",
     "2022-01-20.md",
     "保险.md",
@@ -108,7 +116,6 @@
     "2022-01-16.md",
     "2022-01-15.md",
     "simpread/simpread-买了这两个险种，去医院看病都踏实了.md",
-    "simpread/simpread-一个被低估的险种.md",
-    "simpread/simpread-职场人担心的猝死，哪种保险可以赔？.md"
+    "simpread/simpread-一个被低估的险种.md"
   ]
 }
