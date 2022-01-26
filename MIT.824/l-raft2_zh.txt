@@ -233,7 +233,7 @@ nextIndex=领导对XTerm的最后一项
 案例3（追随者的日志太短）：
 nextIndex=XLen
 
-*** topic: persistence (Lab 2C)
+topic: persistence (Lab 2C)
 ***主题：持久性（实验2C）
 
 what would we like to happen after a server crashes?
