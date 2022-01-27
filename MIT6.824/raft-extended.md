@@ -10,4 +10,5 @@
 # Replicated state machines
 ![[Pasted image 20220127213517.png]]
 - replicated state machines用于解决分布式系统中[fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance)问题，常用来管理leader election和存储必要的数据以让Leader崩溃后正常恢复。
-- 每个server
+- 每个server存储着log，log由许多个command组成。每个state machine按照相同的顺序执行相同命令，产生相同的输出。
+- 
