@@ -4,13 +4,25 @@
     "type": "split",
     "children": [
       {
-        "id": "4b339578faa1ddac",
+        "id": "01d17c5a936b9a83",
         "type": "leaf",
+        "dimension": 68.89013452914799,
+        "state": {
+          "type": "pdf-annotator",
+          "state": {
+            "file": "pdf/raft-extended-annotation.md"
+          }
+        }
+      },
+      {
+        "id": "3a509018697bf013",
+        "type": "leaf",
+        "dimension": 31.109865470852014,
         "state": {
           "type": "markdown",
           "state": {
             "file": "MIT6.824/raft-extended.md",
-            "mode": "preview",
+            "mode": "source",
             "source": false
           }
         }
@@ -61,7 +73,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 324.01499938964844,
+    "width": 325.51499938964844,
     "collapsed": true
   },
   "right": {
@@ -106,17 +118,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "4b339578faa1ddac",
+  "active": "3a509018697bf013",
   "lastOpenFiles": [
     "MIT6.824/raft-extended.md",
-    "MIT6.824/raft-extended.pdf",
+    "pdf/raft-extended-annotation.md",
+    "pdf/raft-extended.pdf",
+    "MIT6.824/l-raft.md",
     "MIT6.824/l-raft2_zh.md",
     "2022-01-27.md",
     "2022-01-20.md",
     "2022-01-15.md",
     "保险.md",
-    "2022-01-18.md",
-    "2022-01-17.md",
-    "2022-01-16.md"
+    "2022-01-18.md"
   ]
 }
