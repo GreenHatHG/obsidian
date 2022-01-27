@@ -7,9 +7,11 @@
         "id": "4b339578faa1ddac",
         "type": "leaf",
         "state": {
-          "type": "pdf-annotator",
+          "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md"
+            "file": "MIT6.824/raft-extended.md",
+            "mode": "source",
+            "source": false
           }
         }
       }
@@ -59,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 324.01499938964844,
-    "collapsed": true
+    "width": 324.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -107,6 +108,7 @@
   "active": "4b339578faa1ddac",
   "lastOpenFiles": [
     "MIT6.824/raft-extended.md",
+    "MIT6.824/raft-extended.pdf",
     "MIT6.824/l-raft2_zh.md",
     "2022-01-27.md",
     "2022-01-20.md",
@@ -114,7 +116,6 @@
     "保险.md",
     "2022-01-18.md",
     "2022-01-17.md",
-    "2022-01-16.md",
-    "MIT.824/未命名.md"
+    "2022-01-16.md"
   ]
 }
