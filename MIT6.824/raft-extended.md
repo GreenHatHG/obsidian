@@ -14,4 +14,4 @@
 - consensus module接收client的命令，并添加到其log中。它会与其他server上的该module进行通信，确保每个server上的log都包含着相同的command序列。一旦command被正确的复制，每个server的state machine将按照同样的顺序处理command。然后返回结果给client。
 - consensus algorithm通常具有以下特性：
 	- 在[non-Byzantine](https://en.wikipedia.org/wiki/Byzantine_fault)条件下，network delays, partitions, and packet loss, duplica-tion, and reordering都能保证safety。
-	- 只要
+	- 只要majority of the servers正常运行，能够彼此通信
