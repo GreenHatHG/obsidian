@@ -10,7 +10,7 @@
           "type": "markdown",
           "state": {
             "file": "MIT6.824/raft-extended.md",
-            "mode": "source",
+            "mode": "preview",
             "source": false
           }
         }
@@ -61,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 324.01499938964844
+    "width": 324.01499938964844,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
