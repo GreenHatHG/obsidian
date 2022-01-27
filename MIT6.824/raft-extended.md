@@ -16,4 +16,5 @@
 	- 在[non-Byzantine](https://en.wikipedia.org/wiki/Byzantine_fault)条件下，network delays, partitions, and packet loss, duplica-tion, and reordering都能保证safety。
 	- 只要majority of the servers在运行，并且彼此（包括client）能够通信，系统就能正常运行。
 	- 不依赖时间确保log的一致性，但是在极端情况下，faulty clocks and extreme message  delays会导致极端问题。
+	- 少数slow server不会影响系统性能
 	- 
