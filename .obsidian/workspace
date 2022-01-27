@@ -4,9 +4,9 @@
     "type": "split",
     "children": [
       {
-        "id": "bc20d64677e88acb",
+        "id": "ad933aecc9636c58",
         "type": "leaf",
-        "dimension": 66.96578799775659,
+        "dimension": 67.2085201793722,
         "state": {
           "type": "pdf-annotator",
           "state": {
@@ -15,9 +15,9 @@
         }
       },
       {
-        "id": "722409c25f5e4e7b",
+        "id": "fd85f655a43099b2",
         "type": "leaf",
-        "dimension": 33.034212002243414,
+        "dimension": 32.7914798206278,
         "state": {
           "type": "markdown",
           "state": {
@@ -118,12 +118,12 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "722409c25f5e4e7b",
+  "active": "fd85f655a43099b2",
   "lastOpenFiles": [
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
-    "attachment/Pasted image 20220127213457.png",
     "pdf/raft-extended.pdf",
+    "attachment/Pasted image 20220127213457.png",
     "MIT6.824/l-raft.md",
     "MIT6.824/l-raft2_zh.md",
     "2022-01-27.md",
