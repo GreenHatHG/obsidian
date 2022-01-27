@@ -1,2 +1,3 @@
 - Raft是什么
-	- [[raft-extended-annotation#^bjr4hmf4zmf|Raft is a consensus algorithm for managing a replicatedlog.]]
+	- [[raft-extended-annotation#^hhf15v1r3do|Raft is a consensus algorithm for managing a replicated log.]]
+	- consensus: 

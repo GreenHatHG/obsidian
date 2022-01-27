@@ -6,7 +6,6 @@
       {
         "id": "01d17c5a936b9a83",
         "type": "leaf",
-        "dimension": 68.89013452914799,
         "state": {
           "type": "pdf-annotator",
           "state": {
@@ -15,9 +14,8 @@
         }
       },
       {
-        "id": "3a509018697bf013",
+        "id": "c9f1de06382a08a8",
         "type": "leaf",
-        "dimension": 31.109865470852014,
         "state": {
           "type": "markdown",
           "state": {
@@ -118,7 +116,7 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "3a509018697bf013",
+  "active": "c9f1de06382a08a8",
   "lastOpenFiles": [
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
