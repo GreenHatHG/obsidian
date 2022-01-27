@@ -11,4 +11,5 @@
 ![[Pasted image 20220127213517.png]]
 - replicated state machines用于解决分布式系统中[fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance)问题，常用来管理leader election和存储必要的数据以让Leader崩溃后正常恢复。
 - 每个server存储着log，log由许多个command组成。每个state machine按照相同的顺序执行相同命令，产生相同的输出。
+- consensus module接收client的命令，并添加到其log中。它会与其他server上的该module进行通信，确保每个server上的log都包含着相同的command序列。一旦command被正确的复制，每个server的state machine将按照同样的顺序处理command。然后返回结果给client。
 - 
