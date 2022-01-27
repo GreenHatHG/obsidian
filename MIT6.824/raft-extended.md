@@ -9,4 +9,5 @@
 	- state space reduction
 # Replicated state machines
 ![[Pasted image 20220127213517.png]]
-- replicated state machines用于解决分布式系统中fault tolerance问题，常见于存储
+- replicated state machines用于解决分布式系统中[fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance)问题，常用来持久化必要的数据以让Leader崩溃后正常恢复。
+- 
