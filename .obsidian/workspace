@@ -89,7 +89,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "pdf/raft-extended-annotation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -106,7 +106,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "pdf/raft-extended-annotation.md"
               }
             }
           }
@@ -117,17 +117,17 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "722409c25f5e4e7b",
+  "active": "bc20d64677e88acb",
   "lastOpenFiles": [
-    "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
+    "MIT6.824/raft-extended.md",
+    "attachment/Pasted image 20220127213457.png",
     "pdf/raft-extended.pdf",
     "MIT6.824/l-raft.md",
     "MIT6.824/l-raft2_zh.md",
     "2022-01-27.md",
     "2022-01-20.md",
     "2022-01-15.md",
-    "保险.md",
-    "2022-01-18.md"
+    "保险.md"
   ]
 }

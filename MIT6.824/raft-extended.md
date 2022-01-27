@@ -8,5 +8,5 @@
 	- safety
 	- state space reduction
 # Replicated state machines
-![[Pasted image 20220127213306.png]]
+![[Pasted image 20220127213517.png]]
 
