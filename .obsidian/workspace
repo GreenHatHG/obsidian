@@ -90,7 +90,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "pdf/raft-extended-annotation.md",
+                "file": "MIT6.824/raft-extended.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -107,7 +107,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "pdf/raft-extended-annotation.md"
+                "file": "MIT6.824/raft-extended.md"
               }
             }
           }
@@ -118,10 +118,10 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "bc20d64677e88acb",
+  "active": "722409c25f5e4e7b",
   "lastOpenFiles": [
-    "pdf/raft-extended-annotation.md",
     "MIT6.824/raft-extended.md",
+    "pdf/raft-extended-annotation.md",
     "pdf/raft-extended.pdf",
     "MIT6.824/l-raft.md",
     "MIT6.824/l-raft2_zh.md",
