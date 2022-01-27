@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md",
+            "file": "2022-01-27.md",
             "mode": "source",
             "source": false
           }
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 211.01499938964844,
+    "width": 275.51499938964844,
     "collapsed": true
   },
   "right": {
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "2022-01-27.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "2022-01-27.md"
               }
             }
           }
@@ -108,15 +108,15 @@
   },
   "active": "4b339578faa1ddac",
   "lastOpenFiles": [
+    "2022-01-27.md",
+    "2022-01-20.md",
     "MIT6.824/raft-extended.md",
+    "2022-01-15.md",
+    "保险.md",
     "2022-01-18.md",
+    "2022-01-17.md",
+    "2022-01-16.md",
     "MIT.824/未命名.md",
-    "MIT6.824/l-raft2_zh.txt",
-    "MIT6.824/l-raft.md",
-    "MIT6.824/raft-extended.pdf",
-    "2022-01-26.md",
-    "MIT.824/l-raft2_zh.md",
-    "simpread/simpread-投资是一场赌博.md",
-    "2022-01-20.md"
+    "MIT6.824/l-raft2_zh.txt"
   ]
 }
