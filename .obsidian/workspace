@@ -4,16 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "70f6cf9b818518cc",
-        "type": "leaf",
-        "state": {
-          "type": "pdf-annotator",
-          "state": {
-            "file": "MIT6.824/raft-extended.md"
-          }
-        }
-      },
-      {
         "id": "4b339578faa1ddac",
         "type": "leaf",
         "state": {
