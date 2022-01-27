@@ -8,9 +8,9 @@
   "debugLogging": false,
   "customDefaultPath": "",
   "annotationMarkdownSettings": {
-    "annotationModeByDefault": true,
+    "annotationModeByDefault": false,
     "includePrefix": false,
-    "highlightHighlightedText": true,
+    "highlightHighlightedText": false,
     "includePostfix": false
   }
 }
