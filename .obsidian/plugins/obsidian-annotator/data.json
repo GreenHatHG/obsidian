@@ -8,7 +8,7 @@
   "debugLogging": false,
   "customDefaultPath": "",
   "annotationMarkdownSettings": {
-    "annotationModeByDefault": false,
+    "annotationModeByDefault": true,
     "includePrefix": false,
     "highlightHighlightedText": false,
     "includePostfix": false

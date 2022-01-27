@@ -4,8 +4,9 @@
     "type": "split",
     "children": [
       {
-        "id": "01d17c5a936b9a83",
+        "id": "bc20d64677e88acb",
         "type": "leaf",
+        "dimension": 66.96578799775659,
         "state": {
           "type": "pdf-annotator",
           "state": {
@@ -14,8 +15,9 @@
         }
       },
       {
-        "id": "c9f1de06382a08a8",
+        "id": "722409c25f5e4e7b",
         "type": "leaf",
+        "dimension": 33.034212002243414,
         "state": {
           "type": "markdown",
           "state": {
@@ -88,7 +90,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "pdf/raft-extended-annotation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +107,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "pdf/raft-extended-annotation.md"
               }
             }
           }
@@ -116,10 +118,10 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "c9f1de06382a08a8",
+  "active": "bc20d64677e88acb",
   "lastOpenFiles": [
-    "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
+    "MIT6.824/raft-extended.md",
     "pdf/raft-extended.pdf",
     "MIT6.824/l-raft.md",
     "MIT6.824/l-raft2_zh.md",
