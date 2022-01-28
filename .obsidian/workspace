@@ -4,24 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "ad933aecc9636c58",
-        "type": "leaf",
-        "dimension": 67.2085201793722,
-        "state": {
-          "type": "pdf-annotator",
-          "state": {
-            "file": "pdf/raft-extended-annotation.md"
-          }
-        }
-      },
-      {
         "id": "fd85f655a43099b2",
         "type": "leaf",
-        "dimension": 32.7914798206278,
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md",
+            "file": "Day Planners/Day Planner-20220128.md",
             "mode": "source",
             "source": false
           }
@@ -73,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 325.51499938964844,
-    "collapsed": true
+    "width": 325.51499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -90,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "Day Planners/Day Planner-20220128.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -107,19 +94,33 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "Day Planners/Day Planner-20220128.md"
               }
+            }
+          }
+        ]
+      },
+      {
+        "id": "de8cbd7b371cf07e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8381658ffe4fb0ec",
+            "type": "leaf",
+            "state": {
+              "type": "timeline",
+              "state": {}
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 343.21502685546875
   },
   "active": "fd85f655a43099b2",
   "lastOpenFiles": [
+    "Day Planners/Day Planner-20220128.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
     "pdf/raft-extended.pdf",
@@ -128,7 +129,6 @@
     "MIT6.824/l-raft2_zh.md",
     "2022-01-27.md",
     "2022-01-20.md",
-    "2022-01-15.md",
-    "保险.md"
+    "2022-01-15.md"
   ]
 }

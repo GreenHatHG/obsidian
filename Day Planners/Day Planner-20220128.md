@@ -1,0 +1,17 @@
+## Day Planner
+- [ ] 11:00 raft-extended
+- [ ] 11:30 洗碗
+- [ ] 11:50 raft-extended
+- [ ] 12:20 做菜
+- [ ] 13:45 睡觉
+- [ ] 14:15 起床
+- [ ] 15:00 raft-extended
+- [ ] 15:35 raft-extended
+- [ ] 16:00 运动&娱乐
+- [ ] 17:00 raft-extended
+- [ ] 17:30 吃饭&娱乐
+- [ ] 19:00 raft-extended
+- [ ] 19:40 raft-extended
+- [ ] 20:10 洗澡
+- [ ] 20:40 raft-extended
+- [ ] 22:00 短期计划
