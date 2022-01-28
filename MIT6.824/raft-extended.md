@@ -55,6 +55,8 @@
 - Server启动的时候，状态为follower。只要接收到来自leader或者candidate有效的RPC时候，就会保持follower这个状态。
 - Leader定期向所有follower发送heartbeat以维持follower的状态。
 - 如果follower在一段时间内（这段时间称为election timeout）没有收到任何请求，就会发起leader election。
-- 
+### election过程
+递增当前term->转变为candidate->自己给自己投一票->并行向其他server发出RequestVote RPC
+
 
 
