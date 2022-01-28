@@ -61,12 +61,17 @@
 - Candidate一直处于上面的流程直到下面某一件事发生：
 	- 它赢得了选举
 	- 另外一个server成为了leader
-	- 一段时间过去了还没有选举成功
+	- 一段时间过去了没有winer
 ### 选举成功
 - 成为leader：candidate从所有成员中获取了majority vote（确保最多只有一个leader）
 - 每个server在一个term内只能投一次票（按照先到先得的原则，后续添加了个vote restriction验证）
 - 成为leader后向其他server发送heartbeat，防止新的选举产生
 ###  另外一个server成为了leader
-
+- Election时候可能会收到来自leader的AppendEntries RPC，如果leader的term至少和candidate的term一样大，那么candidate就会回到follower状态。
+- 如果小于，则拒绝该RPC请求，保持在candidate状态。
+### 一段时间过去了没有winer
+- 如果许多follower同时成为candidate，可能会出现spilt vote，导致没有一个candidate获取majority vote。
+- 此时，每个candidate启动新一轮election。并且需要额外的措施，否则spilt vote可能一直重复下去。
+- 
 
 
