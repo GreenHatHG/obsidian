@@ -63,8 +63,10 @@
 	- 另外一个server成为了leader
 	- 一段时间过去了还没有选举成功
 ### 选举成功
-- 选举成功：candidate从所有成员中获取了majority vote
-- 每个server在一个term内只能投一次票
-- 
+- 成为leader：candidate从所有成员中获取了majority vote（确保最多只有一个leader）
+- 每个server在一个term内只能投一次票（按照先到先得的原则，后续添加了个vote restriction验证）
+- 成为leader后向其他server发送heartbeat，防止新的选举产生
+###  另外一个server成为了leader
+
 
 
