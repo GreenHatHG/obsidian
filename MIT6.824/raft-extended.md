@@ -49,9 +49,12 @@
 - 每个server之间使用RPC进行通信
 - 基本的算法只需要两种RPC
 	- RequestVote RPC：在选举时候由candidate发起
-	- AppendEntries RPC：由leader发起，提供复制log和heartbeat功能
+	- AppendEntries RPC：由leader发起，提供复制log和heartbeat（没有log entries）功能
 - Snapshot RPC用于在server之间传输snapshot（优化）
 ## Leader election
-
+- Server启动的时候，状态为follower。只要接收到来自leader或者candidate有效的RPC时候，就会保持follower这个状态。
+- Leader定期向所有follower发送heartbeat以维持follower的状态。
+- 如果follower在一段时间内（这段时间称为election timeout）没有收到任何请求，就会发起leader election。
+- 
 
 

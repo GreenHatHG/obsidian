@@ -6,6 +6,7 @@
       {
         "id": "fd85f655a43099b2",
         "type": "leaf",
+        "dimension": 59.506813757300456,
         "state": {
           "type": "pdf-annotator",
           "state": {
@@ -16,6 +17,7 @@
       {
         "id": "9c0a41ef4c9b1353",
         "type": "leaf",
+        "dimension": 40.493186242699544,
         "state": {
           "type": "markdown",
           "state": {
@@ -110,7 +112,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
         "id": "de8cbd7b371cf07e",
