@@ -4,10 +4,7 @@
 - [x] 11:50 raft-extended
 - [x] 12:20 做菜
 - [x] 13:45 睡觉
-- [ ] 14:15 起床
-- [ ] 15:00 raft-extended
-- [ ] 15:35 raft-extended
-- [ ] 16:00 运动&娱乐
+- [ ] 16:25 raft-extended
 - [ ] 17:00 raft-extended
 - [ ] 17:30 吃饭&娱乐
 - [ ] 19:00 raft-extended

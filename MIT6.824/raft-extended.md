@@ -51,6 +51,7 @@
 	- RequestVote RPC：在选举时候由candidate发起
 	- AppendEntries RPC：由leader发起，提供复制log和heartbeat功能
 - Snapshot RPC用于在server之间传输snapshot（优化）
+## Leader election
 
 
 

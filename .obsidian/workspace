@@ -6,7 +6,6 @@
       {
         "id": "fd85f655a43099b2",
         "type": "leaf",
-        "dimension": 62.66937669376694,
         "state": {
           "type": "pdf-annotator",
           "state": {
@@ -15,13 +14,12 @@
         }
       },
       {
-        "id": "8458b0093ca8c09d",
+        "id": "9c0a41ef4c9b1353",
         "type": "leaf",
-        "dimension": 37.330623306233065,
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Day Planners/Day Planner-20220128.md",
+            "file": "MIT6.824/raft-extended.md",
             "mode": "source",
             "source": false
           }
@@ -83,7 +81,7 @@
       {
         "id": "072dd23b50cfa7d2",
         "type": "tabs",
-        "dimension": 26.736842105263158,
+        "dimension": 39.01156677181914,
         "children": [
           {
             "id": "ebe9df932b9cbd23",
@@ -91,7 +89,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Day Planners/Day Planner-20220128.md",
+                "file": "MIT6.824/raft-extended.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,7 +106,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Day Planners/Day Planner-20220128.md"
+                "file": "MIT6.824/raft-extended.md"
               }
             }
           }
@@ -117,7 +115,7 @@
       {
         "id": "de8cbd7b371cf07e",
         "type": "tabs",
-        "dimension": 73.26315789473684,
+        "dimension": 60.98843322818086,
         "children": [
           {
             "id": "8381658ffe4fb0ec",
@@ -131,13 +129,13 @@
       }
     ],
     "direction": "horizontal",
-    "width": 343.21502685546875
+    "width": 242.2150115966797
   },
-  "active": "8458b0093ca8c09d",
+  "active": "9c0a41ef4c9b1353",
   "lastOpenFiles": [
-    "Day Planners/Day Planner-20220128.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
+    "Day Planners/Day Planner-20220128.md",
     "pdf/raft-extended.pdf",
     "attachment/Pasted image 20220127213457.png",
     "MIT6.824/l-raft.md",
