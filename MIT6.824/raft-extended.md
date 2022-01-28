@@ -29,4 +29,12 @@
 	- Leader election：选取leader和leader fails时重新选举
 	- Log replication：接收Log entries、复制到其他server、保持log一致性
 	- Safety：state machine safety property
+## Raft basics
+### 三种server状态
+
+- 每个server共有三种状态：Leader、Follower、Candidate
+- 正常运行时候只有一个Leader，其他都是Follower
+- Follower只接收来自Leader和Candidate的request，自己不会发出任何request
+### Term
+一个Term代表任意时间段，用连续序号表示，每个Term以Leader election开始。
 
