@@ -75,6 +75,13 @@
 - Raft使用randomized election timeout确保大多数情况下只有一个follower发起election成为leader，并在其他server超时之前发送heartbeat。
 - 同样也可以处理spilt vote。每个candidate开始election之前重置自己的election timeout，降低了下一次出现split vote的可能性。
 ## Log replication
+### replication流程
+1. Leader接收client发送包含command的request
+2. Leader将command作为new entry添加到log中
+3. 并行地向其他server发出AppendEntries RPC
+4. Safely replicate entry后，leader将entry apply到state machines
+5. 返回执行结果给client
+- 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower replicate log
 
 
 
