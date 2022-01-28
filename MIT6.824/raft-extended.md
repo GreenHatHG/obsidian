@@ -52,6 +52,7 @@
 	- AppendEntries RPC：由leader发起，提供复制log和heartbeat（没有log entries）功能
 - Snapshot RPC用于在server之间传输snapshot（优化）
 ## Leader election
+### 发起election
 - Server启动的时候，状态为follower。只要接收到来自leader或者candidate有效的RPC时候，就会保持follower这个状态。
 - Leader定期向所有follower发送heartbeat以维持follower的状态。
 - 如果follower在一段时间内（这段时间称为election timeout）没有收到任何请求，就会发起leader election。
@@ -61,6 +62,7 @@
 	- 它赢得了选举
 	- 另外一个server成为了leader
 	- 一段时间过去了还没有选举成功
+### 选举成功
 
 
 
