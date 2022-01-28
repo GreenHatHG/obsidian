@@ -21,7 +21,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md",
+            "file": "Day Planners/Day Planner-20220128.md",
             "mode": "source",
             "source": false
           }
@@ -91,7 +91,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "Day Planners/Day Planner-20220128.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,7 +108,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "Day Planners/Day Planner-20220128.md"
               }
             }
           }
@@ -135,9 +135,9 @@
   },
   "active": "8458b0093ca8c09d",
   "lastOpenFiles": [
+    "Day Planners/Day Planner-20220128.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
-    "Day Planners/Day Planner-20220128.md",
     "pdf/raft-extended.pdf",
     "attachment/Pasted image 20220127213457.png",
     "MIT6.824/l-raft.md",
