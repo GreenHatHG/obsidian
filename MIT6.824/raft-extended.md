@@ -31,10 +31,14 @@
 	- Safety：state machine safety property
 ## Raft basics
 ### 三种server状态
-
+![[Pasted image 20220128115316.png]]
 - 每个server共有三种状态：Leader、Follower、Candidate
 - 正常运行时候只有一个Leader，其他都是Follower
 - Follower只接收来自Leader和Candidate的request，自己不会发出任何request
+- 如果一段时间内Follower没有收到任何信息，就会变成Candidate，并发起Leader election
+- Candidate从所有成员中获得majority vote就能成为新的Leader
+- Leader一直工作到fail为止
 ### Term
 一个Term代表任意时间段，用连续序号表示，每个Term以Leader election开始。
+
 
