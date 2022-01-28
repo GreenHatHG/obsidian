@@ -72,6 +72,7 @@
 ### 一段时间过去了没有winer
 - 如果许多follower同时成为candidate，可能会出现spilt vote，导致没有一个candidate获取majority vote。
 - 此时，每个candidate启动新一轮election。并且需要额外的措施，否则spilt vote可能一直重复下去。
+- Raft使用randomized election timeout确保大多数情况下只有一个follower发起election成为leader，并在其他server超时之前发送heartbeat。
 - 
 
 
