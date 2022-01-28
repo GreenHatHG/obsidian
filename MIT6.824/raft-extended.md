@@ -74,6 +74,7 @@
 - 此时，每个candidate启动新一轮election。并且需要额外的措施，否则spilt vote可能一直重复下去。
 - Raft使用randomized election timeout确保大多数情况下只有一个follower发起election成为leader，并在其他server超时之前发送heartbeat。
 - 同样也可以处理spilt vote。每个candidate开始election之前重置自己的election timeout，降低了下一次出现split vote的可能性。
+## Log replication
 
 
 
