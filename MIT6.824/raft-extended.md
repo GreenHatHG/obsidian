@@ -84,5 +84,6 @@
 - 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower都apply了log
 ### log entry
 ![[Pasted image 20220129164500.png]]
-- log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command
+- log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
+- 
 
