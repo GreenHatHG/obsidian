@@ -9,7 +9,7 @@
 	- State space reduction
 # Replicated state machines
 ![[Pasted image 20220127213517.png]]
-- Replicated state machines用于解决分布式系统中[fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance)问题，常用来管理leader election和存储必要的数据以让Leader崩溃后正常恢复。
+- Replicated state machines用于解决分布式系统中[fault tolerance](https://en.wikipedia.org/wiki/Fault_tolerance)问题，常用来管理leader election和存储必要的数据以让leader崩溃后正常恢复。
 - 通常使用replicated log实现
 - 每个server存储着log，log中最主要的内容是command。每个state machine按照相同的顺序执行相同命令，产生相同的输出。
 - Consensus module接收client的命令，并添加到其log中。它会与其他server上的该module进行通信，确保每个server上log中的command都一致。一旦command被正确的复制，每个server的state machine将按照同样的顺序处理command。然后返回结果给client。
@@ -83,5 +83,5 @@
 5. 返回执行结果给client
 - 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower replicate log
 ### log entry
-
+每个server中
 
