@@ -40,10 +40,10 @@
 - Leader一直工作到fail为止。
 ### Term
 ![[Pasted image 20220128115801.png]]
-- 一个term代表一个任意时间段，用连续整数序号表示，每个term以Leader election开始，一个或多个candidate试图成为leader。
+- 一个term代表一个任意时间段，用连续整数序号term number表示，每个term以Leader election开始，一个或多个candidate试图成为leader。
 - Election可能会导致spilt vote，这时候该term会以没有leader结束，一个term最多有一个leader。
-- Term用来检测过时的信息，每个server存储着current term编号。
-- 在server之间通信时候会交换current term。如果一个candidate或者leader发现它的term过时了，它会立即恢复到follower状态。
+- Term用来检测过时的信息，每个server存储着current term number。
+- 在server之间通信时候会交换current term number。如果一个candidate或者leader发现它的term number过时了，它会立即恢复到follower状态。
 - 每个server不会处理过时的request
 ### RPC
 - 每个server之间使用RPC进行通信
@@ -83,5 +83,6 @@
 5. 返回执行结果给client
 - 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower都apply了log
 ### log entry
-
+![[Pasted image 20220129164500.png]]
+- log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command
 
