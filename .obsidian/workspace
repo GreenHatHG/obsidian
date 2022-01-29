@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "fd85f655a43099b2",
+        "id": "9aa05e220b236b39",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "资源.md",
+            "file": "career/知秋.md",
             "mode": "source",
             "source": false
           }
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "资源.md",
+                "file": "career/知秋.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "资源.md"
+                "file": "career/知秋.md"
               }
             }
           }
@@ -122,17 +122,17 @@
     "width": 242.2150115966797,
     "collapsed": true
   },
-  "active": "fd85f655a43099b2",
+  "active": "9aa05e220b236b39",
   "lastOpenFiles": [
-    "资源.md",
     "career/知秋.md",
+    "journal/2022-01-15.md",
+    "资源.md",
     "Day Planners/Day Planner-20220129.md",
     "Day Planners/Day Planner-20220128.md",
     "pdf/raft-extended-annotation.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended.pdf",
     "attachment/Pasted image 20220127213457.png",
-    "MIT6.824/l-raft.md",
-    "MIT6.824/l-raft2_zh.md"
+    "MIT6.824/l-raft.md"
   ]
 }
