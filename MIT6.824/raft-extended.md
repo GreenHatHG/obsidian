@@ -81,7 +81,7 @@
 3. 并行地向其他server发出AppendEntries RPC
 4. Safely replicate entry后，leader将entry apply到state machines
 5. 返回执行结果给client
-- 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower replicate log
+- 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower都apply了log
 ### log entry
-每个server中
+
 
