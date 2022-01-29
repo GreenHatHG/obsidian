@@ -6,22 +6,10 @@
       {
         "id": "fd85f655a43099b2",
         "type": "leaf",
-        "dimension": 67.85714285714286,
-        "state": {
-          "type": "pdf-annotator",
-          "state": {
-            "file": "pdf/raft-extended-annotation.md"
-          }
-        }
-      },
-      {
-        "id": "9c0a41ef4c9b1353",
-        "type": "leaf",
-        "dimension": 32.142857142857146,
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md",
+            "file": "资源.md",
             "mode": "source",
             "source": false
           }
@@ -73,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 325.51499938964844,
-    "collapsed": true
+    "width": 356.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -91,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "资源.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "资源.md"
               }
             }
           }
@@ -135,17 +122,17 @@
     "width": 242.2150115966797,
     "collapsed": true
   },
-  "active": "9c0a41ef4c9b1353",
+  "active": "fd85f655a43099b2",
   "lastOpenFiles": [
-    "MIT6.824/raft-extended.md",
-    "pdf/raft-extended-annotation.md",
+    "资源.md",
+    "career/知秋.md",
+    "Day Planners/Day Planner-20220129.md",
     "Day Planners/Day Planner-20220128.md",
+    "pdf/raft-extended-annotation.md",
+    "MIT6.824/raft-extended.md",
     "pdf/raft-extended.pdf",
     "attachment/Pasted image 20220127213457.png",
     "MIT6.824/l-raft.md",
-    "MIT6.824/l-raft2_zh.md",
-    "2022-01-27.md",
-    "2022-01-20.md",
-    "2022-01-15.md"
+    "MIT6.824/l-raft2_zh.md"
   ]
 }
