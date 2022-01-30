@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "simpread/simpread-投资是一场赌博.md",
+            "file": "资源.md",
             "mode": "source",
             "source": false
           }
@@ -90,7 +90,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "simpread/simpread-投资是一场赌博.md",
+                "file": "资源.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -107,7 +107,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "simpread/simpread-投资是一场赌博.md"
+                "file": "资源.md"
               }
             }
           }
@@ -136,9 +136,9 @@
   },
   "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
+    "资源.md",
     "simpread/simpread-投资是一场赌博.md",
     "journal/2022-01-29.md",
-    "资源.md",
     "保险.md",
     "未命名.md",
     "journal/2022-01-27.md",
