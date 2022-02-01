@@ -89,13 +89,15 @@
 - 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower都apply了log
 ### Log entry
 ![[Pasted image 20220129164500.png]]
-- log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
-- committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。一旦log entry在大多数server上复制，就会被commit。
+- Log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
+- Committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。一旦log entry在大多数server上复制，就会被commit。
 ### Log Matching
 - 如果不同log中的两个entry具有相同的index和term
 	- 则它们存储着相同的command
-	- log中所有前面的entry都是相同的
+	- Log中所有前面的entry都是相同的
 - 第一个属性：一个log index只会对应一个entry，而且不会改变log entry在log的位置。
-- 第二个属性：发送Append Entries RPC时候会携带上一个entry的index的term，如果follower在其log中找不到这样的entry，则会拒绝新的entry。
+- 第二个属性源自consistency check：发送Append Entries RPC时候会携带上一个entry的index的term，如果follower在其log中找不到这样的entry，则会拒绝新的entry。 ^4ajtq
 ### Log consistency
+ - Follower收到Append Entries RPC时候会执行[[raft-extended#^4ajtq|consistency check]]，并找到和leader log一致的最新的log entry，删除该点之后的所有entry
+ - Leader会在下一次Append Entries RPC时候带上该点之后的所有entry
  - 
