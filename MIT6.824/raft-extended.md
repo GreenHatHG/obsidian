@@ -103,4 +103,5 @@
  - 具体实现：
 	 1. Leader为每个follower维护一个nextIndex，代表将发送给对应follower的log entry index（leader当选时候将所有的nextIndex初始化为自己log最后一个之后的index）
 	 2. 如果consistency check不通过的话，leader将对应的nextIndex递减，并重试
-	 3. 最终，nextIndex将是leader和follower匹配的点，follower中冲突的entry也会会删除，然后append
+	 3. 最终，nextIndex将是leader和follower匹配的点，follower中冲突的entry也会会删除，然后append缺少的log entry
+- 优化：
