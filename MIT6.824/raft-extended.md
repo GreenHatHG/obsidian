@@ -31,7 +31,8 @@
 	- Safety：state machine safety property
 		- Election Safety: 一个term最多一个leader
 		- Leader Append-only: leader不会删除或者覆盖自己的log，只会追加
-		- Log Matching: 
+		- Log Matching: 两个不同server中的log的某个entry如果含有相同的index和term，那么该index之前的log都是相同的。
+		- 
 ## Raft basics
 ### 三种server状态
 ![[Pasted image 20220128115316.png]]
