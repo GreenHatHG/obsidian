@@ -30,7 +30,8 @@
 	- Log replication：接收Log entries、复制到其他server、保持log一致性。
 	- Safety：state machine safety property
 		- Election Safety: 一个term最多一个leader
-		- 
+		- Leader Append-only: leader不会删除或者覆盖自己的log，只会追加
+		- Log Matching: 
 ## Raft basics
 ### 三种server状态
 ![[Pasted image 20220128115316.png]]
