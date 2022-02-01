@@ -100,4 +100,6 @@
 ### Log consistency
  - Follower收到Append Entries RPC时候会执行[[raft-extended#^4ajtq|consistency check]]，并找到和leader log一致的最新的log entry，删除该点之后的所有entry
  - Leader会在下一次Append Entries RPC时候带上该点之后的所有entry
- - 
+ - 具体实现：
+	 1. Leader为每个follower维护一个nextIndex，代表将发送给对应follower的下一个log entry index（leader当选时候将所有的nextIndex初始化为自己log最后一个之后的index）
+	 2. 如果consistency check不通过的话，leader将对应的nextIndex递减
