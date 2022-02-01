@@ -85,7 +85,6 @@
 ### log entry
 ![[Pasted image 20220129164500.png]]
 - log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
-- committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。
-- 一旦log entry在大多数server上复制，就会被commit。
+- committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。一旦log entry在大多数server上复制，就会被commit。
 - 
 
