@@ -29,9 +29,9 @@
 	- Leader election：选取leader和leader fails时重新选举
 	- Log replication：接收Log entries、复制到其他server、保持log一致性。
 	- Safety：state machine safety property
-		- Election Safety: 一个term最多一个leader
+		- [[raft-extended#选举成功|Election Safety]]: 一个term最多一个leader
 		- Leader Append-only: leader不会删除或者覆盖自己的log，只会追加
-		- Log Matching: 如果不同log中的两个entry具有相同的index和term，那么该index之前的log都是相同的。
+		- [[raft-extended#Log Matching|Log Matching]]: 如果不同log中的两个entry具有相同的index和term，那么该index之前的log都是相同的。
 		- Leader Completeness: 
 		- State Machine Safety: 
 ## Raft basics
@@ -92,5 +92,8 @@
 - log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
 - committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。一旦log entry在大多数server上复制，就会被commit。
 ### Log Matching
+- 如果不同log中的两个entry具有相同的index和term
+	- 则它们存储着相同的command
+	- log中所有前面的entry都是相同的
 - 
 
