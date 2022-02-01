@@ -95,5 +95,7 @@
 - 如果不同log中的两个entry具有相同的index和term
 	- 则它们存储着相同的command
 	- log中所有前面的entry都是相同的
+- 第一个属性：一个log index只会对应一个entry，而且不会改变log entry在log的位置。
+- 第二个属性：发送Append Entries RPC时候会携带上一个entry的index的term，如果follower在其log中找不到这样的entry，则会拒绝新的entry。
 - 
 
