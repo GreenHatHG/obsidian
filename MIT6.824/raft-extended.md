@@ -60,7 +60,7 @@
 - Server启动的时候，状态为follower。只要接收到来自leader或者candidate有效的RPC时候，就会保持follower这个状态。
 - Leader定期向所有follower发送heartbeat以维持follower的状态。
 - 如果follower在一段时间内（这段时间称为election timeout）没有收到任何请求，就会发起leader election。
-### election过程
+### Election过程
 - 递增当前term->转变为candidate->自己给自己投一票->并行向其他server发出RequestVote RPC
 - Candidate一直处于上面的流程直到下面某一件事发生：
 	- 它赢得了选举
@@ -79,14 +79,14 @@
 - Raft使用randomized election timeout确保大多数情况下只有一个follower发起election成为leader，并在其他server超时之前发送heartbeat。
 - 同样也可以处理spilt vote。每个candidate开始election之前重置自己的election timeout，降低了下一次出现split vote的可能性。
 ## Log replication
-### replication流程
+### Replication流程
 1. Leader接收client发送包含command的request
 2. Leader将command作为new entry添加到log中
 3. 并行地向其他server发出AppendEntries RPC
 4. Safely replicate entry后，leader将entry apply到state machines
 5. 返回执行结果给client
 - 如果出现followers crash or run slowly,  network packets are lost, leader将无限期重试AppendEntries RPC（即使已经响应client），直到所有的follower都apply了log
-### log entry
+### Log entry
 ![[Pasted image 20220129164500.png]]
 - log其实就是log entry数组，entry按顺序编号，称为log index。每个entry由两部分组成，term number和command。
 - committed entry：leader safely apply到state machine的log entry 。Raft保证 committed entry持久化，最终由state machine执行。一旦log entry在大多数server上复制，就会被commit。
