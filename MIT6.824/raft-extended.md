@@ -106,3 +106,6 @@
 	 3. 最终，nextIndex将是leader和follower匹配的点，follower中冲突的entry也会会删除，然后append缺少的log entry
 - 优化：每次递减会导致很多无用的RPC请求，确定最新的匹配点可以采用优化的方法
 	- 当consistency check不通过的时候，可以记录conflicting entry term以及对应该term的第一个entry index，这样leader可以直接设置nextIndex跳过该term，减少RPC请求。
+## Safety
+上面的Leader election和log replication还不能确保每个state machine以相同的顺序执行完全相同的命令，需要添加下面额外的限制才行。
+### Election restriction
