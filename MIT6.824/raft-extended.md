@@ -109,7 +109,8 @@
 ## Safety
 上面的Leader election和log replication还不能确保每个state machine以相同的顺序执行完全相同的命令，需要添加下面额外的限制才行。
 ### Election restriction
-- 如果voter自己的log比candidate的log更新（more up-to-date），则拒绝为其投票。
+- 如果voter自己的log比candidate的log more up-to-date，则拒绝为其投票。
 - more update-to-data：通过比较两个log最后一个entry的index和term来决定
-	- 如果term不一样，则term number更大的那个为更新
-	- 
+	- 如果term不一样，则采用term number更大的那个
+	- 如果term一样，则采用log更长的那个
+- 
