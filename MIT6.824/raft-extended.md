@@ -120,7 +120,7 @@ leader不能立刻断定previous term（相对于current term）是否是committ
 - b：s1崩溃了，s5当选为leader
 - c：s5崩溃，s1恢复正常并成为leader，此时current term为4，并使用heartbeat将(term:2, index:2) entry复制到s3。这时候已经达到了majority，但是还不能commit，因为可能会出现d这种情况，导致committed entry丢失。
 - d：s1崩溃，s5成为leader，使用(term:3, index:2) entry覆盖掉(term:2, index: 2) entry。
-所以，**正确commit的时机是只有在leader current term形成majority并commit后才能commit之前的log entry**，即使出现了d这种情况，(term:2, index:2)也是未commit，不影响覆盖。
+所以，**正确commit的时机是只有在leader current term形成majority并commit后才能顺带将之前Term的日志提交了**，即使出现了d这种情况，(term:2, index:2)也是未commit，不影响覆盖。
 像e这种，(term:4, index:3) entry形成majority并commit后，才commit (term:2, index:2)的entry，并且s5也不会成为leader像d那样覆盖掉。
 [Raft： Committing entries from previous terms – Development Channel](http://dev.poetpalace.org/?p=632)
 [MIT 6.824 Lab2 Raft (2) – 论文收割机](https://www.strickland.cloud/2021/09/06/mit-6-824-lab2-raft-2/)
