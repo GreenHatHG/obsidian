@@ -116,8 +116,8 @@
 ### Committing entries from previous terms
 leader不能立刻断定previous term（相对于current term）是否是committed entry，因为会出现old log entry被未来leader覆盖的情况。
 ![[Pasted image 20220203115208.png]]
-- a：leader是s1，复制了部分term为2的log entry
+- a：leader是s1，复制了部分(term:2, index:2) entry
 - b：s1崩溃了，s5当选为leader
-- c：s5崩溃，s1恢复正常并成为leader，同步term为2的entry给s3，但是未能提交，可能会出现下面d或者e的情况
-- d：s1崩溃，s5成为leader，使用term为3的entry覆盖掉term为2的entry
+- c：s5崩溃，s1恢复正常并成为leader，此时current term为4，并使用heartbeat将(term:2, index:2) entry复制到s3。这时候已经达到了majority，但是还不能commit，因为可能会出现d或者e这种情况
+- d：s1崩溃，s5成为leader，使用(term:3, index:2) entry覆盖掉(term:2, index: 2) entry。这种情况是合法的，但是e情况会更好。
 - e：
