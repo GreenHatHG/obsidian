@@ -4,16 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "d49437168215ac30",
-        "type": "leaf",
-        "state": {
-          "type": "pdf-annotator",
-          "state": {
-            "file": "pdf/raft-extended-annotation.md"
-          }
-        }
-      },
-      {
         "id": "973d22cd198ccf9a",
         "type": "leaf",
         "state": {
