@@ -115,3 +115,7 @@
 	- 如果term一样，则采用log更长的那个
 ### Committing entries from previous terms
 leader不能立刻断定previous term（相对于current term）是否是committed entry，因为会出现old log entry被未来leader覆盖的情况。
+![[Pasted image 20220203115208.png]]
+a：leader是s1，复制了部分index为2的log entry，未提交
+b：s1崩溃了，s5当选为leader
+c：s5崩溃，s1恢复正常并称为leader
