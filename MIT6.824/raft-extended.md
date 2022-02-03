@@ -113,3 +113,4 @@
 - more update-to-data：通过比较两个log最后一个entry的index和term来决定
 	- 如果term不一样，则采用term number更大的那个
 	- 如果term一样，则采用log更长的那个
+### Committing entries from previous terms
