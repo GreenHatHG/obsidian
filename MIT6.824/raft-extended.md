@@ -114,3 +114,4 @@
 	- 如果term不一样，则采用term number更大的那个
 	- 如果term一样，则采用log更长的那个
 ### Committing entries from previous terms
+leader不能立刻断定previous term（相对于current term）是否是committed entry，因为会出现old log entry被未来leader覆盖的情况。
