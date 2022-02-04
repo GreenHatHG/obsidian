@@ -4,18 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "e5e75ab1ebf6c155",
-        "type": "leaf",
-        "state": {
-          "type": "markdown",
-          "state": {
-            "file": "pdf/raft-extended-annotation.md",
-            "mode": "source",
-            "source": false
-          }
-        }
-      },
-      {
         "id": "973d22cd198ccf9a",
         "type": "leaf",
         "state": {
@@ -91,7 +79,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "pdf/raft-extended-annotation.md",
+                "file": "MIT6.824/raft-extended.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,7 +96,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "pdf/raft-extended-annotation.md"
+                "file": "MIT6.824/raft-extended.md"
               }
             }
           }
@@ -135,10 +123,10 @@
     "width": 107.65501403808594,
     "collapsed": true
   },
-  "active": "e5e75ab1ebf6c155",
+  "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
-    "pdf/raft-extended-annotation.md",
     "MIT6.824/raft-extended.md",
+    "pdf/raft-extended-annotation.md",
     "资源.md",
     "simpread/simpread-投资是一场赌博.md",
     "journal/2022-01-29.md",

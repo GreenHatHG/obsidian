@@ -32,8 +32,8 @@
 		- [[raft-extended#选举成功|Election Safety]]: 一个term最多一个leader
 		- Leader Append-only: leader不会删除或者覆盖自己的log，只会追加
 		- [[raft-extended#Log Matching|Log Matching]]: 如果不同log中的两个entry具有相同的index和term，那么该index之前的log都是相同的。
-		- Leader Completeness: 
-		- State Machine Safety: 
+		- Leader Completeness: 如果一个log entry commit给定的term，那么该entry将出现在所有higher-numbered term的leader的日志中。
+		- State Machine Safety: 如果一个服务器在state machine上应用了一个给定index的log entry，那么其他server将永远不会为同一index应用一个不同的log entry。
 ## Raft basics
 ### 三种server状态
 ![[Pasted image 20220128115316.png]]
