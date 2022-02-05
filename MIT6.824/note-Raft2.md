@@ -6,3 +6,4 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 	- 虽然很慢，但是也要实现，避免crash是永久的
 2. 重启server并重新恢复状态 
 	- 需要持久化状态，避免多台机器同时断电
+## server重启后恢复正常需要持久化什么
