@@ -11,3 +11,5 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - votedFor：避免投票后重启在同一term内又投票给另外一个candidate
 - currentTerm：确保term是递增的，并且用来检测leader和candidate的RPC请求
 - 何时保存：状态发生后或者在发送RPC和接收RPC前
+## 为什么不需要保存这些状态
+## 
