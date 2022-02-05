@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/raft-extended.md",
+            "file": "MIT6.824/l-raft2_zh.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 389.01499938964844,
-    "collapsed": true
+    "width": 389.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -79,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/raft-extended.md",
+                "file": "MIT6.824/l-raft2_zh.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/raft-extended.md"
+                "file": "MIT6.824/l-raft2_zh.md"
               }
             }
           }
@@ -125,6 +124,7 @@
   },
   "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
+    "MIT6.824/l-raft2_zh.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
     "资源.md",
@@ -133,7 +133,6 @@
     "保险.md",
     "未命名.md",
     "journal/2022-01-27.md",
-    "career/知秋.md",
-    "journal/2022-01-15.md"
+    "career/知秋.md"
   ]
 }
