@@ -2,12 +2,15 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 6.824 2020 Lecture 7: Raft (2)
 6.824 2020第7讲：木筏（2）
 
+
 > topic: the Raft log (Lab 2B) 
+
 主题：木筏日志（实验2B）
 
-as long as the leader stays up:
+>as long as the leader stays up:
   clients only interact with the leader
   clients can't see follower states or logs
+
 只要领导不睡觉：
 客户只与领导者互动
 客户端无法看到跟随者状态或日志
