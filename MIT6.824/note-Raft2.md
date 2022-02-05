@@ -12,4 +12,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - currentTerm：确保term是递增的，并且用来检测leader和candidate的RPC请求
 - 何时保存：状态发生后或者在发送RPC和接收RPC前
 ## 为什么不需要保存这些状态
-## 
+## 持久化通常是性能的瓶颈
+- hard disk write: 10ms, SSD write: 0.1ms, 限制100~10000 ops/second
+- 潜在的瓶颈：RPC（<< 1ms on LAN）
+- 
