@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/note-Raft2.md",
+            "file": "MIT6.824/note-raft2.md",
             "mode": "source",
             "source": false
           }
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/note-Raft2.md",
+                "file": "MIT6.824/note-raft2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/note-Raft2.md"
+                "file": "MIT6.824/note-raft2.md"
               }
             }
           }
@@ -124,7 +124,7 @@
   },
   "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
-    "MIT6.824/note-Raft2.md",
+    "MIT6.824/note-raft2.md",
     "MIT6.824/l-raft2_zh.md",
     "MIT6.824/raft-extended.md",
     "pdf/raft-extended-annotation.md",
