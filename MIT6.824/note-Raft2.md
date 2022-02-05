@@ -8,3 +8,5 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 	- 需要持久化状态，避免多台机器同时断电
 ## server重启后恢复正常需要持久化什么
 - Figure 2：`log[]`, currentTerm, votedFor
+- 何时保存：状态发生后或者在发送RPC和接收RPC前
+- 
