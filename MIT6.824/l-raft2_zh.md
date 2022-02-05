@@ -2,7 +2,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 6.824 2020 Lecture 7: Raft (2)
 6.824 2020第7讲：木筏（2）
 
-topic: the Raft log (Lab 2B)
+> topic: the Raft log (Lab 2B) 
 主题：木筏日志（实验2B）
 
 as long as the leader stays up:
