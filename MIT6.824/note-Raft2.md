@@ -14,7 +14,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ## 为什么不需要保存这些状态
 
 ## 持久化通常是性能的瓶颈
-- hard disk write: 10ms, SSD write: 0.1ms, 所以限制100~10000 ops/second
+- hard disk write: 10ms, SSD write: 0.1ms, 所以操作数限制在100~10000 ops/second
 - 潜在的瓶颈：RPC（<< 1ms on LAN）[Much less than](https://math.stackexchange.com/questions/1516976/much-less-than-what-does-that-mean)
 - 解决方法：批量写入、写入battery-backed RAM而不是disk
 ## server crash+reboot后怎么恢复正常
