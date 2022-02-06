@@ -10,7 +10,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - Figure 2：`log[]`, currentTerm, votedFor
 - votedFor：避免投票后重启在同一term内又投票给另外一个candidate
 - currentTerm：确保term是递增的（如果不记录的话reboot后可能会使用了别的server的旧term number），并且用来检测leader和candidate的RPC请求
-- 何时保存：状态发生后或者在发送RPC和接收RPC前
+- 何时保存：状态发生改变后或者在发送RPC和接收RPC之前
 ## 为什么不需要保存这些状态
 
 ## 持久化通常是性能的瓶颈
