@@ -19,5 +19,5 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - 潜在的瓶颈：RPC（<< 1ms on LAN）[Much less than](https://math.stackexchange.com/questions/1516976/much-less-than-what-does-that-mean)
 - 解决方法：批量写入、写入battery-backed RAM而不是disk
 ## server crash+reboot后怎么恢复正常
-- 简单方法：re-play整个持久化日志
-- faster：使用snapshot并仅恢复
+- 简单方法：re-play整个持久化日志（从0开始）
+- faster：使用snapshot
