@@ -12,7 +12,8 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - currentTerm：确保term是递增的（如果不记录的话reboot后可能会使用了别的server的旧term number），并且用来检测leader和candidate的RPC请求
 - 何时保存：状态发生改变后或者在发送RPC和接收RPC之前
 ## 为什么不需要保存这些状态
-
+- commitIndex, lastApplied, `next/matchIndex[]`
+- leader可以通过自身的log和Append Entries RPC回复的信息推断出上述的状态
 ## 持久化通常是性能的瓶颈
 - hard disk write: 10ms, SSD write: 0.1ms, 所以操作数限制在100~10000 ops/second
 - 潜在的瓶颈：RPC（<< 1ms on LAN）[Much less than](https://math.stackexchange.com/questions/1516976/much-less-than-what-does-that-mean)
