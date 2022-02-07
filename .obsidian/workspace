@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lab2c-persistence.md",
+            "file": "MIT6.824/mynote-lab2b.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 389.01499938964844,
-    "collapsed": true
+    "width": 389.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -79,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lab2c-persistence.md",
+                "file": "MIT6.824/mynote-lab2b.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lab2c-persistence.md"
+                "file": "MIT6.824/mynote-lab2b.md"
               }
             }
           }
@@ -125,15 +124,15 @@
   },
   "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
+    "MIT6.824/mynote-lab2b.md",
     "MIT6.824/lab2c-persistence.md",
-    "MIT6.824/raft-extended.md",
     "MIT6.824/lec-note-raft2.md",
+    "MIT6.824/raft-extended.md",
     "MIT6.824/l-raft2_zh.md",
     "pdf/raft-extended-annotation.md",
     "资源.md",
     "simpread/simpread-投资是一场赌博.md",
     "journal/2022-01-29.md",
-    "保险.md",
-    "未命名.md"
+    "保险.md"
   ]
 }

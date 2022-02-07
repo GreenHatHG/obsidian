@@ -1,0 +1,2 @@
+nextIndex
+commitIndex
