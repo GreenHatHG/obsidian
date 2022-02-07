@@ -9,4 +9,4 @@
 - 需要将状态序列化再传递给persister，使用`labgob encoder`，参考`persist()`和`readPersist()`注释
 	- 注意不要使用`lower-case field names`
 - 在需要更新persistent state的地方使用`persist()`
-- 
+- You will probably need the optimization that backs up nextIndex by more than one entry at a time.
