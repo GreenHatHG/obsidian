@@ -1,2 +1,3 @@
-nextIndex
-commitIndex
+# nextIndex
+
+# commitIndex
