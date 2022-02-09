@@ -6,5 +6,5 @@
 # commitIndex
 - 官方描述：for each server, index of highest log entry known to be replicated on server  (initialized to 0, increases monotonically)
 -  If leaderCommit > commitIndex, set commitIndex = min(leaderCommit, index of last new entry)
-	- 这一步是必须的，因为append了Append Entries RPC args里面的log entries后，不一定到达LeaderCommit那个位置，导致apply的时候错误。
+	- leader发送Append Entries RPC给follower，majority of 
 	- 
