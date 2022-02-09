@@ -7,4 +7,4 @@
 - 官方描述：for each server, index of highest log entry known to be replicated on server  (initialized to 0, increases monotonically)
 -  If leaderCommit > commitIndex, set commitIndex = min(leaderCommit, index of last new entry)
 	- leader发送带有log的Append Entries RPC给follower，append log的follower达到majority后，leader commit该log，并更新commitIndex
-	- 第二次发送RPC时候，因为leaderCommit大于follower
+	- 第二次发送RPC时候，因为leaderCommit大于follower的commitIndex，所以follower更新自己的commitIndex
