@@ -8,5 +8,5 @@
 -  If leaderCommit > commitIndex, set commitIndex = min(leaderCommit, index of last new entry)
 	- leader发送带有log的Append Entries RPC给follower，append log的follower达到majority后，leader commit该log，并更新commitIndex
 	- 第二次发送RPC时候，因为leaderCommit大于follower的commitIndex，所以follower根据上述规则更新自己的commitIndex
-	- 根据commitIndex > lastApplied，就会apply相关log到state machine
+	- 根据commitIndex > lastApplied，就会apply相关log到state machine，所以这里apply的是上一次的log。因为取min，并且min里面的由leaderCommit，leaderCommit是上一次log更新的。
 	- 
