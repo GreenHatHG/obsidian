@@ -9,4 +9,5 @@
 	- leader发送带有log的Append Entries RPC给follower，append log的follower达到majority后，leader commit该log，并更新commitIndex
 	- 第二次发送RPC时候，因为leaderCommit大于follower的commitIndex，代表着leader已经commit了新的log，所以follower根据上述规则更新自己的commitIndex
 	- 根据commitIndex > lastApplied，就会apply `[lastApplied+1, commitIndex]`的log到state machine。这里apply的是上一次的log。因为leader commit后，follower才能commit，本次log leader还没有commit
-	- 什么情况会出现leaderCommit > commitIndex呢，当follower掉线了的时候，
+	- 什么情况会出现leaderCommit > commitIndex呢，当follower掉线了的时候
+- 
