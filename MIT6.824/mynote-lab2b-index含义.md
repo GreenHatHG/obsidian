@@ -13,7 +13,7 @@
 3. 更新matchIndex时候，应该取自args的值，因为nextIndex和raft中的logEntries的值可能已经发生了变化。`matchIndex = prevLogIndex + len(args.entries)`
 4. 更新matchIndex的两个时机
 	- AppendEntries RPC返回success，代表已经成功replicated log
-	- leader接收到新的command时候，主要用来统计是否
+	- leader接收到新的command时候，主要
 # commitIndex
 1. 官方描述：index of highest log entry known to be  committed (initialized to 0, increases  monotonically)
 2. commitIndex并不是只有leader才有的，所有server的commitIndex应该是一致的。
