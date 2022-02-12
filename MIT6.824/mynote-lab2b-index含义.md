@@ -5,7 +5,8 @@
 4. leader收到Append Entries RPC回复后只有是因为`log inconsistency`才能更新nextIndex。
 5. 更新nextIndex的三个时机
 	- leader election成功时候，需要更新nextIndex为`leader last log index + 1`
-	- 
+	- AppendEntries RPC返回success，代表已经成功replicated log
+	- `log inconsistency`时候回退nextIndex
 # matchIndex
 1. 官方描述：for each server, index of highest log entry known to be replicated on server  (initialized to 0, increases monotonically)
 2. leader保存该数组变量，由leader更新。
