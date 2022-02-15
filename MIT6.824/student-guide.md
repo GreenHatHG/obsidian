@@ -21,3 +21,6 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 - 即使AE中不带logEntries，也应该执行Figure中的第二条检查
 - AE中的第5步取min是必须的
 - 确保检查`up-to-date log`规则按照section5.4来，而不是单纯检查长度
+# Failure to follow The Rules
+- 当`commitIndex>lastApplied`时候就应该apply相关log。可以延迟一会再执行，但是一定要保证针对某个entry只apply一次
+- 
