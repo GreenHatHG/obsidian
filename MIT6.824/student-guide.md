@@ -10,4 +10,6 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 1. follower收到AE且检查后（比如检查args里面的term）重置
 2. follower timer触发，转变为candidate后
 3. **follower给candidate成功投票后**
+## 正确触发election
+根据Figure2决定何时触发election，特别是假如candidate正在执行election的过程中，这时候timer触发了，应该开启另外一个election
 
