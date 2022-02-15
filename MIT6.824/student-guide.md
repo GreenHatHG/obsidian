@@ -17,4 +17,7 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 例如，如果follower在currentTerm已经投票了，同时接收到的RequestVote RPC的term比currentTerm大，这时候应该采用最新的term并重置votedFor，接着处理RPC
 # Incorrect RPC handlers
 - 如果Figure2中的步骤显示`reply false`，这时候应该直接返回不执行后面程序
-- 如果AE中的prevLogIndex为lastLogIndex+1，
+- 如果AE中的prevLogIndex大于lastLogIndex，直接reply false
+- 即使AE中不带logEntries，也应该执行Figure中的第二条检查
+- AE中的第5步取min是必须的
+- 确保检查`up-to-date log`规则按照section5.4来，而不是单纯检查长度
