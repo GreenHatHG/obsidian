@@ -15,3 +15,4 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 ## 确保正确遵守了Figure2中Rules for Servers
 第二条规定：`If RPC request or response contains term T > currentTerm: set currentTerm = T, convert to follower`
 例如，如果follower在currentTerm已经投票了，同时接收到的RequestVote RPC的term比currentTerm大，这时候应该采用最新的term并重置votedFor，接着处理RPC
+# Incorrect RPC handlers
