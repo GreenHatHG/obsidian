@@ -23,4 +23,4 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 - 确保检查`up-to-date log`规则按照section5.4来，而不是单纯检查长度
 # Failure to follow The Rules
 - 当`commitIndex>lastApplied`时候就应该apply相关log。可以延迟一会再执行，但是一定要保证针对某个entry只apply一次
-- 
+- leader发出的AE只能是因为`log inconsistency`被拒绝
