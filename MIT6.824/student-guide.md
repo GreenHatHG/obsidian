@@ -36,7 +36,6 @@ S1:Follower，S2:Leader，S2将要发送term为6的AE
 - 否则prevLogIndex对应的位置term不对应，返回`conflictTerm=rf.logEntries[prevLogIndex].Term`，conflictIndex为rf.logEntries第一个term等于conflictTerm的log index
 - leader收到回复后，会在其log中找到最后一个term为conflictTerm的log index，并将nextIndex更新为该log index+1
 - 如果没有找到则设置nextIndex为conflictIndex
-1. case1：S1没有term为6的log，需要回退整个term为6的log。conflictTerm=5，conflictIndex=2，
- case2：覆盖一部分log
-	
-case3: s1缺失log
+1. case1：S1没有term为6的log，需要回退整个term为6的log。conflictTerm=5，conflictIndex=2，Leader发现没有term为5的log，nextIndex=2，可以一下子覆盖掉S1中term为5的log
+2. case2：覆盖一部分log。conflictTerm=4，conflictIndex=1，Leader发现有term为4的log，nextIndex=2，可以一下子覆盖掉S1中index为2、3的log
+3. case3: s1缺失log。conflictTerm=-1，conflictIndex=1，Leader应该回退到Follower最后一条log的下一条，nextIndex=
