@@ -32,9 +32,10 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 ![[Pasted image 20220216211431.png]]
 S1:Follower，S2:Leader，S2将要发送term为6的AE
 当发生`log inconsistency`时候，需要提供两个信息给leader
+- 如果follower没有prevLogIndex对应的log，返回`conflictIndex=len(rf.logEntries)`和`conflictTerm=None`
+- 否则prevLogIndex对应的位置term不对应，返回`conflictTerm = rf.logEntries[prevLogIndex].Term`
 1. case1：S1没有term为6的log，需要回退整个term为6的log
-	-  
-1. case2：覆盖一部分log
+
+ case2：覆盖一部分log
 	
-1. case3: s1缺失log
-	- follower没有prevLogIndex对应的log，`conflictIndex=len(log)`，`conflictTerm = None`
+case3: s1缺失log
