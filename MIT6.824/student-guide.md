@@ -28,3 +28,13 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 # Term confusion
 - 指的是收到过期的RPC回复应该怎么处理，一般做法是比对currentTerm，如果不一致的话则拒绝处理。
 - 处理RPC回复时不应该更新matchIndex为`nextIndex - 1`或者`len(rf.logEntries)`，因为这两者可能已经发生了改变，应该更新为`prevLogIndex + len(args.logEntries)`
+# Log backtracking optimization
+![[Pasted image 20220216211431.png]]
+S1:Follower，S2:Leader，S2将要发送term为6的AE
+当发生`log inconsistency`时候，需要提供两个信息给leader
+1. case1：S1没有term为6的log，需要回退整个term为6的log
+	-  
+1. case2：覆盖一部分log
+	
+1. case3: s1缺失log
+	- follower没有prevLogIndex对应的log，`conflictIndex=len(log)`，`conflictTerm = None`
