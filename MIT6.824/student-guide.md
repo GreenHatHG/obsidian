@@ -26,4 +26,5 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 - leader发出的AE被拒绝，如果不是因为`log inconsistency`的原因，那么leader此时应该立刻变为follower，并且不能更新nextIndex和matchIndex。
 - 根据Fogure8，leader只能commit currentTerm log，所以commitIndex涉及到的log只能是currentTerm的，需要特别检查`log[N].term == currentTerm`
 # Term confusion
-指的是收到过期的RPC回复应该怎么处理，一般做法是比对currentTerm，如果不一致的话则拒绝处理。
+- 指的是收到过期的RPC回复应该怎么处理，一般做法是比对currentTerm，如果不一致的话则拒绝处理。
+- 处理RPC回复时不应该更新matchIndex为`nextIndex - 1`或者`len(rf.logEntries)`，因为这两者可能已经发生了改变，应该更新为`prevLogIndex + len(args.logEntries)`
