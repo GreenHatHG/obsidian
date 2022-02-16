@@ -25,4 +25,5 @@ https://thesquareplanet.com/blog/students-guide-to-raft/
 - 当`commitIndex>lastApplied`时候就应该apply相关log。可以延迟一会再执行，但是一定要保证针对某个entry只apply一次
 - leader发出的AE被拒绝，如果不是因为`log inconsistency`的原因，那么leader此时应该立刻变为follower，并且不能更新nextIndex和matchIndex。
 - 根据Fogure8，leader只能commit currentTerm log，所以commitIndex涉及到的log只能是currentTerm的，需要特别检查`log[N].term == currentTerm`
-- 
+# Term confusion
+指的是收到过期的RPC回复应该怎么处理，一般做法是比对currentTerm，如果不一致的话则拒绝处理。
