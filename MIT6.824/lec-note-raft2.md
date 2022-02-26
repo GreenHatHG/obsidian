@@ -31,3 +31,6 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - service state通常小得多，只需要保存这个即可
 ## service定时保存snapshot
 ![[Pasted image 20220226164026.png]]
+- copy service state，例如上面的k/v table
+- service将snapshot持久化到磁盘
+- 
