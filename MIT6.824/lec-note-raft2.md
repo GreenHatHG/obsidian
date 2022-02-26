@@ -21,3 +21,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ## server crash+reboot后怎么恢复正常
 - 简单方法：re-play整个持久化日志（从0开始）
 - faster：使用snapshot
+# topic: log compaction and Snapshots (Lab 3B)
+## 问题
+- log可能变得很大
+- 进而导致re-play或者发送log可能需要很多时间
