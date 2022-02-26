@@ -31,6 +31,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - service state通常小得多，只需要保存这个即可
 ## service定时保存snapshot
 ![[Pasted image 20220226164026.png]]
-- copy service state，例如上面的k/v table
-- service将snapshot持久化到磁盘
-- 
+1. copy service state，例如上面的k/v table
+2. service将snapshot持久化到磁盘，同时记录着对应的log index，比如上图的3
+3. raft丢弃log index为3之前的log
+4. service可以随时创建snapshot并告诉raft丢弃log
