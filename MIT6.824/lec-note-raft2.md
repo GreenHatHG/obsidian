@@ -25,3 +25,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ## 问题
 - log可能变得很大
 - 进而导致re-play或者发送log可能需要很多时间
+## 只需要保存service state
+
+- clients only see the state, not the log
+- service state通常小得多，只需要保存这个即可
