@@ -30,3 +30,4 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - clients only see the state, not the log
 - service state通常小得多，只需要保存这个即可
 ## service定时保存snapshot
+![[Pasted image 20220226164026.png]]
