@@ -26,6 +26,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - log可能变得很大
 - 进而导致re-play或者发送log可能需要很多时间
 ## 只需要保存service state
-
+![[Pasted image 20220226163657.png]]
 - clients only see the state, not the log
 - service state通常小得多，只需要保存这个即可
+## service定时保存snapshot
