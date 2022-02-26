@@ -36,3 +36,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 3. raft丢弃log index为3之前的log
 4. service可以随时创建snapshot并告诉raft丢弃log
 - raft可能都不知道snapshot的存在和里面的内容是什么，因为snapshot存的内容都是与service相关的。
+## crash+restart后怎么恢复
+1. service从磁盘中读取snapshot
+2. raft从磁盘中读取persisted log
+3. service告诉raft将lastApplied设置为snapshot保存时对应的log index
