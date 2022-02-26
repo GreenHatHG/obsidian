@@ -25,13 +25,14 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ## 问题
 - log可能变得很大
 - 进而导致re-play或者发送log可能需要很多时间
-## 只需要保存service state
+## 我们只需要保存service state
 ![[Pasted image 20220226163657.png]]
 - clients only see the state, not the log
 - service state通常小得多，只需要保存这个即可
-## service定期保存snapshot
+## 解决方案：service定期保存snapshot
 ![[Pasted image 20220226164026.png]]
 1. copy service state，例如上面的k/v table
 2. service将snapshot持久化到磁盘，同时记录着对应的log index，比如上图的3
 3. raft丢弃log index为3之前的log
 4. service可以随时创建snapshot并告诉raft丢弃log
+- raft可能都不知道snapshot的存在和里面的内容是什么，因为snapshot存的内容都是与service相关的。
