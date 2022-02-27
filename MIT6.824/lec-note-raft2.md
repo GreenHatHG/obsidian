@@ -49,3 +49,4 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ## linearizability definition
 针对于`execution history`（client操作的历史，每个操作都有参数、返回值、开始时间、完成时间）：
 one can find a total order of all operations, that matches real-time (for non-overlapping ops), and in which each read sees the value from the write preceding it in the order.
+ 
