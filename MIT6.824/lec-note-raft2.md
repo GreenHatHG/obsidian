@@ -46,4 +46,6 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - leader不能用AppendEntriesRPC，应该额外使用InstallSnapshot RPC
 # linearizability
 - 等同于strong consistency
-- 
+## linearizability definition
+针对于`execution history`（其实就是log），如果满足以下条件：
+1. 
