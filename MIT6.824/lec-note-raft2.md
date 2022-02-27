@@ -44,3 +44,4 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 ![[Pasted image 20220227122714.png]]
 - follower offline并且snapshot后leader丢失了一些log
 - leader不能用AppendEntriesRPC，应该额外使用InstallSnapshot RPC
+# linearizability
