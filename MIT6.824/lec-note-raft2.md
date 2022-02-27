@@ -45,3 +45,5 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - follower offline并且snapshot后leader丢失了一些log
 - leader不能用AppendEntriesRPC，应该额外使用InstallSnapshot RPC
 # linearizability
+- 等同于strong consistency
+- 
