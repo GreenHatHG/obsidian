@@ -40,3 +40,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 1. service从磁盘中读取snapshot
 2. raft从磁盘中读取persisted log
 3. service告诉raft将lastApplied设置为snapshot保存时对应的log index
+## 问题：leader缺少发送给follower的日志
+![[Pasted image 20220227122714.png]]
+- follower offline并且snapshot后leader丢失了一些log
+- leader不能用AppendEntriesRPC，应该额外使用InstallSnapshot RPC
