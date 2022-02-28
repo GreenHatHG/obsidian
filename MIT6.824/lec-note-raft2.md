@@ -46,6 +46,7 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - leader不能用AppendEntriesRPC，应该额外使用InstallSnapshot RPC
 # linearizability
 - 等同于strong consistency
+https://www.anishathalye.com/2017/06/04/testing-distributed-systems-for-linearizability/
 ## linearizability definition
 针对于`execution history`（其实就是client request history，每个操作都有参数、返回值、开始时间、完成时间）：
 1. 历史中的每个操作都是有序的，一个接一个
@@ -74,4 +75,4 @@ order: Wx0 Wx2 Rx2 Wx1 Rx1
 ```
 
 这里可以看出write操作是可以并发的
-## EX4
+# duplicate RPC detection (Lab 3)
