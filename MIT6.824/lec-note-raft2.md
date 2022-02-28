@@ -59,3 +59,6 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 3. 同理第三点
 4. 根据图，先有x=1，再有x=2
 所以整个操作历史是`Wx1 Rx1 Wx2 Rx2`，是linearizable history
+## EX2
+![[Pasted image 20220228215715.png]]
+4. Rx1应该在Wx1后，但是严格的讲，Rx1应该在Wx2的前面，
