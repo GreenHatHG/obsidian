@@ -76,3 +76,14 @@ order: Wx0 Wx2 Rx2 Wx1 Rx1
 
 这里可以看出write操作是可以并发的
 # duplicate RPC detection (Lab 3)
+## RPC操作超时
+- call()返回false
+- server可能没有处理请求，重新发送request可行
+- server可能已经处理了请求，但是response丢失了，重新发送request不可行
+## problem
+- 上面两种情况对于client来讲都是一样的，没有收到response
+- 如果已经处理了请求，但是仍然需要处理结果
+## idea: duplicate RPC detection
+- 在k/v service中检测重复的client请求
+- client为每个request分配一个ID，重新发送相同的RPC时候带上相同的ID
+- 
