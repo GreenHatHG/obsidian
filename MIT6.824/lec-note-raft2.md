@@ -48,6 +48,9 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - 等同于strong consistency
 ## linearizability definition
 针对于`execution history`（其实就是client request history，每个操作都有参数、返回值、开始时间、完成时间）：
-- 历史中的每个操作都是有序的，一个接一个
-- 如果一个操作在另一个操作开始前结束，这个先结束的操作会先落地到历史中
-- 如果某个读请求看到了一个特定的写入值，那么这个读请求必然在对应的写请求之后
+1. 历史中的每个操作都是有序的，一个接一个
+2. 如果一个操作在另一个操作开始前结束，这个先结束的操作会先落地到历史中
+3. 如果某个读请求看到了一个特定的写入值，那么这个读请求必然在对应的写请求之后
+## EX1
+
+`|- Wx1 -|`：`|-`代表client发出request，`-|`代表收到response，`Wx1`代表write操作，将x设置为1
