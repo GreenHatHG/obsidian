@@ -86,4 +86,4 @@ order: Wx0 Wx2 Rx2 Wx1 Rx1
 ## idea: duplicate RPC detection
 - 在k/v service中检测重复的client请求
 - client为每个request分配一个ID，重新发送相同的RPC时候带上相同的ID
-- 
+- k/v中维护`ID:server处理后返回值`对应关系的表，收到重复RPC请求时候，直接查表返回
