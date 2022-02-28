@@ -48,4 +48,6 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 - 等同于strong consistency
 ## linearizability definition
 针对于`execution history`（其实就是client request history，每个操作都有参数、返回值、开始时间、完成时间）：
-- 每个
+- 历史中的每个操作都是有序的，一个接一个
+- 先结束的操作会先落地到历史中
+- 
