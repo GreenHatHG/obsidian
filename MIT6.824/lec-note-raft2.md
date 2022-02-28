@@ -64,8 +64,9 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 4. Rx1应该在Wx1后，但是严格的讲，Rx1应该在Wx2的前面，如果Wx2在Rx1之前出现，那么就不可能有Rx1了
 234形成一个环，所以不是是linearizable
 ## EX3
-
 Wx0 Wx1
-Wx1 Rx1
 Wx2 Rx2
 Rx2 Rx1
+Rx1 Wx1
+
+Wx2 Rx2 Rx1 Wx1
