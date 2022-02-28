@@ -47,5 +47,5 @@ http://nil.csail.mit.edu/6.824/2020/notes/l-raft2.txt
 # linearizability
 - 等同于strong consistency
 ## linearizability definition
-针对于`execution history`（client操作的历史，每个操作都有参数、返回值、开始时间、完成时间）：
+针对于`execution history`（其实就是client request history，每个操作都有参数、返回值、开始时间、完成时间）：
 - 每个
