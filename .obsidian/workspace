@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lec-note-raft2.md",
+            "file": "MIT6.824/lec-note-raft2-faq.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 258.01499938964844,
-    "collapsed": true
+    "width": 258.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -79,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lec-note-raft2.md",
+                "file": "MIT6.824/lec-note-raft2-faq.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lec-note-raft2.md"
+                "file": "MIT6.824/lec-note-raft2-faq.md"
               }
             }
           }
@@ -125,6 +124,7 @@
   },
   "active": "973d22cd198ccf9a",
   "lastOpenFiles": [
+    "MIT6.824/lec-note-raft2-faq.md",
     "MIT6.824/lec-note-raft2.md",
     "MIT6.824/lab2c-persistence.md",
     "MIT6.824/mynote-lab2b-index含义.md",
@@ -133,7 +133,6 @@
     "pdf/raft-extended-annotation.md",
     "pdf/raft-extended.pdf",
     "MIT6.824/l-raft2_zh.md",
-    "资源.md",
-    "simpread/simpread-投资是一场赌博.md"
+    "资源.md"
   ]
 }
