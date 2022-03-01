@@ -17,6 +17,6 @@ leader发出AE RPC告知100ms之内其是leader，如果得到了majority，那�
 - 让leader保留足够的log以覆盖follower常见滞后情况下需要的log或者短暂离线的情况
 - 只传输差异的部分，比如数据库最近更改的数据。
 #  写入snapshot的时间可能会超过election timeout吗，因为需要大量数据append
-对于大型的server来讲是会的
+对于大型的server来讲可能是会的。
 假设要复制1g数据量的数据库，而磁盘的写入速度只为100m/s，那么写入snapshot可能需要花费10s。
-在后台写snapshot，并且确保创建snapshot的频率
+在后台写snapshot（即not wait for the write，可能需要通过child process），并且确保创建snapshot的频率不高于10s一次
