@@ -7,3 +7,4 @@ no-op: no operation
 section8提到了这个点，需要两个措施去保障leader的合法性
 - leader term开始时候心跳提交no-op来确定commited log
 - 处理read request之前通过心跳确定自己是不是已经过期了
+# 为什么需要提交no-op
