@@ -19,4 +19,4 @@ leader发出AE RPC告知100ms之内其是leader，如果得到了majority，那�
 #  写入snapshot的时间可能会超过election timeout吗，因为需要大量数据append
 对于大型的server来讲是会的
 假设要复制1g数据量的数据库，而磁盘的写入速度只为100m/s，那么写入snapshot可能需要花费10s。
-在后台写snapshot（）
+在后台写snapshot，并且确保创建snapshot的频率
