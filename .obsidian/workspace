@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "91e0a5db46465044",
+        "id": "8dd2c2843d5ddbf4",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "资源.md",
+            "file": "MIT6.824/lec-note-raft2.md",
             "mode": "source",
             "source": false
           }
@@ -61,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 258.01499938964844
+    "width": 258.01499938964844,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -78,7 +79,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "资源.md",
+                "file": "MIT6.824/lec-note-raft2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +96,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "资源.md"
+                "file": "MIT6.824/lec-note-raft2.md"
               }
             }
           }
@@ -122,17 +123,17 @@
     "width": 234.2150115966797,
     "collapsed": true
   },
-  "active": "91e0a5db46465044",
+  "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
+    "MIT6.824/lec-note-raft2.md",
+    "MIT6.824/lec-note-raft2-faq.md",
+    "MIT6.824/lec-note-zookper.md",
+    "保险.md",
     "资源.md",
     "career/知秋.md",
     "MIT6.824/student-guide.md",
     "MIT6.824/mynote-lab2b-index含义.md",
-    "MIT6.824/lec-note-raft2-faq.md",
-    "MIT6.824/lec-note-raft2.md",
     "MIT6.824/lab2c-persistence.md",
-    "MIT6.824/raft-extended.md",
-    "pdf/raft-extended-annotation.md",
-    "pdf/raft-extended.pdf"
+    "MIT6.824/raft-extended.md"
   ]
 }
