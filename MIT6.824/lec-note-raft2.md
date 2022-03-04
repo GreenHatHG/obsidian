@@ -54,7 +54,7 @@ https://www.anishathalye.com/2017/06/04/testing-distributed-systems-for-lineariz
 3. 如果某个读请求看到了一个特定的写入值，那么这个读请求必然在对应的写请求之后
 ## EX1
 ![[Pasted image 20220228213422.png]]
-`|- Wx1 -|`：`|-`代表client发出request，`-|`代表收到response，`Wx1`代表write操作，将x设置为1，这个赋值操作的执行是在这段时间的某个时间点，其他时候可能在等待。
+`|- Wx1 -|`：`|-`代表client发出request，`-|`代表client收到response，`Wx1`代表write操作，将x设置为1，这个赋值操作的执行是在这段时间的某个时间点，其他时候可能在等待。
 1. 根据第二点，先结束的落到历史
 2. 根据第三点，读到x=2，那么肯定是先设置x=2
 3. 同理第三点
