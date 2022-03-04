@@ -73,7 +73,6 @@ Rx2 Rx1
 Wx1 Rx1
 order: Wx0 Wx2 Rx2 Wx1 Rx1
 ```
-
 这里可以看出write操作是可以并发的 
 # duplicate RPC detection (Lab 3)
 ## RPC操作超时
