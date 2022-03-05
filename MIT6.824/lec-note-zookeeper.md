@@ -7,3 +7,5 @@
 # 当我们添加更多的server时候，replication arrangement是否变得更快
 replica越多，写入的速度就越慢
 leader必须将每次写入发送给越来越多的server
+# 可以让follower提供只读服务，这样leader压力就小很多
+可能会产生log与leader不一致的情况，这个就不可能是Linearizability
