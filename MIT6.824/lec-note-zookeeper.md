@@ -17,4 +17,5 @@ Raft和Lab3不会出现这种情况，因为follower不提供只读服务
 client发送写入命令到leader，leader将写入命令发送给replica，和raft一样。即使是并发写操作，也会保证按照某个顺序去一一执行。
 ## FIFO client order
 client指定write和read操作的执行顺序
-- write：
+- write：按照client指定的write order，section2.3 ready file
+- read：
