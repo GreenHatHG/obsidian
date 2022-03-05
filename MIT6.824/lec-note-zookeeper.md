@@ -13,3 +13,5 @@ Raft和Lab3不会出现这种情况，因为follower不提供只读服务
 # ZooKeeper怎么处理这个
 在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据，但是在其他方面则是保证了顺序。
 # Ordering guarantees (Section 2.3)
+## Linearizable writes
+client发送写入命令到leader，leader将写入命令发送给replica，和raft一样。即使是并发写操作，也会保证按照某个顺序去一一执行。
