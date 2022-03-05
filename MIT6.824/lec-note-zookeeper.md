@@ -28,3 +28,4 @@ client指定write和read操作的执行顺序
 	- 工作原理是每个log entry都有一个zxid，当一个replica响应client的读请求时会携带上一个log entry的zxid（这里的上一个相对于是下一个读请求），client会记住最新数据的zxid，每次请求会携带上zxid。
 	- 如果另外一个replica也没有最新zxid对应的下一个log，replica可能会延迟对读请求回复直到leader同步了log或者是拒绝这个请求，或者是其他。
 - 将write发送给leader，但是leader还没有同步给replica，这时候read replica会被delay（因为指定了命令的执行顺序）
+- 只是保证了一个client的FIFO order，即同一个client的命令可以保证下一次读到的是上一次的写。但是对于不同的client来讲，client2不一定能准确读到刚刚client1写的数据
