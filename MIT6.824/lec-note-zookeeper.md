@@ -12,3 +12,4 @@ leader必须将每次写入发送给越来越多的server
 Raft和Lab3不会出现这种情况，因为follower不提供只读服务
 # ZooKeeper怎么处理这个
 在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据，但是在其他方面则是保证了顺序。
+# Ordering guarantees (Section 2.3)
