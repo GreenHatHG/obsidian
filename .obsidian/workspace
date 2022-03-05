@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lec-note-raft2.md",
+            "file": "MIT6.824/lec-note-zookeeper.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 258.01499938964844,
-    "collapsed": true
+    "width": 258.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -79,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lec-note-raft2.md",
+                "file": "MIT6.824/lec-note-zookeeper.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lec-note-raft2.md"
+                "file": "MIT6.824/lec-note-zookeeper.md"
               }
             }
           }
@@ -125,9 +124,9 @@
   },
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
+    "MIT6.824/lec-note-zookeeper.md",
     "MIT6.824/lec-note-raft2.md",
     "MIT6.824/lec-note-raft2-faq.md",
-    "MIT6.824/lec-note-zookper.md",
     "保险.md",
     "资源.md",
     "career/知秋.md",
