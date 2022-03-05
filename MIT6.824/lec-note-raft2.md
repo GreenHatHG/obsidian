@@ -80,7 +80,7 @@ order: Wx0 Wx2 Rx2 Wx1 Rx1
 ![[Pasted image 20220304082634.png]]
 - 这里ex4由ex3修改而来，增加了个client2，不过client2读取的顺序和client1不一致。因为ex3是linearizable history，那么ex4自然不是。
 - server可以选择任一个顺序写入（比如wx2和wx1在大部分时间段是同时发生，可能先执行wx2），但是所有的client读到的结果序列必须是一致的。
-- 这个很重要，因为当我们有replicas或者caches的时候，如果设计不好，就可能会出现不一致的情况。
+- 这个很重要，因为当我们有replicas或者caches的时候，如果设计不好，就可能会出现不一致的情况。 
 # duplicate RPC detection (Lab 3)
 ## RPC操作超时
 - call()返回false
