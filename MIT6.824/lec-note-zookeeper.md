@@ -25,6 +25,6 @@ client指定write和read操作的执行顺序
 	- 每次读都在写入顺序中的某一个点开始执行
 	- client连续读操作，每次读的顺序保证是非递减，这一次读不会读到前面的内容
 	- 如果执行读操作的时候，replica挂掉了，client需要将它的读请求发送给另外一个replica，这时候依旧会保证FIFO client order（非递减）。
-	- 工作原理是每个log entry都有一个zxid，当一个replica响应client的读请求时会携带上一个log entry的zxid（这里的上一个相对于是下一个读请求），client会记住最新数据的zxid，每次请求会携带上zxid。
-	- 如果另外一个replica也没有最新zxid对应的下一个log，replica可能会延迟对读请求回复直到leader同步了log或者是拒绝这个请求，或者是其他。
+	- 工作原理是每个log entry都有一个id，当一个replica响应client的读请求时会携带上一个log entry的id（这里的上一个相对于是下一个读请求），client会记住最新数据的id，每次请求会携带上id。
+	- 如果另外一个replica也没有最新id对应的下一个log，replica可能会延迟对读请求回复直到leader同步了log或者是拒绝这个请求，或者是其他。
 - 将write发送给leader，但是leader还没有同步给replica，这时候read replica会被delay（因为指定了命令的执行顺序）
