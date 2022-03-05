@@ -23,4 +23,5 @@ client指定write和read操作的执行顺序
 - write：按照client指定的write order，section2.3 ready file
 - read：
 	- 每次读都在写入顺序中的某一个点开始执行
-	- client连续读操作，每次读必须保证读到的
+	- client连续读操作，每次读的顺序保证是非递减，这一次读不会读到前面的内容
+	- 
