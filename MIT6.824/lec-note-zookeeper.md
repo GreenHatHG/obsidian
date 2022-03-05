@@ -8,4 +8,7 @@
 replica越多，写入的速度就越慢
 leader必须将每次写入发送给越来越多的server
 # 可以让follower提供只读服务，这样leader压力就小很多
-可能会产生log与leader不一致的情况，这个就不可能是Linearizability
+可能会产生log与leader不一致的情况，导致client读取的数据不对，甚至是产生“倒退现象”，client先从up-to-date replica读，再从logging replica读。这个就不可能是Linearizability
+Raft和Lab3不会出现这种情况，因为follower不提供只读服务
+# ZooKeeper怎么处理这个
+在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据，但是在其他方面则是保证了顺序。
