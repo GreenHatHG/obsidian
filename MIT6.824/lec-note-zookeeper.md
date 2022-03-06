@@ -31,4 +31,4 @@ client指定write和read操作的执行顺序
 - 只是保证了一个client的FIFO order（同一个clien的Linearizability），即同一个client的命令可以保证下一次读到的是上一次的写。但是对于不同的client来讲，client2不一定能准确读到刚刚client1写的数据
 # 尽管Zookeeper不是Linearizability，但是在别的方面还是有用的
 - sync()能够让后续不同的client看到之前client写入的值。只有该数据在整个系统中处于写状态，不允许其他client读到。想要读取最新数据，需要sync再读。缺点是增加了leader的处理时间，不这样做的话就不能因为ex3是linearizable
-- 场景1 ready file：master在Zookeeper中维护了一个配置文件，里面有一堆文件，
+- 场景1 ready file：master在Zookeeper中维护了一个配置文件（描述了分布系统的东西，比如worker ip，master信息等），里面有一堆文件，
