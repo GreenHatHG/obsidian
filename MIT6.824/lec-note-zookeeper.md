@@ -37,4 +37,6 @@ client指定write和read操作的执行顺序
 - 可能会出现的问题：
 ![[Pasted image 20220306190548.png]]
 	读f1的时候，执行了写操作，导致读到的f2不是原来应该读的
-	Zookeeper使用watch事件去解决，当调用exists的时候，除了判断file是否存在，还在这个文件上面设置了watch事件，当这个文件被修改时候replica会在一个相对正确的时间点通知client，即会在读操作执行之前。
+	Zookeeper使用watch事件去解决，当调用exists的时候，除了判断file是否存在，还在这个文件上面设置了watch事件（replicate会创建watch table，文件修改之前查看watch table），当这个文件被修改时候replica会在一个相对正确的时间点通知client，即会在读操作执行之前。
+![[Pasted image 20220306191450.png]]
+	
