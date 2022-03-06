@@ -40,3 +40,6 @@ client指定write和read操作的执行顺序
 	Zookeeper使用watch事件去解决，当调用exists的时候，除了判断file是否存在，还在这个文件上面设置了watch事件（replicate会创建watch table，文件修改之前查看watch table），当这个文件被修改时候replica会在一个相对正确的时间点通知client，即会在读操作执行之前。
 ![[Pasted image 20220306191450.png]]
 	当replicate crash时候，对应的watch table也会没有，client切换到新的replicate读的时候就不会有对应的watch table。但是client会在合适的时间收到replica崩溃的通知。
+# 几个影响
+- 当leader failed时候leader必须保存client的write order
+- 
