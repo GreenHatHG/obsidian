@@ -30,4 +30,4 @@ client指定write和read操作的执行顺序
 - 将write发送给leader，但是leader还没有同步给replica，这时候read replica会被delay（因为指定了命令的执行顺序）或者sync()
 - sync：保障写操作，在写数据的时候不允许读，即告诉replica，直到最后一个sync操作后，才处理读操作。想要读取最新数据，需要sync再读。
 - 只是保证了一个client的FIFO order（同一个clien的Linearizability），即同一个client的命令可以保证下一次读到的是上一次的写。但是对于不同的client来讲，client2不一定能准确读到刚刚client1写的数据
- 
+# 尽管Zookeeper
