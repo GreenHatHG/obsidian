@@ -44,3 +44,6 @@ client指定write和read操作的执行顺序
 - 当leader failed时候leader必须保存client的write order（？
 - replicate需要保障client的读取顺序按照zxid顺序
 - client必须跟踪它已读取的最高 zxid
+# 提高性能的技巧
+- client可以让leader发送异步写入，不必等待
+- leader可以批处理请求以减少磁盘和网络开销
