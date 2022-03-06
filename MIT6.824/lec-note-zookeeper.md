@@ -35,11 +35,11 @@ client指定write和read操作的执行顺序
 	- 正常的操作序列：
 	```
 	Write order:      Read order:
-	         delete("ready")
-	         write f1
-	         write f2
-	         create("ready")
-	                           exists("ready")
-	                           read f1
-	                           read f2
+	 delete("ready")
+	 write f1
+	 write f2
+	 create("ready")
+					   exists("ready")
+					   read f1
+					   read f2
 	```
