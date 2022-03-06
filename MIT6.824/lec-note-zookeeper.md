@@ -47,3 +47,5 @@ client指定write和read操作的执行顺序
 # 提高性能的技巧
 - client可以让leader发送异步写入，不必等待
 - leader可以批处理请求以减少磁盘和网络开销
+# coordination as a service是怎么样的
+## VMware-FT's test-and-set server
