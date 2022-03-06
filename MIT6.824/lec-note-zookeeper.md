@@ -41,5 +41,6 @@ client指定write和read操作的执行顺序
 ![[Pasted image 20220306191450.png]]
 	当replicate crash时候，对应的watch table也会没有，client切换到新的replicate读的时候就不会有对应的watch table。但是client会在合适的时间收到replica崩溃的通知。
 # 几个影响
-- 当leader failed时候leader必须保存client的write order
-- 
+- 当leader failed时候leader必须保存client的write order（？
+- replicate需要保障client的读取顺序按照zxid顺序
+- client必须跟踪它已读取的最高 zxid
