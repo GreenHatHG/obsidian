@@ -32,14 +32,9 @@ client指定write和read操作的执行顺序
 # 尽管Zookeeper不是Linearizability，但是在别的方面还是有用的
 - sync()能够让后续不同的client看到之前client写入的值。只有该数据在整个系统中处于写状态，不允许其他client读到。想要读取最新数据，需要sync再读。缺点是增加了leader的处理时间，不这样做的话就不是linearizable
 - 场景1 ready file：master在Zookeeper中维护了一个配置文件（描述了分布系统的东西，比如worker ip，master信息等），里面有一堆文件（可以实现原子更新效果），master会去更新配置文件，在更新的过程中worker不能查看配置，只能看到完全更新后的配置。
-	- 正常的操作序列：
-	```
-	Write order:      Read order:
-	 delete("ready")
-	 write f1
-	 write f2
-	 create("ready")
-					   exists("ready")
-					   read f1
-					   read f2
-	```
+	- 正常的操作序列，虽然不是完全linearizable（只有写），但是读只能往前读，所以达了类似linearizable的效果，提高了性能：
+![[Pasted image 20220306190528.png]]
+- 可能会出现的问题：
+![[Pasted image 20220306190548.png]]
+	读f1的时候，执行了写操作，导致读到的f2不是原来应该读的
+	Zookeeper使用watch事件去解决，当调用exists的时候，除了判断file是否存在，还在这个文件上面设置了watch事件，当这个文件被修改时候replica会在一个相对正确的时间点通知client。
