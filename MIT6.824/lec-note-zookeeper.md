@@ -1,7 +1,7 @@
-# ZooKeeper提出了什么问题
+# Zookeeper提出了什么问题
 1. 能够将coordination作为一种通用服务去提供吗，可以的话，API应该是怎么样的，其他分布式程序应该怎么去使用它？
 2. 我们有N个replica server，能从这个N个server中获得N倍性能吗？
-# 将ZooKeer视为基于Raft的service
+# 将Zookeer视为基于Raft的service
 ![[Pasted image 20220305160645.png]]
 只不过ZooKeeper使用的是zab协议，为ZooKeeper专门设计的一种支持崩溃恢复的一致性协议
 # 当我们添加更多的server时候，replication arrangement是否变得更快
@@ -10,7 +10,7 @@ leader必须将每次写入发送给越来越多的server
 # 可以让follower提供只读服务，这样leader压力就小很多
 可能会产生log与leader不一致的情况，导致client读取的数据不对，甚至是产生“倒退现象”，client先从up-to-date replica读，再从logging replica读。这个就不可能是Linearizability
 Raft和Lab3不会出现这种情况，因为follower不提供只读服务
-# ZooKeeper怎么处理这个
+# Zookeeper怎么处理这个
 在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据，但是在其他方面则是保证了顺序。
 # Ordering guarantees (Section 2.3)
 ## Linearizable writes
@@ -47,15 +47,14 @@ client指定write和read操作的执行顺序
 # 提高性能的技巧
 - client可以让leader发送异步写入，不必等待
 - leader可以批处理请求以减少磁盘和网络开销
-# coordination as a service是怎么样的（Zookeeper有什么用）
+# Coordination as a service是怎么样的（Zookeeper有什么用）
 ## VMware-FT's test-and-set server
-- 一个replica无法和其他replica通信，则获取t-a-s lock（test-and-set lock），成为sole server
-- 必须是唯一的以避免存在两个primary（如果出现network partition）
-- 必须是fault-tolerant
-## GFS
-- 从meta-data replica中选出master
-- 记录chunk servers列表，哪个是primary
+- 要求：一个replica无法和其他replica通信，则获取t-a-s lock（test-and-set lock），成为sole server。必须是唯一的以避免存在两个primary（如果出现network partition），必须是fault-tolerant。
+- Zookeeper提供了工具，可以写出fault-tolerant test-and-set服务
+## Config info
+通过Zookeeper发布信息给其他服务使用，比如可以将一组worker中作为当前master的那个ip存放在Zookeeper
+## Mater elect
+在test-and-set server中有体现，master可以把state存放在Zookeeper，如果master crash，选出一个新的maser代替它，新的master可以从Zookeeper中读取旧master的状态。
 ## MapReduce
-- master的信息
-- workers的信息
-- 任务状态
+worker可以注册到Zookeeper中，master会在里面记录着worker的任务，worker会从Zookeeper中将任务一件件拿出来，完成后就会移除掉。
+
