@@ -53,4 +53,9 @@ client指定write和read操作的执行顺序
 - 必须是唯一的以避免存在两个primary（如果出现network partition）
 - 必须是fault-tolerant
 ## GFS
-- 
+- 从meta-data replica中选出master
+- 记录chunk servers列表，哪个是primary
+## MapReduce
+- master的信息
+- workers的信息
+- 任务状态
