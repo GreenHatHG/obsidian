@@ -57,4 +57,6 @@ client指定write和read操作的执行顺序
 在test-and-set server中有体现，master可以把state存放在Zookeeper，如果master crash，选出一个新的maser代替它，新的master可以从Zookeeper中读取旧master的状态。
 ## MapReduce
 worker可以注册到Zookeeper中，master会在里面记录着worker的任务，worker会从Zookeeper中将任务一件件拿出来，完成后就会移除掉。
-
+# Zookeeper API
+- a file-system-like tree of znodes
+- 
