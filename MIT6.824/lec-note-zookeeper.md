@@ -49,5 +49,8 @@ client指定write和read操作的执行顺序
 - leader可以批处理请求以减少磁盘和网络开销
 # coordination as a service是怎么样的
 ## VMware-FT's test-and-set server
-- 一个replica无法和其他replica通信，则获取t-a-s lock，成为sole server
+- 一个replica无法和其他replica通信，则获取t-a-s lock（test-and-set lock），成为sole server
+- 必须是唯一的以避免存在两个primary（如果出现network partition）
+- 必须是fault-tolerant
+## GFS
 - 
