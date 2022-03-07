@@ -59,4 +59,6 @@ client指定write和read操作的执行顺序
 worker可以注册到Zookeeper中，master会在里面记录着worker的任务，worker会从Zookeeper中将任务一件件拿出来，完成后就会移除掉。
 # Zookeeper API
 - a file-system-like tree of znodes
-- 
+![[Pasted image 20220308074546.png]]
+示例：将一组机器和哪个机器是primary的信息存放在znodes
+- znode的分类：regular、ephemeral、sequential
