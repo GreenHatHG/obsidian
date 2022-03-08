@@ -78,3 +78,12 @@ flags：znode type
 - 当client fail的时候，session会自动执行操作，例如失败时release lock
 - sequential znode file可用于并发创建的同时又能指定顺序
 - watch
+# znode中的数字递增
+mini-transaction保障atomic read-modify-write
+```
+while true:
+    x, v := getData("f")
+    if setData(x + 1, version=v):
+      break
+```
+
