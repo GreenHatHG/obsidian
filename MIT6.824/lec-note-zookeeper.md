@@ -69,4 +69,5 @@ flags：znode type
 - delete(path, version)：if znode.version = version, then delete
 - exists(path, watch)：设置watch后，当path创建或者删除后会发送一个通知。原子操作，两个write之间的watch不会有任何操作，znode完成改变之前不会收到通知
 - getData(path, watch)
-- setData(path, data, version)
+- setData(path, data, version)：if znode.version = version, then update
+- 
