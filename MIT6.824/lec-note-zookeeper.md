@@ -71,4 +71,5 @@ flags：znode type
 - getData(path, watch)
 - setData(path, data, version)：if znode.version = version, then update
 - getChildren(path, watch)
-- sync()：sync后可以确保
+- sync()
+# Zookeeper api可以很好地实现同步
