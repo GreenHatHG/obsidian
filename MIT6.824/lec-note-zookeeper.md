@@ -73,3 +73,8 @@ flags：znode type
 - getChildren(path, watch)
 - sync()
 # Zookeeper api可以很好地实现同步
+- exclusive file creation：并发创建只有一个能返回成功
+- getData()/setData(x, version)支持mini-transactions
+- 当client fail的时候，session会自动执行操作，例如失败时release lock
+- sequential znode file可用于并发创建的同时又能指定顺序
+- watch
