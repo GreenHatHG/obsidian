@@ -60,5 +60,11 @@ worker可以注册到Zookeeper中，master会在里面记录着worker的任务�
 # Zookeeper API
 - a file-system-like tree of znodes
 ![[Pasted image 20220308074546.png]]
+each znode has a version number
 示例：将一组机器和哪个机器是primary的信息存放在znodes
 - znode的分类：regular、ephemeral、sequential（file name + seqno）
+# Operations on znodes
+flags：znode type
+- create(path, data, flags)：唯一的（exclusive），只有第一次创建才能成功
+- delete(path, version)：if znode.version = version, then delete
+- 
