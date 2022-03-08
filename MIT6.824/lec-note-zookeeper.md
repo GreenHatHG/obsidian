@@ -86,4 +86,5 @@ while true:
     if setData(x + 1, version=v):
       break
 ```
-当replica不能与leader通信时候，不能退出while循环。只适合少量请求的场景，当有大量的client同时递增时候，性能就会很差，因为同时操作只有一个能完成，复杂度是N^2。
+当replica不能与leader通信时候，不能退出while循环。只适合少量请求的场景，当有大量的client同时递增时候，性能就会很差，因为同时操作只有一个能完成，复杂度是N^2。使用随机sleep能够减少循环的次数，避免大量的重试。
+
