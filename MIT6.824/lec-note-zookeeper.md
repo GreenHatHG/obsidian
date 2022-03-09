@@ -95,5 +95,5 @@ acquire():
       if exists("f", watch=true)
         wait for notification
 ```
- 在replica exists执行过程中，目标文件锁被释放掉，会发生什么情况
- 
+在replica exists执行过程中，目标文件锁被释放掉，会发生什么情况
+exists是个只读请求，可能会发生在replica，与此同时，可能会有别的client在执行delete操作。
