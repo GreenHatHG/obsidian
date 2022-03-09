@@ -98,5 +98,5 @@ acquire():
 在replica exists执行过程中，lock文件被释放掉，会发生什么情况
 exists是个只读请求，可能会发生在replica，与此同时，可能会有别的client在执行delete操作。
 exists会在两个write请求之间执行。
-![[Pasted image 20220309081417.png]]
+![[Pasted image 20220309081922.png]]
 在完成执行成功的时间点，replica会看到lock文件依旧存在，replica会插入watch信息到watch table，然后才执行delete操作。所以当delete操作执行时，确保watch请求会在replica的watch table中，并且replica会给client发送通知。
