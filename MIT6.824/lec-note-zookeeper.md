@@ -102,4 +102,11 @@ release():
 在完成执行成功的时间点，replica会看到lock文件依旧存在，replica会插入watch信息到watch table，然后才执行delete操作。所以当delete操作执行时，确保watch请求会在replica的watch table中，并且replica会给client发送通知。
 每次释放锁，所有剩下的client都会收到watch通知，都会返回第一步发送create请求，所以时间复杂度基本上还是N^2。这个就是大量等待client引起的`Herd Effect`。
 # Locks without Herd Effect
-
+```
+1. create a "sequential" file
+2. list files
+3. if no lower-numbered, lock is acquired!
+4. if exists(next-lower-numbered, watch=true)
+5.   wait for event...
+6. goto 2
+```
