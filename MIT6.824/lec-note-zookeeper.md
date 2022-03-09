@@ -95,3 +95,5 @@ acquire():
       if exists("f", watch=true)
         wait for notification
 ```
+ 在replica exists执行过程中，目标文件锁被释放掉，会发生什么情况
+ 
