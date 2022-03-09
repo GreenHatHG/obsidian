@@ -11,7 +11,7 @@ leader必须将每次写入发送给越来越多的server
 可能会产生log与leader不一致的情况，导致client读取的数据不对，甚至是产生“倒退现象”，client先从up-to-date replica读，再从logging replica读。这个就不可能是Linearizability
 Raft和Lab3不会出现这种情况，因为follower不提供只读服务
 # Zookeeper怎么处理这个
-在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据，但是在其他方面则是保证了顺序。
+在性能和强一致性之间保持平衡，不提供强一致性，允许从replica读取数据（写只能是写leader），但是在其他方面则是保证了顺序。
 # Ordering guarantees (Section 2.3)
 ## Linearizable writes
 1. client发送写入命令到leader
@@ -110,4 +110,6 @@ release():
 5.   wait for event...
 6. goto 2
 ```
- 
+ - 大量client请求的话会按顺序产生很多个文件
+ - 这些文件代表着获得了锁，如果释放了锁则需要删除文件
+ - 
