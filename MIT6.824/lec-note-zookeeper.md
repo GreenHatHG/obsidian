@@ -94,9 +94,11 @@ acquire():
       if create("f", ephemeral=true), success
       if exists("f", watch=true)
         wait for notification
+release():
+	delete("f")
 ```
-在replica exists执行过程中，lock文件被释放掉，会发生什么情况
-exists是个只读请求，可能会发生在replica，与此同时，可能会有别的client在执行delete操作。
-exists会在两个write请求之间执行。
+在replica exists执行过程中，lock文件被释放掉，会发生什么情况。exists是个只读请求，可能会发生在replica，与此同时，可能会有别的client在执行delete操作。exists会在两个write请求之间执行。
 ![[Pasted image 20220309081922.png]]
 在完成执行成功的时间点，replica会看到lock文件依旧存在，replica会插入watch信息到watch table，然后才执行delete操作。所以当delete操作执行时，确保watch请求会在replica的watch table中，并且replica会给client发送通知。
+每次释放锁，所有剩下的client都会收到watch通知，都会返回第一步发送create请求，所以时间复杂度基本上还是N^2。这个就是大量等待client引起的`Herd Effect`。
+
