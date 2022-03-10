@@ -23,6 +23,11 @@
 - 在CR中head server只需要发送一次请求，Raft需要leader将请求发送给所有的follower。
 - 读取数据在CR中是由tail server完成，而在Raft中则是leader，会增加leader的负载。
 - 失败的情况比Raft更简单
+# 可以让client读取CR中任一replica？
+- 当大量读取操作导致tail server负载很高的情况，此时中间的server可能还有很多闲置的性能。因此，如果中间节点也参与进处理读请求的话性能可能会更好。
+- 
+
+
 # 这是否意味CR比Raft &c更强大
 不是
 - 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
