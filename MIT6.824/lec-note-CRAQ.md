@@ -16,6 +16,7 @@
 - 如果head server fail，下一个节点可以代替head继续工作（tail server同理，不过是上一个节点）。如果head中途crash，但是数据还没有到tail server，所以就不会回复给client。
 - 如果中间的server fail，需要移除该节点，上一个节点重新发送请求给新的下一个节点。
 - 不能处理network partition或者spilt brain的情况，需要配合第三方组件configuration manager (cm)来判断哪些服务器或者还是挂掉了，当有问题的时候，cm会重新发出配置决定谁是head，谁是tail，怎么安排链等。cm一般会使用Raft或者Zookeeper。
+- 可能不止一条链，也许是replication group，以此来请求分流，这个都由cm去决定。
 - 每个节点不需要更新其他服务器是否处于在线情况，当下一个节点挂掉后，上一个节点会一直尝试和下一个节点通信，除非收到了新的配置。
 # 为什么CR比Raft更有吸引力
 - client请求的接收和回复在CR中是在两个不同的server中处理，Raft需要leader都处理。
