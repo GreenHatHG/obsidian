@@ -15,7 +15,6 @@
 - 为了让tail回复，这条链的每个节点必须处理写请求，即整个路径上的节点都已经处理了写请求。
 - 如果head server fail，下一个节点可以代替head继续工作（tail server同理，不过是上一个节点）。如果head中途crash，但是数据还没有到tail server，所以就不会回复给client。
 - 如果中间的server fail，需要移除该节点，上一个节点重新发送请求给新的下一个节点。
-- 如果一个节点变得很慢的话，会影响这个链的性能。
 - 不能处理network partition或者spilt brain的情况，需要配合第三方组件configuration manager (cm)来判断哪些服务器或者还是挂掉了，当有问题的时候，cm会重新发出配置决定谁是head，谁是tail，怎么安排链等。cm一般会使用Raft或者Zookeeper。
 - 可能不止一条链，也许是replication group，以此来请求分流，这个都由cm去决定。
 - 每个节点不需要更新其他服务器是否处于在线情况，当下一个节点挂掉后，上一个节点会一直尝试和下一个节点通信，除非收到了新的配置。
@@ -24,3 +23,8 @@
 - 在CR中head server只需要发送一次请求，Raft需要leader将请求发送给所有的follower。
 - 读取数据在CR中是由tail server完成，而在Raft中则是leader，会增加leader的负载。
 - 失败的情况比Raft更简单
+# 这是否意味CR比Raft &c更强大
+不是
+- 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
+- 如果一个节点变得很慢的话，会影响这个链的性能，Raft则没有这些影响。
+- 不能像Raft或者Zookeeper那样立即可以fault-tolerant
