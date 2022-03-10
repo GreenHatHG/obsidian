@@ -25,8 +25,13 @@
 - 失败的情况比Raft更简单
 # 可以让client读取CR中任一replica？
 - 当大量读取操作导致tail server负载很高的情况，此时中间的server可能还有很多闲置的性能。因此，如果中间节点也参与进处理读请求的话性能可能会更好。
-- paper中
-
+- paper中提出一种解决方案：
+```
+Chain1: S1 S2 S3
+Chain2: S2 S3 S1
+Chain3: S3 S1 S2
+```
+这不一定有效，如果请求没有均匀分配的话
 
 # 这是否意味CR比Raft &c更强大
 不是
