@@ -35,7 +35,11 @@ Chain3: S3 S1 S2
 - 这也会导致强一致性失效，可能会读到未提交的值，或者是从一个replica读到旧值，从另外一个replica读到新值。
 # 如何让CRAQ支持强一致性读取任一replica
 ![[Pasted image 20220311090029.png]]
-
+- 每个replica存储每一个object的version list：clean version和最近写入的dirty version
+- write：
+	- client向head server发送写请求
+	- 写请求在链传递的时候每个replica创建新的dirty version
+	- 
 # 这是否意味CR比Raft &c更强大
 不是
 - 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
