@@ -32,7 +32,7 @@ Chain2: S2 S3 S1
 Chain3: S3 S1 S2
 ```
 这不一定有效，如果请求没有均匀分配的话
-
+- 这也会导致强一致性失效，可能会读到未提交的值，或者是从一个replica读到旧值，从另外一个replica读到新值。
 # 这是否意味CR比Raft &c更强大
 不是
 - 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
