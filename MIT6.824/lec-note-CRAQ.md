@@ -48,8 +48,7 @@ Chain3: S3 S1 S2
 - CRAQ的结构是一条链，所以对于所有的节点：
 	- 在写入commit之前，所有节点都知道了这个写入
 	- 能够知道何时查询tail server以得到最新的数据
-- Raft/Zookpeer的leader不能做到：
-	- 
+- Raft/Zookpeer的leader机制是以majority进行的，所以follower不能何时错过了一个committed write
 # 这是否意味CR比Raft &c更强大
 不是
 - 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
