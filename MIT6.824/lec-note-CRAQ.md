@@ -44,6 +44,10 @@ Chain3: S3 S1 S2
 	- 如果最新版本是clean version，则返回给client
 	- 如果最新是dirty version，不能返回recent clean version，因为client可能从别的replica获得了部分新的数据；也不能直接返回dirty version，因为这个可能是未committed的
 	- 只需要向tail server查询最新的版本即可（version query）
+# 为什么CRAQ支持强一致性读取replica，而Raft/Zookpeer不能
+- CRAQ的结构是一条链，所以对于所有的节点：
+	- 在写入commit之前，所有节点都知道了这个写入
+	- 
 # 这是否意味CR比Raft &c更强大
 不是
 - 所有的CRAQ replica都处理了请求后才能提交数据，Raft只需要majority
