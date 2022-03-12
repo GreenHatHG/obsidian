@@ -47,6 +47,8 @@ Chain3: S3 S1 S2
 # 为什么CRAQ支持强一致性读取replica，而Raft/Zookpeer不能
 - CRAQ的结构是一条链，所以对于所有的节点：
 	- 在写入commit之前，所有节点都知道了这个写入
+	- 能够知道何时查询tail server以得到最新的数据
+- Raft/Zookpeer的leader不能做到：
 	- 
 # 这是否意味CR比Raft &c更强大
 不是
