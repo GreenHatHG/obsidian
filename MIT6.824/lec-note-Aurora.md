@@ -15,3 +15,5 @@
 - 如果DB EC2崩溃，只需要在另一个EC2上面重新启动一个DB并挂载同一个EBS volume
 - EBS不是shared storage，只能由一个EC2挂载
 # DB-on-EBS缺点
+- 需要通过网络发送大量数据--log和dirty data pages，即使只是几bytes的更改，data pages也很大
+- 为了性能，两个replica在同一个数据库中心，整个数据中心挂了则数据库都挂了
