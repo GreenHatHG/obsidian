@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lec-note-CRAQ.md",
+            "file": "MIT6.824/lec-note-Aurora.md",
             "mode": "source",
             "source": false
           }
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lec-note-CRAQ.md",
+                "file": "MIT6.824/lec-note-Aurora.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lec-note-CRAQ.md"
+                "file": "MIT6.824/lec-note-Aurora.md"
               }
             }
           }
@@ -124,6 +124,8 @@
   },
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
+    "MIT6.824/lec-note-Aurora.md",
+    "MIT6.824/lab2c-persistence.md",
     "MIT6.824/lec-note-CRAQ.md",
     "MIT6.824/lec-note-zookeeper.md",
     "MIT6.824/lec-note-raft2.md",
@@ -131,8 +133,6 @@
     "保险.md",
     "资源.md",
     "career/知秋.md",
-    "MIT6.824/student-guide.md",
-    "MIT6.824/mynote-lab2b-index含义.md",
-    "MIT6.824/lab2c-persistence.md"
+    "MIT6.824/student-guide.md"
   ]
 }
