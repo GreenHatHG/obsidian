@@ -38,7 +38,11 @@ Chain3: S3 S1 S2
 - 每个replica存储每一个object的version list：clean version和最近写入的dirty version
 - write：
 	- client向head server发送写请求
-	- 写请求在链传递的时候每个replica创建新的dirty version
+	- 写请求在链传递的时候中间每个replica创建新的dirty version
+	- tail server则创建clean version，沿着链返回ack，将dirty version转变为clean version
+- read from replica：
+	- 如果最新版本是clean version，则返回给client
+	- 如果最新是dirty version，不能返回recent clean version，因为client可能从别的replica获得了部分新的数据；也不能直接返回dirty version，因为这个可能是未committed的
 	- 
 # 这是否意味CR比Raft &c更强大
 不是
