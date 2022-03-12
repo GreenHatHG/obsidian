@@ -4,3 +4,10 @@
 - 使用general-purpose storage架构情况下的局限性
 - 许多关于云基础架构中重要的内容
 # Amazon EC2，cloud computing，针对于web
+![[Pasted image 20220312154755.png]]
+- 租用直接运行在Amazon数据中心物理机器上的virtual machines instances
+- 使用的存储是连接在物理磁盘上的virtual local disk
+- 客户在EC2上面运行着stateless www server或者DB
+- 但是EC2不适合DB：扩展功能和容错功能有限（可以通过S3大容量存储服务定期存储数据库的snapshot）
+# Amazon EBS (Elastic Block Store)
+
