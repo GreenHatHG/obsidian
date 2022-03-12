@@ -125,10 +125,10 @@
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
     "MIT6.824/lec-note-Aurora.md",
-    "MIT6.824/lab2c-persistence.md",
     "MIT6.824/lec-note-CRAQ.md",
-    "MIT6.824/lec-note-zookeeper.md",
     "MIT6.824/lec-note-raft2.md",
+    "MIT6.824/lab2c-persistence.md",
+    "MIT6.824/lec-note-zookeeper.md",
     "MIT6.824/lec-note-raft2-faq.md",
     "保险.md",
     "资源.md",

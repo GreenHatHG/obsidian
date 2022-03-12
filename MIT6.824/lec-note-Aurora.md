@@ -10,4 +10,8 @@
 - 客户在EC2上面运行着stateless www server或者DB
 - 但是EC2不适合DB：扩展功能和容错功能有限（可以通过S3大容量存储服务定期存储数据库的snapshot）
 # Amazon EBS (Elastic Block Store)
-
+![[Pasted image 20220312160129.png]]
+- 使用的是Chain Replication，基于paxos的configuration manager
+- 如果DB EC2崩溃，只需要在另一个EC2上面重新启动一个DB并挂载同一个EBS volume
+- EBS不是shared storage，只能由一个EC2挂载
+# DB-on-EBS缺点
