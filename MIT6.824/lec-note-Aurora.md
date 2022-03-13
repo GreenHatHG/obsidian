@@ -16,7 +16,7 @@
 - EBS不是shared storage，只能由一个EC2挂载
 # DB-on-EBS缺点
 - 需要通过网络发送大量数据--log和dirty data pages，即使只是几bytes的更改，data pages也很大
-- 为了性能，两个replica放在同一个数据中心，整个数据中心挂了则数据库都挂了
+- 为了性能，两个replica放在同一个"availability zone" (AZ)--machine room or datacenter，AZ挂了则数据库都挂了
 # generic transactional DB
 示例：单机，x账户转账10元到y账户，在事务执行期间，x和y将被锁住，直到commit完成后释放，事务完成后数据就被持久化。
 ```
