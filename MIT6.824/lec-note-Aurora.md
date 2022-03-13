@@ -32,3 +32,7 @@ end
 2. 安全提交WAL到磁盘后，释放x和y的锁，并回复给client
 3. 随后将修改后的data page从缓存写入到磁盘，但是数据库一般会积累很多未写入磁盘的值在cache上面。当db crash后重启，会扫描commit记录，执行redo和undo操作。
 # Multi-AZ RDS
+database-as-a-service，而不是客户自己运行db在EC2
+![[Pasted image 20220313120857.png]]
+- 目标：通过cross-AZ replication实现更好的容错能力
+- 每个
