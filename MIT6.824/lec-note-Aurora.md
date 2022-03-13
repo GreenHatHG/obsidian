@@ -27,5 +27,7 @@ end
 ```
 ![[Pasted image 20220313112022.png]]
 - WAL(Write-Ahead Log)：让系统实现容错能力的关键部分
-- DB server在事务运行时只会修改cached data page，并将更新信息添加到WAL
+1. DB server在事务运行时只会修改cached data page，并将更新信息添加到WAL
 ![[Pasted image 20220313112559.png]]
+2. 安全提交WAL到磁盘后，释放x和y的锁，并回复给client
+3. 随后将修改后的data page从缓存写入到磁盘，
