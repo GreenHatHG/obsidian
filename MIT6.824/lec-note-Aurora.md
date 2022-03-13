@@ -46,5 +46,5 @@ database-as-a-service，而不是客户自己运行db在EC2
 # Aurora's storage fault tolerance goal
 - 即使一个AZ完全死了也能处理写请求
 - 即使一个AZ完全死了+另外一台server发生故障，也能够处理读请求
-- 即使在存储服务器变慢或者暂时不可用情况下，服务也能够继续进行
-- 
+- 即使在某些存储服务器变慢或者暂时不可用情况下，服务也能够继续进行
+- fast re-replication（快速复制出另外一个replica或者修复dead replica）
