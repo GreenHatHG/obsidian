@@ -27,7 +27,7 @@ end
 ```
 ![[Pasted image 20220313112022.png]]
 - WAL(Write-Ahead Log)：让系统实现容错能力的关键部分
-1. DB server在事务运行时只会修改cached data page，并将更新信息添加到WAL
+1. DB server在事务运行时只会修改cached data page，并将更新信息（log entry）添加到WAL
 ![[Pasted image 20220313112559.png]]
 2. 安全提交WAL到磁盘后，释放x和y的锁，并回复给client
 3. 随后将修改后的data page从缓存写入到磁盘，但是数据库一般会积累很多未写入磁盘的值在cache上面。当db crash后重启，会扫描commit记录，执行redo和undo操作。
@@ -35,6 +35,6 @@ end
 database-as-a-service，而不是客户自己运行db在EC2
 ![[Pasted image 20220313120857.png]]
 - 目标：通过cross-AZ replication实现更好的容错能力
-- 每个写数据必须发送到本地EBS和另外一个EC2上运行的DB，包括log和所有的dirty data pages
+- 每个写数据必须发送到本地EBS和另外一个EC2上运行的DB，包括log entry和所有的dirty data pages
 - 数据库写入必须等待四个EBS完成后才能回复给client，所以数据量大的话这里会有很大的延迟，但是容错性更好。
  
