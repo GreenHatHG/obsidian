@@ -38,4 +38,4 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 每个写数据必须发送到本地EBS和另外一个EC2上运行的DB，包括log entry和所有的dirty data pages
 - 数据库写入必须等待四个EBS完成后才能回复给client，所以数据量大的话这里会有很大的延迟，但是容错性更好。
 # Aurora的做法
-
+![[Pasted image 20220313122926.png]]
