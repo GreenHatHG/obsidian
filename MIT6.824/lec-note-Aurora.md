@@ -39,3 +39,6 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 数据库写入必须等待四个EBS完成后才能回复给client，所以数据量大的话这里会有很大的延迟，但是容错性更好。
 # Aurora的做法
 ![[Pasted image 20220313122926.png]]
+- 一个DB client给一个客户使用，底层对应着6个replica
+- 但是6个replica并不比RDS慢，因为只需要发送log entry（small），而不用发送dirty data pages（big）。但是这里并不是通用的，只能处理MySQL的log entry，EBS则具有通用，因为只是一个磁盘。
+- 不需要让6个replica都确认写请求，只要有Quorum（达到法定确认人数，事实证明只需要任意4个，简单的来说，在写操作时候，可以忽略最慢或者基本死掉的replica），数据库服务器就能够继续运行。
