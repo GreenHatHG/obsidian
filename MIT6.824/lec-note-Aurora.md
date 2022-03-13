@@ -25,5 +25,5 @@ x = x + 10
 y = y - 10
 end
 ```
+
 - WAL(Write-Ahead Log)：让系统实现容错能力的关键部分
-- 
