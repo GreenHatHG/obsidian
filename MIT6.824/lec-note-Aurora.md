@@ -15,7 +15,7 @@
 - 如果DB EC2崩溃，只需要在另一个EC2上面重新启动一个DB并挂载同一个EBS volume
 - EBS不是shared storage，只能由一个EC2挂载
 # DB-on-EBS缺点
-- 需要通过网络发送大量数据--log和dirty data pages，即使只是几bytes的更改，data pages也很大
+- 需要通过网络发送大量数据--log和dirty data pages，即使只是几bytes的更改，data pages也很大，可能一个page是8k
 - 为了性能，两个replica放在同一个"availability zone" (AZ)--machine room or datacenter，AZ挂了则数据库都挂了
 # generic transactional DB
 示例：单机，x账户转账10元到y账户，在事务执行期间，x和y将被锁住，直到commit完成后释放，事务完成后数据就被持久化。
@@ -37,4 +37,4 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 目标：通过cross-AZ replication实现更好的容错能力
 - 每个写数据必须发送到本地EBS和另外一个EC2上运行的DB，包括log entry和所有的dirty data pages
 - 数据库写入必须等待四个EBS完成后才能回复给client，所以数据量大的话这里会有很大的延迟，但是容错性更好。
- 
+# Aurora的做法
