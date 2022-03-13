@@ -43,3 +43,6 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 但是6个replica并不比RDS慢，因为只需要发送log entry（small），而不用发送dirty data pages（big）。但是这里并不是通用的，只能处理MySQL的log entry，EBS则具有通用，因为只是一个磁盘。
 - 不需要让6个replica都确认写请求，只要有Quorum（达到法定确认人数，事实证明只需要任意4个，简单的来说，在写操作时候，可以忽略最慢或者基本死掉的replica），数据库服务器就能够继续运行。
 - 35x throughput increase，可能主要是因为发送的数据少得多，但是增加了cpu和存储的使用量。
+# Aurora's storage fault tolerance goal
+- 即使一个AZ完全死了也能处理写请求
+- 即使一个AZ完全死了
