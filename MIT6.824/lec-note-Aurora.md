@@ -49,3 +49,7 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 即使在某些存储服务器变慢或者暂时不可用情况下，服务也能够继续进行
 - fast re-replication（快速复制出另外一个replica或者修复dead replica）
 # Quorum read/write technique
+- 目标：fault-tolerant storage，即使出现一些failures也能够读取最新的数据
+- 通常应用于简单的read/write (put/get) storage
+- 需要配置N、W、R（**N** replicas, writes to any **W** replicas,  reads from any **R** replicas），W和R的replica需要有重叠（overlap，也就是R+W=N+1）
+示例：N=3, W=2, R=2
