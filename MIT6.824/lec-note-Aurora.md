@@ -51,5 +51,5 @@ database-as-a-service，而不是客户自己运行db在EC2
 # Quorum read/write technique
 - 目标：fault-tolerant storage，即使出现一些failures也能够读取最新的数据
 - 通常应用于简单的read/write (put/get) storage
-- 需要配置N、W、R（**N** replicas, writes to any **W** replicas,  reads from any **R** replicas），W和R的replica需要有重叠（overlap，也就是R+W=N+1）
+- 需要配置N、W、R（**N** replicas, writes to any **W** replicas,  reads from any **R** replicas），W和R的replica需要有一台重叠（overlap，也就是R+W=N+1），即负责写也负责读
 示例：N=3, W=2, R=2
