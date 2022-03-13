@@ -54,4 +54,6 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 需要配置N、W、R（**N** replicas, writes to any **W** replicas,  reads from any **R** replicas），W和R的replica需要有一台重叠（overlap，也就是R+W=N+1），即负责写也负责读
 示例：N=3, W=2, R=2
 1. 发出一个写请求，将值更新为23
-2. 至少从W replica获取
+2. 得写入W个replica
+3. 接着处理读请求，为了处理读请求，至少得包含一个处理过写请求的server
+所以overlap确保至少有1个来自write quorum
