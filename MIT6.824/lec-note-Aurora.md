@@ -30,4 +30,4 @@ end
 1. DB server在事务运行时只会修改cached data page，并将更新信息添加到WAL
 ![[Pasted image 20220313112559.png]]
 2. 安全提交WAL到磁盘后，释放x和y的锁，并回复给client
-3. 随后将修改后的data page从缓存写入到磁盘，
+3. 随后将修改后的data page从缓存写入到磁盘，但是数据库一般会积累很多未写入磁盘的值在cache上面。当db crash后重启，会扫描commit记录，执行redo和undo操作
