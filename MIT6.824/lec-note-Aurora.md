@@ -18,9 +18,7 @@
 - 需要通过网络发送大量数据--log和dirty data pages，即使只是几bytes的更改，data pages也很大
 - 为了性能，两个replica放在同一个数据中心，整个数据中心挂了则数据库都挂了
 # generic transactional DB
-single  machine
-example bank transaction -- transfer $10 from x's account to y's account
-locks x and y, released after commit finishes
+示例：单机，x账户转账10元到y账户，在事务执行期间，x和y将被锁住，直到commit完成后释放，事务完成后数据就被持久化。
 ```
 begin
 x = x + 10
