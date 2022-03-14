@@ -61,3 +61,6 @@ database-as-a-service，而不是客户自己运行db在EC2
 - read quorum对应的server有多个，如何确定从哪个server中读取到的是最新数据？
 采用版本号机制，最大版本号的就是最新的数据，不能采用投票机制，可能read quorum中只有一个数据是最新的。
 - read/write quorum不能达到指定人数怎么办？继续重试
+# quorum read/write storage systems有什么好处
+- 可以轻易处理dead or slow or partitioned storage servers，不需要等待、检测、超时机制等并且也不存在split brain风险。
+- 
