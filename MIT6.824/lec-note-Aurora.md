@@ -52,11 +52,12 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 目标：fault-tolerant storage，即使出现一些failures也能够读取最新的数据
 - 通常应用于简单的read/write (put/get) storage
 - 需要配置N、W、R（**N** replicas, writes to any **W** replicas,  reads from any **R** replicas），W和R的replica需要有一台重叠（overlap，也就是R+W=N+1），即负责写也负责读
-示例：N=3, W=2, R=2
+- 示例：N=3, W=2, R=2
 ![[Pasted image 20220313212518.png]]
 1. 发出一个写请求，将值更新为23
 2. 得写入W个replica
 3. 接着处理读请求，为了处理读请求，至少得包含一个处理过写请求的server
 所以overlap确保了至少有1个来自write quorum
-read quorum对应的server有多个，如何确定从哪个server中读取到的是最新数据？
+- read quorum对应的server有多个，如何确定从哪个server中读取到的是最新数据？
 采用版本号机制，最大版本号的就是最新的数据，不能采用投票机制，可能read quorum中只有一个数据是最新的。
+- read/write quorum不能达到指定人数怎么办？继续重试
