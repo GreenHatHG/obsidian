@@ -65,3 +65,6 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 可以轻易处理dead or slow or partitioned storage servers，不需要等待、检测、超时机制等并且也不存在split brain风险。
 - 可以调整R和W以使读/写更快，比如可以使R=1，W=3，这样读起来更快，只需要等待一台机器响应即可，反过来写则会慢很多。但是Aurora容错能力是min(N-W, N-R)，这里的值是0，所以就没有容错能力。
 # Aurora的N、W、R是怎么样的
+N=6，W=4，R=3
+一个AZ完全死掉之后剩余4个replica，W=4，可以继续写入
+一个AZ完全死掉+一个server死掉后，剩余3个replica，R=3，可以继续读取
