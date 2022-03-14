@@ -58,3 +58,5 @@ database-as-a-service，而不是客户自己运行db在EC2
 2. 得写入W个replica
 3. 接着处理读请求，为了处理读请求，至少得包含一个处理过写请求的server
 所以overlap确保了至少有1个来自write quorum
+read quorum对应的server有多个，如何确定从哪个server中读取到的是最新数据？
+采用版本号机制，最大版本号的就是最新的数据，不能采用投票机制，可能read quorum中只有一个数据是最新的。
