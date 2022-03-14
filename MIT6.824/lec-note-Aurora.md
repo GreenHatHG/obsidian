@@ -63,4 +63,5 @@ database-as-a-service，而不是客户自己运行db在EC2
 - read/write quorum不能达到指定人数怎么办？继续重试
 # quorum read/write storage systems有什么好处
 - 可以轻易处理dead or slow or partitioned storage servers，不需要等待、检测、超时机制等并且也不存在split brain风险。
-- 
+- 可以调整R和W以使读/写更快，比如可以使R=1，W=3，这样读起来更快，只需要等待一台机器响应即可，反过来写则会慢很多。但是Aurora容错能力是min(N-W, N-R)，这里的值是0，所以就没有容错能力。
+# Aurora的N、W、R是怎么样的
