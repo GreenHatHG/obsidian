@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lec-note-Aurora.md",
+            "file": "李沐学AI/线形回归.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 258.01499938964844,
-    "collapsed": true
+    "width": 258.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -79,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lec-note-Aurora.md",
+                "file": "李沐学AI/线形回归.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lec-note-Aurora.md"
+                "file": "李沐学AI/线形回归.md"
               }
             }
           }
@@ -125,6 +124,7 @@
   },
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
+    "李沐学AI/线形回归.md",
     "MIT6.824/lec-note-Aurora.md",
     "MIT6.824/lec-note-CRAQ.md",
     "MIT6.824/lec-note-raft2.md",
@@ -133,7 +133,6 @@
     "MIT6.824/lec-note-raft2-faq.md",
     "保险.md",
     "资源.md",
-    "career/知秋.md",
-    "MIT6.824/student-guide.md"
+    "career/知秋.md"
   ]
 }
