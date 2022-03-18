@@ -69,5 +69,8 @@ N=6，W=4，R=3
 一个AZ完全死掉之后剩余4个replica，W=4，可以继续写入
 一个AZ完全死掉+一个server死掉后，剩余3个replica，R=3，可以继续读取
 # Aurora是怎么样写入的
-- DB server写入storage servers时候不会修改现有的数据项，而是写入新的log entry，即写操作或者事务完成之前，这条日志记录至少已经落地到4台server上面。达到write Quorum后才会对client进行响应。
-- 
+- DB server写入storage servers时候不会修改现有的数据项，而是写入新的log entry，即写操作或者事务完成之前，这条日志记录至少已经落地到4台server上面。达到Write Quorum后才会对client进行响应。
+- 确定一个事务之前，需要等待Write Quorum的storage server对之前所有提交的事务响应之后，才会响应现在这个事务。崩溃恢复也是如此，需要先恢复前面的事务。
+# storage server如何处理传入的log entry
+- 拿到的只是对data page修改的日志，并没有data page
+- storage server内部保持了数据库中data page在某一时刻的数据（旧版本）
