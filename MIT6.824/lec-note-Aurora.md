@@ -75,5 +75,5 @@ N=6，W=4，R=3
 - 拿到的只是对data page修改的日志，并没有data page
 - storage server内部保持了数据库中data page在某一时刻的数据（旧版本），所以实际上存储的是旧版本的data page和更新page所需要的日志列表
 - storage server异步或者在需要读取日志的时候apply这些日志到page，然后将data page返回
-- 写入的是log entry，读取的是data page
+- 写入的是log entry，读取的是data page。实际上，DB server会存储
 
