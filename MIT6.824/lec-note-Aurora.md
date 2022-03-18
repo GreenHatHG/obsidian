@@ -73,4 +73,7 @@ N=6，W=4，R=3
 - 确定一个事务之前，需要等待Write Quorum的storage server对之前所有提交的事务响应之后，才会响应现在这个事务。崩溃恢复也是如此，需要先恢复前面的事务。
 # storage server如何处理传入的log entry
 - 拿到的只是对data page修改的日志，并没有data page
-- storage server内部保持了数据库中data page在某一时刻的数据（旧版本）
+- storage server内部保持了数据库中data page在某一时刻的数据（旧版本），所以实际上存储的是旧版本的data page和更新page所需要的日志列表
+- storage server异步或者在需要读取日志的时候apply这些日志到page，然后将data page返回
+- 写入的是log entry，读取的是data page
+
