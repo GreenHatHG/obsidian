@@ -69,3 +69,4 @@ N=6，W=4，R=3
 一个AZ完全死掉之后剩余4个replica，W=4，可以继续写入
 一个AZ完全死掉+一个server死掉后，剩余3个replica，R=3，可以继续读取
 # Aurora是怎么样写入的
+- DB server写入storage servers时候不会修改现有的数据项，而是写入新的log entry
