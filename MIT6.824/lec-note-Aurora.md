@@ -76,6 +76,5 @@ N=6，W=4，R=3
 - storage server内部保持了数据库中data page在某一时刻的数据（旧版本），所以实际上存储的是旧版本的data page和更新page所需要的日志列表
 - storage server异步或者在需要读取日志的时候apply这些日志到page，然后将data page返回
 # Aurora的读是怎么样的
-- 写入的是log entry，读取的是data page（）。实际上，DB server会跟踪每个storage server收到了多少个log entry，读取的时候只需要从有最新的server里面读即可，不需要Read Quorum（写入需要Write Quorum）。
-- 
-
+- 写入的是log entry，读取的是data page（cached data page is missed）。实际上，DB server会跟踪每个storage server收到了多少个log entry，读取的时候只需要从有最新的server里面读即可，不需要Read Quorum（写入需要Write Quorum）。
+- 当DB server（不是storage server）崩溃恢复的时候，在不同的EC2示例上重新启动，
