@@ -26,11 +26,13 @@ y = y - 10
 end
 ```
 ![[Pasted image 20220313112022.png]]
+![[Pasted image 20220320110439.png]]
 - WAL(Write-Ahead Log)：让系统实现容错能力的关键部分
 1. DB server在事务运行时只会修改cached data page，并将更新信息（log entry）添加到WAL
 ![[Pasted image 20220313112559.png]]
 2. 安全提交WAL到磁盘后，释放x和y的锁，并回复给client
 3. 随后将修改后的data page从缓存写入到磁盘，但是数据库一般会积累很多未写入磁盘的值在cache上面。当db crash后重启，会扫描commit记录，执行redo和undo操作。
+- 需要在WAL保存旧值，当崩溃恢复的时候，需要undo回滚到旧值。
 # Multi-AZ RDS
 database-as-a-service，而不是客户自己运行db在EC2
 ![[Pasted image 20220313120857.png]]
@@ -77,4 +79,6 @@ N=6，W=4，R=3
 - storage server异步或者在需要读取日志的时候apply这些日志到page，然后将data page返回
 # Aurora的读是怎么样的
 - 写入的是log entry，读取的是data page（cached data page is missed）。实际上，DB server会跟踪每个storage server收到了多少个log entry，读取的时候只需要从有最新的server里面读即可，不需要Read Quorum（写入需要Write Quorum）。
-- 当DB server（不是storage server）崩溃恢复的时候，会自动在不同的EC2示例上重新启动一个DB server。崩溃的DB server可能处于处理某组事务的状态上，一些事务已经执行完成数据保存在Quorum上面，还有一些执行到一半的事务（一些数据可能已经保存到了某一个server上，而有的server可能还没有），所以重新启动的DB server需要读取Read Quorum，会在这些storage server上找到日志编号最高的那个log entry，
+- 当DB server（不是storage server）崩溃恢复的时候，会自动在不同的EC2示例上重新启动一个DB server。
+- 崩溃的DB server可能处于处理某组事务的状态上，一些事务已经执行完成数据保存在Quorum上面，还有一些执行到一半的事务（一些数据可能已经保存到了某一个server上，而有的server可能还没有），所以重新启动的DB server需要读取Read Quorum，会在这些storage server上找到缺失日志编号最高的那个log entry，并告诉storage server丢失后续所有的日志。
+- 所以可能存在一些半路崩溃保存下来的没有提交的日志（只有更新记录，没有commit记录标志），DB server需要检测出这些日志，并执行undo操作
