@@ -41,7 +41,7 @@ database-as-a-service，而不是客户自己运行db在EC2
 - 数据库写入必须等待四个EBS完成后才能回复给client，所以数据量大的话这里会有很大的延迟，但是容错性更好。
 # Aurora的做法
 ![[Pasted image 20220313122926.png]]
-- 一个DB client给一个客户使用，底层对应着6个replica
+- 一个DB server（使用EC2实例），底层对应着6个replica（storage server，其实就是挂载着一个或两个硬盘的server instance）
 - 但是6个replica并不比RDS慢，因为只需要发送log entry（small），而不用发送dirty data pages（big）。但是这里并不是通用的，只能处理MySQL的log entry，EBS则具有通用，因为只是一个磁盘。
 - 不需要让6个replica都确认写请求，只要有Quorum（达到法定确认人数，事实证明只需要任意4个，简单的来说，在写操作时候，可以忽略最慢或者基本死掉的replica），数据库服务器就能够继续运行。
 - 35x throughput increase，可能主要是因为发送的数据少得多，但是增加了cpu和存储的使用量。
@@ -82,3 +82,4 @@ N=6，W=4，R=3
 - 当DB server（不是storage server）崩溃恢复的时候，会自动在不同的EC2示例上重新启动一个DB server。
 - 崩溃的DB server可能处于处理某组事务的状态上，一些事务已经执行完成数据保存在Quorum上面，还有一些执行到一半的事务（一些数据可能已经保存到了某一个server上，而有的server可能还没有），所以重新启动的DB server需要读取Read Quorum，会在这些storage server上找到缺失日志编号最高的那个log entry，并告诉storage server丢失后续所有的日志。
 - 所以可能存在一些半路崩溃保存下来的没有提交的日志（只有更新记录，没有commit记录标志），DB server需要检测出这些日志，并执行undo操作
+# 如何处理解决太大而无法存储在storage server的问题
