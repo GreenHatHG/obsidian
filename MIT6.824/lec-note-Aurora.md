@@ -83,5 +83,8 @@ N=6，W=4，R=3
 - 崩溃的DB server可能处于处理某组事务的状态上，一些事务已经执行完成数据保存在Quorum上面，还有一些执行到一半的事务（一些数据可能已经保存到了某一个server上，而有的server可能还没有），所以重新启动的DB server需要读取Read Quorum，会在这些storage server上找到缺失日志编号最高的那个log entry，并告诉storage server丢失后续所有的日志。
 - 所以可能存在一些半路崩溃保存下来的没有提交的日志（只有更新记录，没有commit记录标志），DB server需要检测出这些日志，并执行undo操作
 # 如何处理解决太大而无法存储在storage server的问题
-- data page被分片（每片大概10GB）存储在Protection Groups (PGs)上
-- 每个PG由6个replica组成，不同的PG可能位于不同
+![[Pasted image 20220324073828.png]]
+- data page被分片（每片大概10GB）存储在Protection Groups (PGs)上，比如将B-Tree中编号为奇数的data page放到PG1，偶数的放到PG2
+- 每个PG由6个replica组成，不同的PG可能位于不同集群（sets of six storage servers），这些server由Aurora客户共同使用。
+- 如何拆分log：当DB server发送log entry时候，会根据log中所修改的数据查到保存该数据的PG，然后将日志发送给PG。所以每个PG存储了部分data page+这部分data page进行提交的日志记录。
+# 当storage server crash时候如何快速替换
