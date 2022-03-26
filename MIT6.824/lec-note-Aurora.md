@@ -88,3 +88,6 @@ N=6，W=4，R=3
 - 每个PG由6个replica组成，不同的PG可能位于不同集群（sets of six storage servers），这些server由Aurora客户共同使用。
 - 如何拆分log：当DB server发送log entry时候，会根据log中所修改的数据查到保存该数据的PG，然后将日志发送给PG。所以每个PG存储了部分data page+这部分data page进行提交的日志记录。
 # 当storage server crash时候如何快速替换
+- 需要快速替换，避免接着有更多的server崩溃，导致无法恢复
+- 可能crash掉的storage server里面保存了1000个PG（假设每个硬盘10T）replica，这可能会导致其他客户的10G PG数据也不可用，所以需要复制的是整个硬盘上的数据。假设内网的网速是10Gb/s，那么传输需要10000秒。
+- 
