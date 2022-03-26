@@ -96,4 +96,4 @@ N=6，W=4，R=3
 - master只负责写，同时存在很多只读replica（R/O），以减少master的负载
 - R/0从storage server读取data page，并缓存data page，master将log发送给R/O保持缓存的data page是最新的。
 - master需要在log中标注uncommitted log，R/O则需要直到这些transaction commit后才应用到缓存中。
-- replica在storage server直接读数据的时候可能会看到B-Tree正在执行平衡或者一些其他操作，
+- replica在storage server直接读数据的时候可能会看到B-Tree正在执行平衡或者一些其他操作，所以storage server得展示已完成事务后对应的data page，不能是未完成的，需要对B-Tree加锁之类的。
