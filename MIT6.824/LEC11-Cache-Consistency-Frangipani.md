@@ -3,3 +3,4 @@
 - distributed transactions
 - distributed crash recovery
 - 三者的相互作用
+# 整体的设计
