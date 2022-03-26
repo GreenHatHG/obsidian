@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/lec-note-Aurora.md",
+            "file": "MIT6.824/Lab2c-Persistence.md",
             "mode": "source",
             "source": false
           }
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/lec-note-Aurora.md",
+                "file": "MIT6.824/Lab2c-Persistence.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/lec-note-Aurora.md"
+                "file": "MIT6.824/Lab2c-Persistence.md"
               }
             }
           }
@@ -124,15 +124,15 @@
   },
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
-    "MIT6.824/lec-note-Aurora.md",
-    "MIT6.824/lec-note-CRAQ.md",
+    "MIT6.824/Lab2c-Persistence.md",
+    "MIT6.824/LEC7-Raft2-FAQ.md",
+    "MIT6.824/LEC7-note-FaultTolerance-Raft2.md",
+    "MIT6.824/LEC8-note-zookeeper.md",
+    "MIT6.824/LEC11-note-.md",
+    "MIT6.824/LEC9-note-CRAQ.md",
+    "MIT6.824/LEC10-note-Aurora.md",
     "李沐学AI/线形回归.md",
-    "MIT6.824/lec-note-raft2.md",
-    "MIT6.824/lab2c-persistence.md",
-    "MIT6.824/lec-note-zookeeper.md",
-    "MIT6.824/lec-note-raft2-faq.md",
     "保险.md",
-    "资源.md",
-    "career/知秋.md"
+    "资源.md"
   ]
 }

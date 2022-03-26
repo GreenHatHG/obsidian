@@ -29,9 +29,9 @@
 	- Leader election：选取leader和leader fails时重新选举
 	- Log replication：接收Log entries、复制到其他server、保持log一致性。
 	- Safety：state machine safety property
-		- [[raft-extended#选举成功|Election Safety]]: 一个term最多一个leader
+		- [[Raft-extended#选举成功|Election Safety]]: 一个term最多一个leader
 		- Leader Append-only: leader不会删除或者覆盖自己的log，只会追加
-		- [[raft-extended#Log Matching|Log Matching]]: 如果不同log中的两个entry具有相同的index和term，那么该index之前的log都是相同的。
+		- [[Raft-extended#Log Matching|Log Matching]]: 如果不同log中的两个entry具有相同的index和term，那么该index之前的log都是相同的。
 		- Leader Completeness: 如果一个log entry commit给定的term，那么该entry将出现在所有higher-numbered term的leader的日志中。
 		- State Machine Safety: 如果一个服务器在state machine上应用了一个给定index的log entry，那么其他server将永远不会为同一index应用一个不同的log entry。
 ## Raft basics
@@ -98,7 +98,7 @@
 - 第一个属性：一个log index只会对应一个entry，而且不会改变log entry在log的位置。
 - 第二个属性源自consistency check：发送Append Entries RPC时候会携带上一个entry的index的term，如果follower在其log中找不到这样的entry，则会拒绝新的entry。 ^4ajtq
 ### Log consistency
- - Follower收到Append Entries RPC时候会执行[[raft-extended#^4ajtq|consistency check]]，并找到和leader log一致的最新的log entry，删除该点之后的所有entry
+ - Follower收到Append Entries RPC时候会执行[[Raft-extended#^4ajtq|consistency check]]，并找到和leader log一致的最新的log entry，删除该点之后的所有entry
  - Leader会在下一次Append Entries RPC时候带上该点之后的所有entry
  - 具体实现：
 	 1. Leader为每个follower维护一个nextIndex，代表将发送给对应follower的log entry index（leader当选时候将所有的nextIndex初始化为自己log最后一个之后的index）
