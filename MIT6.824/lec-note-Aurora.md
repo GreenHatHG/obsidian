@@ -91,4 +91,4 @@ N=6，W=4，R=3
 - 需要快速替换，避免接着有更多的server崩溃，导致无法恢复
 - 可能crash掉的storage server里面保存了1000个PG（假设每个硬盘10T）replica，这可能会导致其他客户的10G PG数据也不可用，所以需要复制的是整个硬盘上的数据。假设内网的网速是10Gb/s，那么传输需要10000秒。
 ![[Pasted image 20220326092303.png]]
-- 当发生特定storage server crash时候，这时候已经连接不上了，假设这里面存储了PGABC的数据，处理程序会将PGABC其他replica里面的数据发送到另外几台server，并行的恢复只需要10秒。不过当发生
+- 当发生特定storage server crash时候，假设这里面存储了PGABC的数据，处理程序会将PGABC其他replica里面的数据发送到另外几台server，并行的恢复需要的时间很少。不过当发生很多server都crash时候，这种方法也不奏效，只能通过单台机器恢复。
