@@ -49,8 +49,9 @@ y         idle  ...
 - workstation使用锁的规则，保证缓存一致性
 	- 只有持有该文件锁的时候，才能对这个文件的数据缓存
 	- 先获得锁，然后从Petal中读取数据，并保存到缓存
-	- 先将修改后的数据写会到Petal，再释放锁
+	- 先将修改后的数据写回到Petal，再释放锁
 - coherence protocol messages
 	- request  (WS -> LS)
 	- grant (LS -> WS)
-	- 
+	- revoke (LS -> WS)：请求ws释放idle锁，一般情况下workstation创建了文件立即释放掉，而是由busy变成idle，因为绝大部分情况下，创建了文件还会对其操作。当ws收到revoke且能释放的时候（也就是ws此时没有对文件进行操作），如果缓存数据修改过，则需要按照第3条规则写回到Petal。
+	- release (WS -> LS)
