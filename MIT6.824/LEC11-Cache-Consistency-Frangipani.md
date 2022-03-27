@@ -14,4 +14,5 @@
 - 强一致性
 - caching in each workstation -- write-back
 	- 所有对文件的更新最初只是在workstation cache中完成--速度快
+	- 包括创建文件、目录、重命名等
 	- 
