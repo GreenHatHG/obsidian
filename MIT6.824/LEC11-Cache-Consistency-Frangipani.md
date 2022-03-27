@@ -45,4 +45,12 @@ y         idle  ...
 ```
 锁的种类：
 1. busy：正在使用数据
-2. idle：持有锁，但是现在不使用cached data
+2. idle：持有锁，但是现在不使用cached data（结束系统调用后由busy变成idle，比如创建文件、重命名、写入读取）
+- workstation使用锁的规则，保证缓存一致性
+	- 只有持有该文件锁的时候，才能对这个文件的数据缓存
+	- 先获得锁，然后从Petal中读取数据，并保存到缓存
+	- 先将修改后的数据写会到Petal，再释放锁
+- coherence protocol messages
+	- request  (WS -> LS)
+	- grant (LS -> WS)
+	- 
