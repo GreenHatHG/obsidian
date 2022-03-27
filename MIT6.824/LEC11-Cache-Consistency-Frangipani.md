@@ -55,3 +55,4 @@ y         idle  ...
 	- grant (LS -> WS)
 	- revoke (LS -> WS)：请求ws释放idle锁，一般情况下workstation创建了文件立即释放掉，而是由busy变成idle，因为绝大部分情况下，创建了文件还会对其操作。当ws收到revoke且能释放的时候（也就是ws此时没有对文件进行操作），如果缓存数据修改过，则需要按照第3条规则写回到Petal。
 	- release (WS -> LS)
+## 示例：WS1更改文件，然后WS2读取
