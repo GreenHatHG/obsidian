@@ -29,5 +29,5 @@
 - 目标是linearizability和caching，即同时兼备性能和一致性
 - 许多系统使用了cache coherence protocols：多核处理器、file servers、distributed shared memory，但是Frangipani使用的不是这种，而是使用锁实现。
 ## Frangipani's coherence protocol
-- lock server (LS), with one lock per file/directory
-- 
+- lock server (LS), with one lock per file/directory，简化版，实际上Frangipani的锁更复杂，允许一个writer或者多个reader对文件操作
+- workstation (WS) Frangipani cache：每个workstation会去跟踪它持有的锁，
