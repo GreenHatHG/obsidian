@@ -27,5 +27,7 @@
 - Petal里面内置了一套完全独立的容错系统（很像之前讨论的Chain Replication），不在讨论的范围内。
 # cache coherence
 - 目标是linearizability和caching，即同时兼备性能和一致性
-- 许多系统使用了cache coherence protocols：
-
+- 许多系统使用了cache coherence protocols：多核处理器、file servers、distributed shared memory，但是Frangipani使用的不是这种，而是使用锁实现。
+## Frangipani's coherence protocol
+- lock server (LS), with one lock per file/directory
+- 
