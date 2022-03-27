@@ -15,7 +15,10 @@
 - caching in each workstation -- write-back
 	- 所有对文件的更新最初只是在workstation cache中完成--速度快
 	- 包括创建文件、目录、重命名等
+	- 比如ws1(workstation user 1)想要创建并读写`/grades`：Frangipani会从Petal读取`/infomation`的信息并保存到cache，然后添加`/grades`到cache，但是并不会立马将修改同步到Petal，因为ws1也许会继续修改`/grades`
 - 所以Frangipani程序应该安装在workstation，而且petal不会知道workstation上面的文件以及目录信息，所有的逻辑处理复杂性都放在了Frangipani中
 	- 这是一种中心化方案（decentralized scheme）
 	- 添加更多workstation能添加更多CPU算力，有一定的扩展性，但是存储系统则会增加存储的负载，可能需要更多存储服务器。
-	- 
+# 挑战
+- 主要来自caching、decentralized
+- 
