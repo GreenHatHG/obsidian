@@ -21,5 +21,6 @@
 	- 添加更多workstation能添加更多CPU算力，有一定的扩展性，但是存储系统则会增加存储的负载，可能需要更多存储服务器。
 # 挑战
 - 主要来自caching、decentralized
-- cache coherence: ws1创建`/A`，ws2希望能看到`/A`（本地cache不会立即同步到Petal）
+- cache coherence：ws1创建`/A`，ws2希望能看到`/A`（本地cache不会立即同步到Petal）
+- atomicity：两个不同的workstation对同一个目录修改，比如ws1创建`/A`，ws2创建`/B`，最终`/`应该有两个目录，不应该出现覆盖的情况。
 - 
