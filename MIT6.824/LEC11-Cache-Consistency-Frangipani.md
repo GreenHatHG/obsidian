@@ -21,4 +21,5 @@
 	- 添加更多workstation能添加更多CPU算力，有一定的扩展性，但是存储系统则会增加存储的负载，可能需要更多存储服务器。
 # 挑战
 - 主要来自caching、decentralized
-- 
+- ws1创建`/A`，ws2希望能看到`/A`（本地cache不会立即同步到Petal）
+	- 
