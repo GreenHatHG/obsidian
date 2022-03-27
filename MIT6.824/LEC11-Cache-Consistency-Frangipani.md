@@ -30,4 +30,19 @@
 - 许多系统使用了cache coherence protocols：多核处理器、file servers、distributed shared memory，但是Frangipani使用的不是这种，而是使用锁实现。
 ## Frangipani's coherence protocol
 - lock server (LS), with one lock per file/directory，简化版，实际上Frangipani的锁更复杂，允许一个writer或者多个reader对文件操作
-- workstation (WS) Frangipani cache：每个workstation会去跟踪它持有的锁，
+```
+file  owner
+-----------
+x     WS1
+y     WS1
+```
+- workstation (WS) Frangipani **cache**：每个workstation会去跟踪它持有的锁
+```
+file/dir  lock  content(文件或者目录的实际内容)
+-----------------------
+x         busy  ...
+y         idle  ...
+```
+锁的种类：
+1. busy：正在使用数据
+2. idle：持有锁，但是现在不使用cached data
