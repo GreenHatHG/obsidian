@@ -12,4 +12,6 @@
 - 没有涉及到安全问题，彼此电脑之间互相信任，适用于小群体
 # Frangipani的设计
 - 强一致性
-- 
+- caching in each workstation -- write-back
+	- 所有对文件的更新最初只是在workstation cache中完成--速度快
+	- 
