@@ -22,7 +22,7 @@
 # 挑战
 - 主要来自caching、decentralized
 - cache coherence：ws1创建`/A`，ws2希望能看到`/A`（本地cache不会立即同步到Petal）
-- atomicity：两个不同的workstation对同一个目录修改，比如ws1创建`/A`，ws2创建`/B`，最终`/`应该有两个目录，不应该出现覆盖的情况。
+- atomic multi-step operations：两个不同的workstation对同一个目录修改，比如ws1创建`/A`，ws2创建`/B`，最终`/`应该有两个目录，不应该出现覆盖的情况（因为中间会有很多更新的步骤）。
 - crash recovery：当一个workstation crash，不应该影响到其他用户，即使浏览crashed workstation目录下的文件，也应该看到正确的内容（没有损坏的，不一定要最新）
 - Petal里面内置了一套完全独立的容错系统（很像之前讨论的Chain Replication），不在讨论的范围内。
 # cache coherence
@@ -49,7 +49,7 @@ y         idle  ...
 - workstation使用锁的规则，保证缓存一致性
 	- 只有持有该文件锁的时候，才能对这个文件的数据缓存
 	- 先获得锁，然后从Petal中读取数据，并保存到缓存
-	- 先将修改后的数据写回到Petal，再释放锁
+	- 先将修改后的数据写回到Petal，再释放锁（会有定时将缓存写入到磁盘的机制，避免一直没有释放锁后又crash丢失数据）
 - coherence protocol messages
 	- request  (WS -> LS)
 	- grant (LS -> WS)
@@ -66,3 +66,7 @@ y         idle  ...
 7. WS1发送release给Petal，释放锁
 8. WS2拿到锁
 - 锁和使用锁的规则保证最后一次的修改能被别人看到
+- 优化点：
+	- 增加idle锁，避免频繁向LS请求
+	- 增加shared read lock、exclusive-write lock，共享读锁，当要写入时候回收读锁，写锁独占。
+# atomic multi-step operations
