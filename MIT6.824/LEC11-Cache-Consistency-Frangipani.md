@@ -58,7 +58,11 @@ y         idle  ...
 ## 示例：WS1更改文件z，然后WS2读取z
 ![[Pasted image 20220328083733.png]]
 1. WS1向LS请求文件z的锁
-2. 拿到锁
+2. WS1拿到锁
 3. 从Petal读取文件z的内容，保存到cache
 4. WS2向LS请求文件z的锁
-5. 
+5. WS1持有这把锁，向WS1发送revoke请求
+6. 如果z被修改过，需要将更新后的z的内容写回到Petal
+7. WS1发送release给Petal，释放锁
+8. WS2拿到锁
+- 锁和使用锁的规则保证最后一次的修改能被别人看到
