@@ -7,3 +7,4 @@
 # 入门
 在`src/kvraft`中提供了代码框架和测试，需要修改`kvraft/client.go, kvraft/server.go,kvraft/common.go(如果需要)`
 # 3A
+每个kvserver都有一个关联着Raft的peer，Clerk会将Put、Append、Get RPC发送给
