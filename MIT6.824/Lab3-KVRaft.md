@@ -6,5 +6,5 @@
 - 应该重新阅读论文，特别是Sections 7和8
 # 入门
 在`src/kvraft`中提供了代码框架和测试，需要修改`kvraft/client.go, kvraft/server.go,kvraft/common.go(如果需要)`
-# 3A
-每个kvserver都有一个关联着Raft的peer，Clerk会将Put、Append、Get RPC发送给
+# 3A: Key/value service without log compaction
+每个kvserver建立在Raft上，Clerk会将Put、Append、Get RPC发送给leader的kvserver，以便保存log。

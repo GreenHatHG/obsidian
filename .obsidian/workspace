@@ -61,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 292.01499938964844
+    "width": 292.01499938964844,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -109,8 +110,8 @@
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
     "MIT6.824/Lab3-KVRaft.md",
-    "MIT6.824/Lab2c-Persistence.md",
     "MIT6.824/LEC11-Cache-Consistency-Frangipani.md",
+    "MIT6.824/Lab2c-Persistence.md",
     "MIT6.824/LEC10-Cloud Replicated-DB-Aurora.md",
     "MIT6.824/LEC9-More-Replication-CRAQ.md",
     "MIT6.824/Lab2b-index含义.md",
