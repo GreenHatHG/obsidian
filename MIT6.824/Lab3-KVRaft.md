@@ -10,5 +10,7 @@
 每个kvserver建立在Raft上，Clerk会将Put、Append、Get RPC发送给leader的kvserver，以便保存log。
 Clerk有时候不知道哪个kvserver是leader，如果RPC发送给不是leader的kvserver、无法连接的kvserver、leader kvserver commit log失败，此时需要重试发送给不同的kvserver。
 ## task1
-实现最基本的kvserver，不用考虑故障和丢失log的情况
-需要实现client.go中发送Put/Append/Get RPC方法以及server.go中PutApeend()、Get() RPC handler。
+实现最基本的kvserver，不用考虑故障和丢失log的情况，通过TestBasic3A
+- 需要实现client.go中发送Put/Append/Get RPC方法以及server.go中PutApeend()、Get() RPC handler。
+- 将op struct（需要补充下属性）传递给Raft的start()方法以便Raft commit kvserver的Get/Put/Append log。
+- 
