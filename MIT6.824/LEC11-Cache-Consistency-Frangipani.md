@@ -80,7 +80,11 @@ Frangipani的锁有两种作用：
 # crash recovery
 - ws持有锁的时候崩溃（可能已经写入部分修改的数据到Petal）
 - 此时不能直接释放对应的锁，因为操作还没有完成，释放后别的ws可能看到损坏的或者杂乱的数据，但是不释放锁别的ws就得一直等待锁。
-- Frangipani使用write-ahead logging实现crash recovery
-	- 将cache中的信息写入到Petal的之前，先在Petal写入这组完整操作的log
-	- 只有这组操作的log已经安全落地到Petal，ws才发送写操作给Petal
-	- 
+## write-ahead logging
+Frangipani使用write-ahead logging实现crash recovery
+1. 将cache中的信息写入到Petal的之前，先在Petal写入这组完整操作的log
+2. 只有这组操作的log已经安全落地到Petal，ws才发送写操作给Petal
+	- 当已经写入部分到Petal的ws crash后，剩余的写入操作可以根据Petal的log完成
+有两处与传统的logging方法不一样
+- 在大部分事务系统中，只有一个地方存放log，并且所有的事务日志都存放于此，所以一次crash或者多个操作都可以影响到这段数据。而Frangipani则是每个ws都有单独的log，避免了记录log的瓶颈，
+- 在大部分事务系统中，事务log存放位置和执行事务的那台机器是在一起的，基本是存在本地磁盘，但是Frangipani的log存放在共享的Petal中，而不是ws本地磁盘，这样ws2可以读取crash ws1的log并恢复。
