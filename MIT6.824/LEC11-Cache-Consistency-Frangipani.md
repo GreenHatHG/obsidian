@@ -79,3 +79,4 @@ Frangipani的锁有两种作用：
 - transactional file-system：避免没有完成的操作让别的ws看到
 # crash recovery
 ws持有锁的时候崩溃（可能已经写入部分修改的数据到Petal）
+此时不能直接释放对应的锁，因为操作还没有完成，释放后别的ws可能看到损坏的或者杂乱的数据，但是不释放锁别的ws就得一直等待锁。
