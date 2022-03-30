@@ -18,4 +18,7 @@ Clerk有时候不知道哪个kvserver是leader，如果RPC发送给不是leader�
 在task1基础上添加容错机制、处理重复的Clerk请求（等待RPC回复超时、重新发送给另外一个leader）
 - Clerk可能必须多次发送RPC以便找到有响应的kvserver，如果leader commit log后立马故障，那么Clerk可能不会收到回复，因此可能需要将请求重新发送给另外一个leader。
 - Raft应该只执行一次Clerk.put()、Clerk.Apeend()的请求，所以需要确保重新发送请求的时候不会导致Raft重复执行同一个请求两次。
+- 检测leader故障：kvserver检测Raft的term发生了变化。
+- Clerk可以记录哪个是kvserver是leader，优先发送请求，加快速度。
+- 需要唯一标识client操作，确保kvserver的每个操作只执行一次
 - 
