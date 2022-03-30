@@ -71,3 +71,6 @@ y         idle  ...
 	- 增加shared read lock、exclusive-write lock，共享读锁，当要写入时候回收读锁，写锁独占。
 # atomic multi-step operations
 Frangipani实现了transactional file-system operations（创建文件、删除文件、重命名等），以保证原子性
+1. 获取该操作所需的所有锁
+2. 在持有所有锁的情况下执行操作，并将修改后的数据写到Petal
+3. 完成后释放锁
