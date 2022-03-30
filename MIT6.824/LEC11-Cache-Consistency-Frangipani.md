@@ -81,4 +81,6 @@ Frangipani的锁有两种作用：
 - ws持有锁的时候崩溃（可能已经写入部分修改的数据到Petal）
 - 此时不能直接释放对应的锁，因为操作还没有完成，释放后别的ws可能看到损坏的或者杂乱的数据，但是不释放锁别的ws就得一直等待锁。
 - Frangipani使用write-ahead logging实现crash recovery
+	- 将cache中的信息写入到Petal的之前，先在Petal写入这组完整操作的log
+	- 只有这组操作的log已经安全落地到Petal，ws才发送写操作给Petal
 	- 
