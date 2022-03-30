@@ -91,3 +91,12 @@ Frangipani使用write-ahead logging实现crash recovery
 ## log中的内容
 - 使用带有编号的block存储每个ws的日志
 - 每个ws以环形队列的方式使用Petal上为它分配的空间，当空间用完的时候，ws可以从头写入，以此复用空间，但是在复用之前需要确保日志已经不需要（该日志的操作被Petal执行过了）
+![[Pasted image 20220331073356.png]]
+log entry中的内容：
+- LSN(log sequence number)：递增的log entry number，如果ws崩溃了，Frangipani会去扫描它的日志，直到LSN不在递增为止。
+- 描述数据更新的数组，每个元素都有:
+	- Petal上的block号
+	- version number
+	- 需要写入的内容
+log中只有文件系统中的目录、inode、allocation bitmap的元数据修改信息，没有文件中实际的内容的信息，只是包含了crash后恢复文件系统结构的足够信息。
+
