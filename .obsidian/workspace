@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/Lab3-KVRaft.md",
+            "file": "MIT6.824/LEC8-Zookeeper.md",
             "mode": "source",
             "source": false
           }
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 292.01499938964844
+    "width": 344.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/Lab3-KVRaft.md",
+                "file": "MIT6.824/LEC8-Zookeeper.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/Lab3-KVRaft.md"
+                "file": "MIT6.824/LEC8-Zookeeper.md"
               }
             }
           }
@@ -108,15 +108,15 @@
   },
   "active": "8dd2c2843d5ddbf4",
   "lastOpenFiles": [
+    "MIT6.824/LEC8-Zookeeper.md",
+    "MIT6.824/Lab2b-index含义.md",
+    "MIT6.824/Lab2c-Persistence.md",
     "MIT6.824/Lab3-KVRaft.md",
     "MIT6.824/LEC11-Cache-Consistency-Frangipani.md",
-    "MIT6.824/Lab2c-Persistence.md",
     "MIT6.824/LEC10-Cloud Replicated-DB-Aurora.md",
     "MIT6.824/LEC9-More-Replication-CRAQ.md",
-    "MIT6.824/Lab2b-index含义.md",
     "MIT6.824/LEC7-Raft2-FAQ.md",
     "MIT6.824/LEC7-FaultTolerance-Raft2.md",
-    "MIT6.824/LEC8-Zookeeper.md",
     "李沐学AI/线形回归.md"
   ]
 }
