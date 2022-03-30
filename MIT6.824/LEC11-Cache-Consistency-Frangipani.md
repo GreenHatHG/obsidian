@@ -78,3 +78,4 @@ Frangipani的锁有两种作用：
 - cache coherence：同步最新的写入
 - transactional file-system：避免没有完成的操作让别的ws看到
 # crash recovery
+ws持有锁的时候崩溃（可能已经写入部分修改的数据到Petal）
