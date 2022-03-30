@@ -86,5 +86,6 @@ Frangipani使用write-ahead logging实现crash recovery
 2. 只有这组操作的log已经安全落地到Petal，ws才发送写操作给Petal
 	- 当已经写入部分到Petal的ws crash后，剩余的写入操作可以根据Petal的log完成
 有两处与传统的logging方法不一样
-- 在大部分事务系统中，只有一个地方存放log，并且所有的事务日志都存放于此，所以一次crash或者多个操作都可以影响到这段数据。而Frangipani则是每个ws都有单独的log，避免了记录log的瓶颈，
+- 在大部分事务系统中，只有一个地方存放log，并且所有的事务日志都存放于此，所以一次crash或者多个操作都可以影响到这段数据。而Frangipani则是每个ws都有单独的log，避免了记录log的瓶颈，但是某个文件的更新日志可能分散存到不同的位置。
 - 在大部分事务系统中，事务log存放位置和执行事务的那台机器是在一起的，基本是存在本地磁盘，但是Frangipani的log存放在共享的Petal中，而不是ws本地磁盘，这样ws2可以读取crash ws1的log并恢复。
+## log中的内容
