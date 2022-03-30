@@ -74,3 +74,7 @@ Frangipani实现了transactional file-system operations（创建文件、删除�
 1. 获取该操作所需的所有锁
 2. 在持有所有锁的情况下执行操作，并将修改后的数据写到Petal
 3. 完成后释放锁
+Frangipani的锁有两种作用：
+- cache coherence：同步最新的写入
+- transactional file-system：避免没有完成的操作让别的ws看到
+# crash recovery
