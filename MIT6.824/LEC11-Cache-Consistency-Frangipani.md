@@ -105,7 +105,7 @@ Frangipani使用write-ahead logging实现crash recovery
 ## ws1在持有锁的时候崩溃
 - ws2请求ws1持有的锁
 	- ls向ws发送revoke请求，没有得到响应，Frangipani的lock使用了lease的设定，当超过了lease time，就会判定ws肯定崩溃了。
-	- ls告诉ws2根据Petal的日志恢复ws1
+	- ls告诉ws2根据Petal的日志恢复ws1（根据ws1的log写入到Petal，有一些checksum机制确保每个log entry都是完整的，避免执行没有写完整的log entry）
 	- 完成后告诉ls才能释放锁
 - ws1可能没有将log写回到Petal就崩溃了，或者是在写的过程中崩溃了，那么可能会丢掉ws1做的一些操作，但是其他的ws不会收到影响。
 - 
