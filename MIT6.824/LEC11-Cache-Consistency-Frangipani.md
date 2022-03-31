@@ -97,5 +97,11 @@ Frangipani使用write-ahead logging实现crash recovery
 	- 描述数据更新的数组，每个元素都有：Petal上的block号、version number和需要写入的内容
 - log中只有文件系统中的目录、inode、allocation bitmap的元数据修改信息，没有文件中实际的内容的信息，只是包含了crash后恢复文件系统结构的足够信息。比如在目录d下创建了文件f，增加一个log entry，里面有两条关于修改的描述：如何初始化f的inode、该文件在目录d下的新名字。
 -  最初log entry只在ws的内存中，避免频繁写入Petal。
+## revoke
+收到ls的revoke消息的时候，需要释放锁
+1. 将某些部分日志写到Petal的内存中，确保日志是完整的
+2. 将已经修改的cache数据发送给Petal
+3. 发送release消息释放锁
+
 
 
