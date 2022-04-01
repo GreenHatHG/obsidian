@@ -99,7 +99,7 @@ Frangipani使用write-ahead logging实现crash recovery
 -  最初log entry只在ws的内存中，避免频繁写入Petal。
 ## revoke
 收到ls的revoke消息的时候，需要释放锁
-1. 将某些部分日志写到Petal的内存中，确保日志是完整的
+1. 将某些部分日志写到Petal的内存中，得确保日志是完整的
 2. 将已经修改的cache数据发送给Petal写入（这组数据修改操作的日志第一步已经发送了）
 3. 发送release消息释放锁
 ## ws1在持有锁的时候崩溃
