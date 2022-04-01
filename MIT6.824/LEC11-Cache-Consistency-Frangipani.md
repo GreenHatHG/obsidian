@@ -102,7 +102,6 @@ Frangipani使用write-ahead logging实现crash recovery
 1. 将某些部分日志写到Petal的内存中，得确保日志是完整的
 2. 将已经修改的cache数据发送给Petal写入（这组数据修改操作的日志第一步已经发送了）
 3. 发送release消息释放锁
-4. 将第一步中的日志落地到Petal
 ## ws1在持有锁的时候崩溃
 - ws2请求ws1持有的锁
 	- ls向ws发送revoke请求，没有得到响应，Frangipani的lock使用了lease的设定，当超过了lease time，就会判定ws肯定崩溃了。
