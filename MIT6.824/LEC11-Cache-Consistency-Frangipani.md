@@ -108,5 +108,5 @@ Frangipani使用write-ahead logging实现crash recovery
 	- ls告诉ws2根据Petal的日志恢复ws1（根据ws1的log写入到Petal，有一些checksum机制确保每个log entry都是完整的，避免执行没有写完整的log entry）
 	- 完成后告诉ls才能释放锁
 - ws1可能没有将log写回到Petal就崩溃了，或者是在写的过程中崩溃了，那么可能会丢掉ws1做的一些操作，但是其他的ws不会收到影响。
-- 另外一种情况是ws1将日志发送给Petal完成后就崩溃了，
+- 另外一种情况是ws1将日志发送给Petal完成后就崩溃了，但是进行恢复工作的ws2并不知道ws1什么时候恢复了
 
