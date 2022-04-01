@@ -82,7 +82,7 @@ Frangipani的锁有两种作用：
 - 此时不能直接释放对应的锁，因为操作还没有完成，释放后别的ws可能看到损坏的或者杂乱的数据，但是不释放锁别的ws就得一直等待锁。
 ## write-ahead logging
 Frangipani使用write-ahead logging实现crash recovery
-1. 将cache中的信息写入到Petal的之前，先在Petal写入这组完整操作的log
+1. 将cache中的信息写入到Petal的之前，先在Petal写入这组完整操作的log（日志是ws一段段根据offset发送给Petal）
 2. 只有这组操作的log已经安全落地到Petal，ws才发送写操作给Petal
 	- 当已经写入部分到Petal的ws crash后，剩余的写入操作可以根据Petal的log完成
 有两处与传统的logging方法不一样
@@ -108,5 +108,5 @@ Frangipani使用write-ahead logging实现crash recovery
 	- ls告诉ws2根据Petal的日志恢复ws1（根据ws1的log写入到Petal，有一些checksum机制确保每个log entry都是完整的，避免执行没有写完整的log entry）
 	- 完成后告诉ls才能释放锁
 - ws1可能没有将log写回到Petal就崩溃了，或者是在写的过程中崩溃了，那么可能会丢掉ws1做的一些操作，但是其他的ws不会收到影响。
-- 
+- 另外一种情况是ws1将日志发送给Petal完成后就崩溃了，
 
