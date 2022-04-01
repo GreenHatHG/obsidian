@@ -113,4 +113,4 @@ Frangipani使用write-ahead logging实现crash recovery
 ![[Pasted image 20220401090622.png]]
 ws1删除完d/f，ws2接着创建d/f，然后ws1崩溃了，接着ws3要恢复ws1
 对于Petal中所保存的数据（元数据、目录、数据块等）来说都有一个版本号，如果数据块的版本号大于等于log entry中的版本号，ws3就忽略该日志，所以上述场景ws3不会执行ws1删除的日志。
-
+当ws3进行恢复工作的时候，ws2可能持有着该目录所对应的锁，
