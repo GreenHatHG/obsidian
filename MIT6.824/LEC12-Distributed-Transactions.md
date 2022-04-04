@@ -55,12 +55,12 @@ x已经+1，但是轮到y的时候发现账户不存在
 - 数据分片（shard）存在于多个服务器上面，事务在transaction coordinator(tc)上运行
 - 每次读/写，TC都会发送RPC到相关的分片服务器（shard server）。shard server称为participant，每个分片服务器管理着对应数据的锁
 - 可能会有很多并发事务，很多TC。TC为每个事务分配一个唯一事务ID(TID)，每个RPC消息、table entry都有TID。
+  ![[Pasted image 20220404155519.png]]
 1. client给TC发送执行事务请求，并等待响应
-2. TC给A发送get请求，给B发送put请求，并收到各自的回复
+2. TC给A发送get请求，给B发送put请求，并收到各自的回复（锁住数据后暂时修改，commit后才会持久化）
 3. TC给A个B发送prepare消息，A和B会去检查是否能够完成这个事务中的操作，TC会等待每个事务参与者的回复（Yes/No）
 4. 如果A和B都回复Yes，则TC向A和B发送commit消息。
-5. 收到TC的commit消息后，A/B commit
-6. A/B回复ACK消息
-7. TC回复给client
-
-- 如果A或B回复No（缺了一条记录或者发生了故障等），则TC发送abort消息
+5. 收到TC的commit消息后，A/B commit并释放事务对数据的锁，A/B回复ACK消息
+6. TC回复给client
+- 如果A或B回复No（缺了一条记录或者发生了故障等），则TC发送abort消息，回滚数据
+- 每个participant都有一张lock表，将锁与该事务所操作的数据对象关联起来。
