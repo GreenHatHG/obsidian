@@ -13,3 +13,4 @@
 - Isolated（隔离性）：事务之间不能相互影响（比如看到另外一个事务正在修改的值），也称serializable
 - Durable（持久化）：committed write是持久的
 # serializable
+执行一些并发事务，会产生结果（更改数据库或者取值），如果结果符合以下条件，则说明是serializable：
