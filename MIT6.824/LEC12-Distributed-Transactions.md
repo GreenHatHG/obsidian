@@ -64,3 +64,4 @@ x已经+1，但是轮到y的时候发现账户不存在
 6. TC回复给client
 - 如果A或B回复No（缺了一条记录或者发生了故障等），则TC发送abort消息，回滚数据
 - 每个participant都有一张lock表，将锁与该事务所操作的数据对象关联起来。
+# B crash并reboot会发生什么
