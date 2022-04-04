@@ -50,7 +50,8 @@
 x已经+1，但刚好执行y的时候就崩溃了
 x已经+1，但是轮到y的时候发现账户不存在
 想要解决上面的问题就得实现原子性，要么全部执行要么全部不执行，挑战在于如何实现以及对性能的影响。
-# two-phase commit protocol
+# two-phase commit protocol(2PC)
 - 用于分布式数据库处理多服务器事务
 - 数据分片存在于多个服务器上面，事务在transaction coordinator(tc)上运行
-- 
+
+- 可能会有很多并发事务，很多TC。TC为每个事务分配一个唯一事务ID(TID)，每个
