@@ -30,4 +30,5 @@
 - 系统可能会强制abort，例如事务执行的时候遇到死锁，需要abort一些事务破坏死锁
 - 服务器故障导致abort
 # 并发控制-Isolated
-
+- pessimistic（悲观锁）：使用前锁定数据、锁冲突导致延迟
+- optimistic（乐观锁）：
