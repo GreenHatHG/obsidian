@@ -37,4 +37,4 @@
 Two-phase locking(2PL)是实现serializable的一种方式
 - 在对任何数据进行读取或者写入之前，必须先去获取该数据对应的锁
 - 直到事务被commit或者abort后，才能释放掉所获得的锁
-
+ 
