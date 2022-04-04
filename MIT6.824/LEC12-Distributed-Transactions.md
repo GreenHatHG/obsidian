@@ -33,4 +33,8 @@
 - pessimistic（悲观锁）：使用前锁定数据、锁冲突导致延迟
 - optimistic（乐观锁）：不加锁修改数据，commit的时候检查写/读是否满足serializable，不满足则重试，称为Optimistic Concurrency Control (OCC)
 - 冲突频繁，悲观锁会更快，反之乐观锁
+# 悲观锁
+Two-phase locking(2PL)是实现serializable的一种方式
+- 在对任何数据进行读取或者写入之前，必须先去获取该数据对应的锁
+- 直到事务被commit或者abort后，才能释放掉所获得的锁
 
