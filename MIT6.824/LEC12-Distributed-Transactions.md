@@ -68,4 +68,6 @@ x已经+1，但是轮到y的时候发现账户不存在
 - B在crash之前已经给TC发送了Yes，假设此时A也回复了Yes，TC给A和B发送commit消息，那么A可能已经收到并commit了。所以B在收到prepara消息回复Yes之前，需要将所作的修改（生成的新值、lock列表）持久化到磁盘，即使在重启后，也能够commit或者不commit。
 - B重启后发现有已经回复Yes，但是未commit的事务日志，B应该询问TC或者等待TC重新发送消息（B此时还持有着事务的锁）
 # TC crash并reboot怎么办
-- TC发送任何commit之前，TC必须
+- TC发送任何commit/abort之前，TC必须将该事务信息写入它的日志中，并持久化。
+- 重启后查看日志继续发commit/abort消息，或者participant因没有收到commit消息主动询问
+- participant必须根据TID过滤到重复的TC commit消息（可能TC在发送后就崩溃了，重启后又发送一次）
