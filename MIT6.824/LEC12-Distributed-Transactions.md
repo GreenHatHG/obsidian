@@ -77,5 +77,6 @@ x已经+1，但是轮到y的时候发现账户不存在
 ## B等待prepare时候超时/崩溃
 - B还没有回应prepare，TC不能commit
 - B单方面中止，并释放锁，对未来的prepare回复No
-## B一直没有收到commit/abort
+## B一直没有收到commit/abort--block
 - B不可以单方面中止事务，TC可能收到了Yes，并将commit发送给A，A提交并释放锁。此时B得一直等待下去，得让人对TC进行修复重启，然后读取上面保存的日志。
+- B不能单方面提交，可能A发送了No
