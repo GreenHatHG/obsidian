@@ -87,4 +87,8 @@ commit/abort均由TC发出，participant之间不用交流，使用2PL相对简�
 - 当participant收到了commit/abort，并且已经执行完了它们所负责的那部分事务（落地，释放锁），发送ACK给TC后就可以删除该事务的相关信息。因为重试发送的commit/abort，但此时已经没有了事务的相关信息，participant直接回复ACK即可。
 ## 总结
 - 2PL主要用于分片数据库/存储系统上，需要支持可以读取或写入多条记录的具有ACID特性的事务。由很多更专业的存储系统不允许在多条记录上使用事务，那么就不需要2PL了。
-- 速度慢：存在很多网络通信，以至于让participant的事务执行完成。大量的写入磁盘操作，在participant收到prepare消息回复Yes之前，需要将数据写入磁盘（假如使用机械硬盘，追加数据需要10ms，意味着1s只能处理100个事务）。TC发送commit/abort之前也得写入日志到磁盘。TC和participant都得写入磁盘，并且participant还持有锁。
+- 速度慢：
+	- 存在很多网络通信，以至于让participant的事务执行完成。
+	- 大量的写入磁盘操作，在participant收到prepare消息回复Yes之前，需要将数据写入磁盘（假如使用机械硬盘，追加数据需要10ms，意味着1s只能处理100个事务）。TC发送commit/abort之前也得写入日志到磁盘。
+	- participant还持有锁，如果TC crash了，block的时间会加长。
+- 通常只在小数据量的地方使用，不会是银行、航空公司等。
