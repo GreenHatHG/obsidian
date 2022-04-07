@@ -92,3 +92,10 @@ commit/abort均由TC发出，participant之间不用交流，使用2PL相对简�
 	- 大量的写入磁盘操作，在participant收到prepare消息回复Yes之前，需要将数据写入磁盘（假如使用机械硬盘，追加数据需要10ms，意味着1s只能处理100个事务）。TC发送commit/abort之前也得写入日志到磁盘。
 	- participant还持有锁，如果TC crash了，block的时间会加长。
 - 通常只在小数据量的地方使用，不会是银行、航空公司等。
+## 对比Raft
+- 使用Raft通过replicate获得高可用性，某些server崩溃的时候还能正常运行，每个server都做同样的事情。但是不能保证每个server都去执行某个操作，只能是majority。
+- 2PL跟高可用没关系，如果出现了故障还需要等待恢复（TC崩溃需要恢复后读取日志发送commit，participant崩溃会中止事务或者询问TC）。但是每个participant干的事情不一样。
+## 结合Raft
+即具备Raft的高可用性，也拥有2PL让让participant去执行自己所负责事务的能力。
+- 设置三台Raft replicated TC，只需要等待majority对leader进行回复即可
+- 每个participant同理
