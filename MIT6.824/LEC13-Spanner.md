@@ -33,4 +33,5 @@ END
 5. TC收到所有的Yes后，TC安全落地日志后就会向X和Y对应的leader发送commit消息
 6. leader对Paxos group中的follower发送commit消息
 - 不管事务有没有被提交，对应的日志都会被复制到副本，即使TC挂了，还会选择新的leader接手工作，这样就解决了2PC的TC持有锁崩溃而导致的阻塞问题。
+- 
 
