@@ -13,7 +13,7 @@
 2. 每个DC都有多个Spanner clinet，比如是web server，例如gmail
 3. 副本由一种变体的Paxos（与Raft类似，存在leader）管理
 	- 同一数据不同DC的多个副本组成了一个Paxos group。
-	- 每个Paxos group彼此独立，每个Paxos group都有属于自己的leader，各自维护着独立的数据版本
+	- 每个Paxos group彼此独立，每个Paxos group都有属于自己的leader（如图中2个蓝框的服务器），各自维护着独立的数据版本
 - 可以并行加速处理数据、多个DC容错率高、Spanner  client可以直接读取同一地区的DC数据减少网络开销、Paxos只需要majority，能够容忍速度慢的副本。
 # Challenges
 - 读取本地副本必须得同步最新的数据，但是Paxos只需要majority，意味着本地副本可能无法同步最新的写入。
@@ -25,6 +25,7 @@ BEGIN
     y = y - 1
 END
 ```
-
+- Spanner想要保障2PL、2PC，使用Paxos group代替单独的一个服务器作为participant和TC。
+1. Spanner client生成一个唯一的事务ID（TID）给所有消息打上标记，
 
 
