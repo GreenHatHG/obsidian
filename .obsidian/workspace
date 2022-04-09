@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/LEC12-Distributed-Transactions.md",
+            "file": "MIT6.824/LEC13-Spanner.md",
             "mode": "source",
             "source": false
           }
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/LEC12-Distributed-Transactions.md",
+                "file": "MIT6.824/LEC13-Spanner.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/LEC12-Distributed-Transactions.md"
+                "file": "MIT6.824/LEC13-Spanner.md"
               }
             }
           }
@@ -108,8 +108,8 @@
   },
   "active": "96898316ae99f422",
   "lastOpenFiles": [
-    "MIT6.824/LEC12-Distributed-Transactions.md",
     "MIT6.824/LEC13-Spanner.md",
+    "MIT6.824/LEC12-Distributed-Transactions.md",
     "CMU213/Chapter1-A-Tour-of-Computer-Systems.md",
     "MIT6.824/Lab3-KVRaft.md",
     "MIT6.824/LEC7-FaultTolerance-Raft2.md",
