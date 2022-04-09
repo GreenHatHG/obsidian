@@ -19,7 +19,12 @@
 - 读取本地副本必须得同步最新的数据，但是Paxos只需要majority，意味着本地副本可能无法同步最新的写入。
 - 一个事务可能涉及到多个Paxos group，需要分布式事务和强一致性。
 # R/W transaction
-
+```
+BEGIN
+    x = x + 1
+    y = y - 1
+END
+```
 
 
 
