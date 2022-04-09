@@ -13,7 +13,7 @@
 3. 副本由一种变体的Paxos（与Raft类似，存在leader）管理
 	- 同一数据不同DC的多个副本组成了一个Paxos group。
 	- 每个Paxos group彼此独立，每个Paxos group都有属于自己的leader，各自维护着独立的数据版本
-	- 这样可以并行加速处理数据
+- 可以并行加速处理数据、多个DC容错率高、Spanner  client可以直接读取同一地区的DC数据减少网络开销、
 
 
 
