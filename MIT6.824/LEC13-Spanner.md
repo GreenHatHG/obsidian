@@ -25,10 +25,10 @@ BEGIN
     y = y - 1
 END
 ```
-- Spanner想要保障2PL、2PC，使用Paxos group代替单独的一个服务器作为participant和TC。
+- Spanner 2PC，使用Paxos group代替单独的一个服务器作为participant和TC。
 1. Spanner client生成一个唯一的事务ID（TID）给所有消息打上标记
 2. 向数据分片x所属的Paxos group中的leader发送读请求，需要首先获取x对应的读锁，y同理。
 3. 获取后client会计算x和y的新值是什么
-4. 当client要向leader提交的时候，选择一个Paxos group作为TC使用（两个蓝框的y，作为leader和TC）
+4. 当client要向leader提交的时候，选择一个Paxos group作为TC使用（两个蓝框的y，作为leader和TC）。client发送x的写请求（携带了TC对应的id）给x的leader，leader收到后发送prepare消息给对应的follower，并写到Paxos日志中，
 
 
