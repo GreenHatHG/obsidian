@@ -15,8 +15,9 @@
 	- 同一数据不同DC的多个副本组成了一个Paxos group。
 	- 每个Paxos group彼此独立，每个Paxos group都有属于自己的leader，各自维护着独立的数据版本
 - 可以并行加速处理数据、多个DC容错率高、Spanner  client可以直接读取同一地区的DC数据减少网络开销、Paxos只需要majority，能够容忍速度慢的副本。
-
-
+# 挑战
+- 读取本地副本必须得同步最新的数据，但是Paxos只需要majority，意味着本地副本可能无法同步最新的写入。
+- 一个事务可能涉及到多个Paxos group，需要分布式事务。
 
 
 

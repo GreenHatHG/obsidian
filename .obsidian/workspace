@@ -110,10 +110,10 @@
   "active": "96898316ae99f422",
   "lastOpenFiles": [
     "MIT6.824/LEC13-Spanner.md",
+    "MIT6.824/LEC7-FaultTolerance-Raft2.md",
     "MIT6.824/LEC12-Distributed-Transactions.md",
     "CMU213/Chapter1-A-Tour-of-Computer-Systems.md",
     "MIT6.824/Lab3-KVRaft.md",
-    "MIT6.824/LEC7-FaultTolerance-Raft2.md",
     "MIT6.824/Student-guide.md",
     "MIT6.824/Raft-extended.md",
     "MIT6.824/LEC11-Cache-Consistency-Frangipani.md",
