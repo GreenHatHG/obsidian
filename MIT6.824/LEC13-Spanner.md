@@ -26,12 +26,13 @@ BEGIN
 END
 ```
 - Spanner 2PC，使用Paxos group代替单独的一个服务器作为participant和TC。
+![[Pasted image 20220409174341.png]]
 1. Spanner client生成一个唯一的事务ID（TID）给所有消息打上标记。向数据分片x所属的Paxos group中的leader发送读请求，需要首先获取x对应的读锁（锁记录存在leader中，锁不会复制），y同理。获取后client会计算x和y的新值是什么
 2. 当client要向leader提交的时候，选择一个Paxos group作为TC使用（两个蓝框的y，作为leader和TC）。client发送x的写请求（携带了TC对应的id）给x的leader，需要获取对应的写锁
 3. leader收到后发送prepare消息给对应的follower（以复制锁和修改后的值），并将该操作写到leader的Paxos日志中
 4. leader收到了majority的回复后，会发送一个Yes给TC
-5. TC收到所有的Yes后，TC安全落地日志后就会向X和Y对应的leader发送commit消息
-6. leader对Paxos group中的follower发送commit消息
+5. TC收到所有的Yes后，TC安全落地日志后就会向X和Y对应的leader发送commit消息，并向client返回结果
+6. leader对Paxos group中的follower发送commit消息，并记录TC是commit还是abort，完成后释放事务的锁。
 - 不管事务有没有被提交，对应的日志都会被复制到副本，即使TC挂了，还会选择新的leader接手工作，这样就解决了2PC的TC持有锁崩溃而导致的阻塞问题。
-- 
+- r/w需要很长时间，涉及很多通信的消息，如果DC跨国成本更高，但是因为并行，吞吐量高。
 
