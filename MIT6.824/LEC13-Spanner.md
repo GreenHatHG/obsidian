@@ -27,6 +27,8 @@ END
 ```
 - Spanner想要保障2PL、2PC，使用Paxos group代替单独的一个服务器作为participant和TC。
 1. Spanner client生成一个唯一的事务ID（TID）给所有消息打上标记
-2. 向数据分片x所属的Paxos group中的leader发送读请求，需要首先获取锁，
+2. 向数据分片x所属的Paxos group中的leader发送读请求，需要首先获取x对应的读锁，y同理。
+3. 获取后client会计算x和y的新值是什么
+4. 
 
 
