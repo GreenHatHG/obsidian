@@ -35,4 +35,12 @@ END
 6. leader对Paxos group中的follower发送commit消息，并记录TC是commit还是abort，完成后释放事务的锁。
 - 不管事务有没有被提交，对应的日志都会被复制到副本，即使TC挂了，还会选择新的leader接手工作，这样就解决了2PC的TC持有锁崩溃而导致的阻塞问题。
 - r/w需要很长时间，涉及很多通信的消息，如果DC跨国成本更高，但是因为并行，吞吐量高。
+# R/O transaction
+- 如果我们能提前知道该事务中所有的操作都是读操作的话，Spanner就能使用速度更快，更加精简，并且不用发送那么多消息的方案了（10x latency improvement）：
+	- 从本地replicate读取，避免跨DC读取数据，但是replicate数据不一定是最新的
+	- 没有锁，没有2PC，没有TC，避免跨DC发送消息给Paxos group leader，不需要等待锁
+## Correctness constraints
+- 所有事务的执行依旧是有序的（只读事务前面可能有读写型事务）
+	- 只读事务必须看到执行前那个事务中所有写操作的执行结果
+	- 
 
