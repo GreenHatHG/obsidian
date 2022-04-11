@@ -40,7 +40,6 @@ END
 	- 从本地replicate读取，避免跨DC读取数据，但是replicate数据不一定是最新的
 	- 没有锁，没有2PC，没有TC，避免跨DC发送消息给Paxos group leader，不需要等待锁
 ## Correctness constraints
-- 所有事务的执行依旧是有序的（只读事务前面可能有读写型事务）
-	- 只读事务必须看到执行前那个事务中所有写操作的执行结果
-	- 
+- Serializable：所有事务的执行依旧是有序的（只读事务前面可能有读写型事务），只读事务必须看到执行前那个事务中所有写操作的执行结果
+- Externally consistent：
 
