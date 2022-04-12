@@ -47,3 +47,8 @@ END
 ![[Pasted image 20220412080214.png]]
 如果让T3直接读取最新的值的话，可能不满足正确性。我们希望的结果是T3要么在T1和T2之间执行完成，要么在T2完成后执行。
 ## Snapshot Isolation(SI)
+- Synchronize all computers' clocks
+- 为每个事务分配一个时间戳
+	- r/w: commit time.
+    - r/o: start time.
+- 
