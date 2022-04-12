@@ -42,4 +42,7 @@ END
 ## Correctness constraints
 - Serializable：所有事务的执行依旧是有序的，只读事务必须看到执行前那个事务中所有写操作的执行结果，看不到后续写入的结果。
 - Externally consistent：如果T1在T2开始之前完成，则T2必须看到T1的写入，与linearizable类似，排除读取旧数据的可能性。
-
+## 为什么不直接读取最新的值不采用任何措施
+![[Pasted image 20220412080214.png]]
+如果让T3直接读取最新的值的话，可能不满足正确性。
+我们希望T3能看到T2的两个写入
