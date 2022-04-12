@@ -49,6 +49,7 @@ END
 ## Snapshot Isolation(SI)
 - Synchronize all computers' clocks
 - 为每个事务分配一个时间戳
-	- r/w: commit time.
-    - r/o: start time.
-- 
+	- r/w: commit time
+    - r/o: start time
+- 如果所有的事务都是按照时间戳的顺序执行，那么事务就会得到正确的执行结果。
+- 每个replica保存数据的时候，会保存该数据的多个时间戳版本
