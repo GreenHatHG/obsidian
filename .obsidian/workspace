@@ -40,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "2PL",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -61,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 326.01499938964844
+    "width": 326.01499938964844,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -109,14 +110,14 @@
   "active": "96898316ae99f422",
   "lastOpenFiles": [
     "MIT6.824/LEC13-Spanner.md",
-    "CMU213/2-Bits-Bytes-and-Ints.md",
-    "CMU213/1-Overview.md",
     "MIT6.824/LEC7-FaultTolerance-Raft2.md",
-    "MIT6.824/LEC12-Distributed-Transactions.md",
-    "MIT6.824/Lab3-KVRaft.md",
-    "MIT6.824/Student-guide.md",
-    "MIT6.824/Raft-extended.md",
+    "MIT6.824/LEC8-Zookeeper.md",
+    "MIT6.824/LEC7-Raft2-FAQ.md",
     "MIT6.824/LEC11-Cache-Consistency-Frangipani.md",
-    "MIT6.824/LEC8-Zookeeper.md"
+    "MIT6.824/LEC10-Cloud Replicated-DB-Aurora.md",
+    "MIT6.824/LEC9-More-Replication-CRAQ.md",
+    "MIT6.824/LEC12-Distributed-Transactions.md",
+    "CMU213/2-Bits-Bytes-and-Ints.md",
+    "CMU213/1-Overview.md"
   ]
 }
