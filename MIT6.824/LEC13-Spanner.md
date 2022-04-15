@@ -59,4 +59,4 @@ END
 T3读取x的值的时候带上`@15`，读取到`x=9`，读取y的值时候，T2已经commit，但是因为读取的数据的时间戳得小于`@15`，所以读取到`y=11`
 上述的结果是serializable: T1、T2、T3，按照时间戳顺序。
 ## safe time解决replica不在majority
-在@15读取之前，replica查看最新的一条日志的时间（代表replica所知道leader的最新的时间），如果
+在@15读取之前，replica查看最新的一条日志的时间（代表replica所知道leader的最新的时间），如果最新的时间没有>15（代表着replica已经知道了前15时间内发生的事情），那么replica就会延迟回复给client。
