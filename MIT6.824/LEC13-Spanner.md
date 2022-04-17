@@ -72,7 +72,7 @@ T3读取x的值的时候带上`@15`，读取到`x=9`，读取y的值时候，T2�
 主要问题是不知道DC离GPS发送器有多远，通过网络获取时间存在延迟。
 ## TrueTime
 server询问Time service会返回一个TTinterval区间`[earliest, latest]`，保障正确的时间位于区间内的某个点。
-两个规则保障Externally consistent
+两个规则保障Externally consistent（确保r/w T1在r/o T2开始之前完成，即TS1<TS2）
 - start rule：一个事务选择的时间戳(TS)=`TT.now().lastest`（TT: TrueTime）
 - commit wait：只适用于r/w事务，在commit之前，保障TS<TS.now().earliest
 场景：T1 commit，然后T2启动，T2必须看到T1的写入
