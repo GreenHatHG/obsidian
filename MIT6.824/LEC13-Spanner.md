@@ -75,4 +75,3 @@ server询问Time service会返回一个TTinterval区间`[earliest, latest]`，�
 两个规则保障Externally consistent
 - start rule：一个事务选择的时间戳(TS)=`TT.now().lastest`（TT: TrueTime）
 - commit wait：只适用于r/w事务，在commit之前，保障TS<TS.now().earliest
- 
