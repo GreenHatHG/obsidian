@@ -76,3 +76,5 @@ server询问Time service会返回一个TTinterval区间`[earliest, latest]`，�
 - start rule：一个事务选择的时间戳(TS)=`TT.now().lastest`（TT: TrueTime）
 - commit wait：只适用于r/w事务，在commit之前，保障TS<TS.now().earliest
 场景：T1 commit，然后T2启动，T2必须看到T1的写入
+
+prepare：选择时间戳，并在这之后提交
