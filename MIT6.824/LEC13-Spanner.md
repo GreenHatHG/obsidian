@@ -68,6 +68,10 @@ T3读取x的值的时候带上`@15`，读取到`x=9`，读取y的值时候，T2�
   T2读取@0提交的版本，即x=1，但是这里应该读取到x=2
 # 时间同步
 每个DC中的计算机都能有相同的时间吗，实际上是不能的。时间由政府制定，并通过各种协议分发，比如GPS（通过GPS卫星发送到DC中的GPS接收器）、NTP
+![[Pasted image 20220417115849.png]]
 主要问题是不知道DC离GPS发送器有多远，通过网络获取时间存在延迟。
 ## TrueTime
 server询问Time service会返回一个TTinterval区间`[earliest, latest]`，保障正确的时间位于区间内的某个点。
+两个规则保障Externally consistent
+- start rule：一个事务选择的时间戳=`TT.now().lastest`
+- commit wait：只适用于r/w事务，
