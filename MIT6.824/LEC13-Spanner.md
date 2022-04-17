@@ -73,5 +73,5 @@ T3读取x的值的时候带上`@15`，读取到`x=9`，读取y的值时候，T2�
 ## TrueTime
 server询问Time service会返回一个TTinterval区间`[earliest, latest]`，保障正确的时间位于区间内的某个点。
 两个规则保障Externally consistent
-- start rule：一个事务选择的时间戳=`TT.now().lastest`
-- commit wait：只适用于r/w事务，
+- start rule：一个事务选择的时间戳(TS)=`TT.now().lastest`
+- commit wait：只适用于r/w事务，在commit之前，保障TS<TS.now().earliest
