@@ -41,3 +41,4 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
 3. 当DMA传输完成时，磁盘控制器用中断通知CPU
    ![[Pasted image 20220418222552.png]]
 4. 如果某处有某个程序在等待将该数据读入内存，那么现在CPU可以执行该程序并处理该内存
+# Solid State Disks (SSDs)
