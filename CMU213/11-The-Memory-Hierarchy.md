@@ -42,3 +42,4 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
    ![[Pasted image 20220418222552.png]]
 4. 如果某处有某个程序在等待将该数据读入内存，那么现在CPU可以执行该程序并处理该内存
 # Solid State Disks (SSDs)
+SSD中的Flash translation layer扮演磁盘控制器的角色
