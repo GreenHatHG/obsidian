@@ -20,4 +20,10 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
    ![[Pasted image 20220418213754.png]]
 3. CPU read word x from the bus and copies it into register %rax.
    ![[Pasted image 20220418213911.png]]
-   
+## Memory Write Transaction
+1. CPU places address A on bus. Main memory reads it and waits for the corresponding data word to arrive.
+   ![[Pasted image 20220418214119.png]]
+2. CPU places data word y on the bus.
+   ![[Pasted image 20220418214149.png]]
+3. Main memory reads data word y from the bus and stores it at address A.
+![[Pasted image 20220418214217.png]]
