@@ -28,3 +28,7 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
    ![[Pasted image 20220418214149.png]]
 3. Main memory reads data word y from the bus and stores it at address A.
 ![[Pasted image 20220418214217.png]]
+# Disk
+- SRAM access time is about  4 ns/doubleword, DRAM about  60 ns
+	- Disk is about 40000 times slower than SRAM,  2500 times slower then DRAM.
+- Logical
