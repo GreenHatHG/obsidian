@@ -14,6 +14,7 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
 ![[Pasted image 20220418212908.png]]
 ## Memory Read Transaction
 `Load operation: movq A, %rax`，将地址A处的8 bytes放到%rax
-1. 将A的地址放到Memory bus
+1. CPU places address A on the memory bus.
    ![[Pasted image 20220418213242.png]]
-2. Main memory从memory bus中读取A，将其放在
+2. Main memory reads A from the memory bus, retrieves word x, and places it on the bus.
+   
