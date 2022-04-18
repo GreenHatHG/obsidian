@@ -17,4 +17,7 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
 1. CPU places address A on the memory bus.
    ![[Pasted image 20220418213242.png]]
 2. Main memory reads A from the memory bus, retrieves word x, and places it on the bus.
+   ![[Pasted image 20220418213754.png]]
+3. CPU read word x from the bus and copies it into register %rax.
+   ![[Pasted image 20220418213911.png]]
    
