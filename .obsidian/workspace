@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "journal/2022-04-15.md",
+            "file": "CMU213/11-The-Memory-Hierarchy.md",
             "mode": "source",
             "source": false
           }
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "journal/2022-04-15.md",
+                "file": "CMU213/11-The-Memory-Hierarchy.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "journal/2022-04-15.md"
+                "file": "CMU213/11-The-Memory-Hierarchy.md"
               }
             }
           }
@@ -108,9 +108,9 @@
   },
   "active": "7e68edd3eb1f7d14",
   "lastOpenFiles": [
+    "CMU213/11-The-Memory-Hierarchy.md",
     "journal/2022-04-15.md",
     "journal/2022-01-29.md",
-    "CMU213/11-The-Memory-Hierarchy.md",
     "CMU213/1-Overview.md",
     "CMU213/2-Bits-Bytes-and-Ints.md",
     "MIT6.824/LEC13-Spanner.md",
