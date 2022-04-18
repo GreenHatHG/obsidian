@@ -10,7 +10,7 @@
 # Nonvolatile Memories
 ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改了。随着技术的发展，出现了Flash memory(EEPROM)，提供了block-level数据擦除功能，缺点是大约十万次擦除后就会磨损。
 # CPU and Memory
-内存使用一种称之为bus（总线）的电线连接到CPU，数据在电线上流动。
+内存使用一种称之为总线(bus)的电线连接到CPU，数据在电线上流动。
 内存操作读取和写入通常可能是50纳秒到100纳秒而寄存器之间发生的操作是亚纳秒（subnanosecond）
 ![[Pasted image 20220418212908.png]]
 ## Memory Read Transaction
@@ -31,6 +31,13 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
 # Disk
 - SRAM access time is about  4 ns/doubleword, DRAM about  60 ns
 	- Disk is about 40000 times slower than SRAM,  2500 times slower then DRAM.
-- 磁盘呈现给CPU的是Logical Disk Blocks(0,1,2,...)，每一块都是扇区大小的倍数，disk controller维护逻辑块和实际物理扇区之间的映射。
+- 磁盘呈现给CPU的是逻辑块0,1,2,...（Logical Disk Blocks），每一块都是扇区大小的倍数，磁盘控制器（disk controller）维护逻辑块和实际物理扇区之间的映射。
   ![[Pasted image 20220418221050.png]]
 ## Reading a Disk Sector 
+1. CPU通过将command、logical block number和destination memory address（将数据放在内存的地址）写入与磁盘控制器相关联的端口(地址)来启动磁盘读取。
+	![[Pasted image 20220418222047.png]]
+2. 磁盘控制器将数据通过l/O bridge经由l/O总线直接复制到主内存（main memory），而无需通知 CPU
+   ![[Pasted image 20220418222350.png]]
+3. 当DMA传输完成时，磁盘控制器用中断通知CPU
+   ![[Pasted image 20220418222552.png]]
+4. 如果某处有某个程序在等待将该数据读入内存，那么现在CPU可以执行该程序并处理该内存
