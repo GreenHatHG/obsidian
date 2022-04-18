@@ -32,3 +32,4 @@ ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改�
 - SRAM access time is about  4 ns/doubleword, DRAM about  60 ns
 	- Disk is about 40000 times slower than SRAM,  2500 times slower then DRAM.
 - 磁盘呈现给CPU的是Logical Disk Blocks(0,1,2,...)，每一块都是扇区大小的倍数，disk controller维护逻辑块和实际物理扇区之间的映射。
+  ![[Pasted image 20220418221050.png]]
