@@ -11,6 +11,7 @@
 ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改了。随着技术的发展，出现了Flash memory(EEPROM)，提供了block-level数据擦除功能，缺点是大约十万次擦除后就会磨损。
 # CPU and Memory
 内存使用一种称之为bus（总线）的电线连接到CPU，数据在电线上流动。
+内存操作读取和写入通常可能是50纳秒到100纳秒而寄存器之间发生的操作是亚纳秒（subnanosecond）
 ![[Pasted image 20220418212908.png]]
 ## Memory Read Transaction
 `Load operation: movq A, %rax`，将地址A处的8 bytes放到%rax
