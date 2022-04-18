@@ -9,3 +9,5 @@
 	- SRAM比DRAM可靠得多，因此不需要进行错误检测和纠正（EDC），由于这种差异，SRAM比DRAM计算成本会更小、更快
 # Nonvolatile Memories
 ROM(Read-only memory)最初设定是出厂时候设定数据后就不能修改了。随着技术的发展，出现了Flash memory(EEPROM)，提供了block-level数据擦除功能，缺点是大约十万次擦除后就会磨损。
+# Bus
+内存使用一种称之为bus（总线）的电线连接到CPU，数据在电线上流动。
