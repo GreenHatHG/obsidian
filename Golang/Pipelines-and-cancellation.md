@@ -1,9 +1,18 @@
+---
+date created: 2022-04-19 08:39
+date updated: 2022-04-19 08:39
+---
+
 # What is pipeline
+
 - receive values from upstream via inbound channels
 - perform some function on that data, usually producing new values
 - send values downstream via outbound channels
+
 # Squaring numbers
+
 - Generator Pattern converts a list of integers to a channel that emits the integers in the list
+
 ```go
 func gen(nums ...int) <-chan int{
 	out := make(chan int)
@@ -16,7 +25,9 @@ func gen(nums ...int) <-chan int{
 	return out
 }
 ```
+
 - receives integers from a channel and returns a channel that emits the square of each received integer
+
 ```go
 func sq(in <-chan int) <-chan int{
 	out := make(chan int)
@@ -29,7 +40,9 @@ func sq(in <-chan int) <-chan int{
 	return out
 }
 ```
+
 - receives integers from a channel and returns a channel that emits the square of each received integer
+
 ```go
 func main() {
 	out := gen(1,2,3,4,5,6)
@@ -38,7 +51,9 @@ func main() {
 	}
 }
 ```
+
 - we can compose it any number of times
+
 ```go
 func main() {
 	out := gen(1,2,3,4,5,6)
@@ -52,6 +67,7 @@ func main() {
 
 - Multiple functions can read from the same channel until that channel is closed; this is called _fan-out_. This provides a way to distribute work amongst a group of workers to parallelize CPU use and I/O.
 - A function can read from multiple inputs and proceed until all are closed by multiplexing the input channels onto a single channel that’s closed when all the inputs are closed. This is called fan-in.
+
 ```go
   func merge(cs ...<-chan int) <-chan int{
   	var wg sync.WaitGroup
@@ -91,27 +107,29 @@ func main() {
 # Resource leak
 
 - Stages don’t always receive all the inbound values
-  
-	- The receiver may only need a subset of values to make progress
-	- More often, a stage exits early because an inbound value represents an error in an earlier stage
--  If a stage fails to consume all the inbound values, the goroutines attempting to send those values will block indefinitely
-  
-  ```go
-      // Consume the first value from the output.
-      out := merge(c1, c2)
-      fmt.Println(<-out) // 4 or 9
-      return
-      // Since we didn't receive the second value from out,
-      // one of the output goroutines is hung attempting to send it.
-  }
-  ```
+
+  - The receiver may only need a subset of values to make progress
+  - More often, a stage exits early because an inbound value represents an error in an earlier stage
+- If a stage fails to consume all the inbound values, the goroutines attempting to send those values will block indefinitely
+
+```go
+    // Consume the first value from the output.
+    out := merge(c1, c2)
+    fmt.Println(<-out) // 4 or 9
+    return
+    // Since we didn't receive the second value from out,
+    // one of the output goroutines is hung attempting to send it.
+}
+```
+
 - This is a resource leak: goroutines consume memory and runtime resources, and heap references in goroutine stacks keep data from being garbage collected. Goroutines are not garbage collected; they must exit on their own.
 - One way to do this is to change the outbound channels to have a buffer. But it depends on knowing the number of values merge will receive and the number of values downstream stages will consume.
--  Instead, we need to provide a way for downstream stages to **indicate to the senders that they will stop accepting input.**
+- Instead, we need to provide a way for downstream stages to **indicate to the senders that they will stop accepting input.**
 
 # Explicit cancellation
 
 We need a way to tell an unknown and unbounded number of goroutines to **stop sending their values downstream**. In Go, we can do this by **closing a channel**, **because a receive operation on a closed channel can always proceed immediately, yielding the element type’s zero value.**
+
 ```go
 func gen(done <-chan struct{}, nums ...int) <-chan int{
 	out := make(chan int)
@@ -192,6 +210,7 @@ func main() {
 # Digesting a tree
 
 Taking a single directory as an argument and prints the digest values for each regular file under that directory, sorted by path name.
+
 ```go
 func main() {
     // Calculate the MD5 sum of all files under the specified directory,
@@ -213,6 +232,7 @@ func main() {
 ```
 
 No concurrency and simply reads and sums each file as it walks the tree.
+
 ```go
 // MD5All reads all the files in the file tree rooted at root and returns a map
 // from file path to the MD5 sum of the file's contents.  If the directory walk
@@ -295,9 +315,9 @@ func MD5All(root string) (map[string][md5.Size]byte, error) {
       // receiving all the values from c and errc.
       done := make(chan struct{})
       defer close(done)          
-  
+
       c, errc := sumFiles(done, root)
-  
+
       m := make(map[string][md5.Size]byte)
       for r := range c {
           if r.err != nil {
@@ -315,6 +335,7 @@ func MD5All(root string) (map[string][md5.Size]byte, error) {
 # Bounded parallelism
 
 Our pipeline now has three stages: walk the tree, read and digest the files, and collect the digests.
+
 ```go
 type result struct {
 	path string
