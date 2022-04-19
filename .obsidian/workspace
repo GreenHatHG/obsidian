@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 305.01499938964844,
-    "collapsed": true
+    "width": 305.01499938964844
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -110,14 +109,14 @@
   "active": "7e68edd3eb1f7d14",
   "lastOpenFiles": [
     "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
-    "MIT6.824/Lab2b-index含义.md",
+    "MIT6.824/Lab3-KVRaft.md",
+    "MIT6.824/LEC7-FaultTolerance-Raft2.md",
+    "MIT6.824/LEC12-Distributed-Transactions.md",
     "MIT6.824/LEC13-Spanner.md",
+    "MIT6.824/Lab2b-index含义.md",
     "CMU213/11-The-Memory-Hierarchy.md",
     "journal/2022-04-15.md",
     "journal/2022-01-29.md",
-    "CMU213/1-Overview.md",
-    "CMU213/2-Bits-Bytes-and-Ints.md",
-    "Day Planners/未命名.md",
-    "Day Planners/Day Planner-20220128.md"
+    "CMU213/1-Overview.md"
   ]
 }

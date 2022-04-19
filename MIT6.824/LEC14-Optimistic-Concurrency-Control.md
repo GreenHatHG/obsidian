@@ -15,3 +15,12 @@
 	3. RDMA限制了系统的设计：必须使用Optimistic Concurrency Control (OCC)
 	4. 简单事务只需要58microseconds，比Spanner快100倍
 	5. 主要瓶颈：服务器上的CPU时间
+# 整体设计
+- Zookeeper+configuration manager，决定哪个是primary哪个是backup
+- 每个数据分片对应着primary/backup replication
+```
+P1 B1
+P2 B2
+...
+```
+只要每个分片有一个可用的replica，系统就依旧可用， f+1 replicas tolerate f failures
