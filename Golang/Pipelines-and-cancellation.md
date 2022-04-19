@@ -1,8 +1,3 @@
----
-date created: 2022-04-19 08:39
-date updated: 2022-04-19 08:39
----
-
 # What is pipeline
 
 - receive values from upstream via inbound channels
@@ -315,9 +310,9 @@ func MD5All(root string) (map[string][md5.Size]byte, error) {
       // receiving all the values from c and errc.
       done := make(chan struct{})
       defer close(done)          
-
+  
       c, errc := sumFiles(done, root)
-
+  
       m := make(map[string][md5.Size]byte)
       for r := range c {
           if r.err != nil {
