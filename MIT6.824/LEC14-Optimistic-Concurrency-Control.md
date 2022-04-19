@@ -24,3 +24,4 @@ P2 B2
 ...
 ```
 只要每个分片有一个可用的replica，系统就依旧可用， f+1 replicas tolerate f failures
+- Transaction Coordinator(TC)
