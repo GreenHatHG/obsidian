@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "7e68edd3eb1f7d14",
+        "id": "b2ec153070406fc8",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
+            "file": "Golang/Pipelines-and-cancellation.md",
             "mode": "source",
             "source": false
           }
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
+                "file": "Golang/Pipelines-and-cancellation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md"
+                "file": "Golang/Pipelines-and-cancellation.md"
               }
             }
           }
@@ -106,17 +106,17 @@
     "width": 234.2150115966797,
     "collapsed": true
   },
-  "active": "7e68edd3eb1f7d14",
+  "active": "b2ec153070406fc8",
   "lastOpenFiles": [
+    "Golang/Pipelines-and-cancellation.md",
+    "未命名.md",
+    "journal/2022-01-27.md",
+    "journal/2022-01-20.md",
+    "journal/2022-01-18.md",
+    "journal/2022-01-17.md",
+    "journal/2022-01-16.md",
+    "journal/2022-01-15.md",
     "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
-    "CMU213/11-The-Memory-Hierarchy.md",
-    "MIT6.824/Lab3-KVRaft.md",
-    "MIT6.824/LEC7-FaultTolerance-Raft2.md",
-    "MIT6.824/LEC12-Distributed-Transactions.md",
-    "MIT6.824/LEC13-Spanner.md",
-    "MIT6.824/Lab2b-index含义.md",
-    "journal/2022-04-15.md",
-    "journal/2022-01-29.md",
-    "CMU213/1-Overview.md"
+    "CMU213/11-The-Memory-Hierarchy.md"
   ]
 }
