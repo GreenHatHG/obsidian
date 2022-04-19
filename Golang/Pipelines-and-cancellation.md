@@ -1,8 +1,3 @@
----
-date created: 2022-04-19 08:39
-date updated: 2022-04-19 08:39
----
-
 # What is pipeline
 
 - receive values from upstream via inbound channels
