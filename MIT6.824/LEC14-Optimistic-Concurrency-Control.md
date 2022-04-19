@@ -24,4 +24,8 @@ P2 B2
 ...
 ```
 只要每个分片有一个可用的replica，系统就依旧可用， f+1 replicas tolerate f failures
-- Transaction Coordinator(TC)
+- transaction clients（位于服务器上）充当Transaction Coordinator(TC)
+# 高性能
+- 数据分片到许多服务器(评估90台)上并行处理
+- 所有数据位于RAM，使用非易失（non-volatile） RAM避免供电故障
+- RDMA：在不对服务器发出中断信号情况下，通过
