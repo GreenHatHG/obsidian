@@ -19,7 +19,7 @@ ref: [6.824 Lab 3: Fault-tolerant Key/Value Service (mit.edu)](http://nil.csail.
 每个kvserver建立在Raft上，Clerk会将Put、Append、Get RPC发送给leader的kvserver，以便保存log。
 Clerk有时候不知道哪个kvserver是leader，如果RPC发送给不是leader的kvserver、无法连接的kvserver、leader kvserver commit log失败，此时需要重试发送给不同的kvserver。
 
-### task1
+### 3A-task1
 
 实现最基本的kvserver，不用考虑故障和丢失log的情况，通过TestBasic3A
 
@@ -27,7 +27,7 @@ Clerk有时候不知道哪个kvserver是leader，如果RPC发送给不是leader�
 - 将op struct（需要补充下需要的字段）传递给Raft的start()方法以便Raft commit kvserver的Get/Put/Append log。
 - 可以向Raft的ApplyMsg、AppendEntriesArgs等结构添加字段
 
-### task2
+### 3A-task2
 
 在task1基础上添加容错机制、处理重复的Clerk请求（等待RPC回复超时、重新发送给另外一个leader）
 
@@ -38,3 +38,16 @@ Clerk有时候不知道哪个kvserver是leader，如果RPC发送给不是leader�
 - 需要唯一标识client操作，确保kvserver的每个操作只执行一次
 
 ## 3B: Key/value service with log compaction
+
+kvserver时不时持久化存储当前状态的快照（snapshot），并且Raft丢弃快照之前的日志。
+当服务器重启后（或者follower远远落后于leader）时，服务器首先安装快照，然后从快照之后的点开始执行日志。
+
+- 在Raft和kvserver之间设计个接口，以允许Raft丢弃日志
+- 修改Raft代码兼容仅存储部分日志的情况
+- 丢弃日志的方式：GC或者重复利用内存
+- StartKVServer()有个maxraftstate参数，代表持久化Raft状态最大允许大小（bytes，包括日志，不包括快照）。
+- 应该将maxraftstate与persister.RaftStateSize()比较，以便创建快照和丢失日志。如果maxraftstate为-1，则不需要快照。
+
+### 3B-task1
+
+修改代码传递给Raft一个log index，代表丢弃该索引之前的日志，只存储之后的日志。修改后的代码能通过Lab2
