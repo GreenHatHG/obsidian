@@ -86,5 +86,4 @@ RDMA（remote direct memory access）：远程直接内存调用，使用到一�
 - 通过使用这种很神奇的kernel bypass networking，在进行简单的读和写的时候，它要远远比通过普通的RPC调用来发送信息的方式快得多。
 
 - 支持RDMA的NIC使用的是它们自己的可靠的sequenced protocol，这和NIC间使用的TCP很像，但又不是TCP（因为没有使用到TCP，而TCP有很多可靠的保护机制，所以RDMA也有可靠机制）。当你去让你的RDMA NIC去进行读或者写操作的时候，它会一直保持传送数据的状态，直到你的请求丢失或者它得到一个响应为止。它会去询问这个软件该请求是成功还是失败了，最后会得到一个ACK消息。
-- 
 
