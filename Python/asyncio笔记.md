@@ -24,3 +24,19 @@ ref: [Python Asyncio Part 1 – Basic Concepts and Patterns](https://bbc.github.
 
 - 事件循环不能强制中断当前正在执行的协程，直到它让出控制权。事件循环的作用是选择下一个要调度的协程，并跟踪哪些协程被阻塞和无法执行，直到某个IO完成，但它只在当前没有协程正在执行的时候做这些事情。
 
+## Asynchronous Code
+
+```python
+async def example_coroutine_function(a, b):
+    # Asynchronous code goes here
+    ...
+
+def example_function(a, b):
+    # Synchronous code goes here
+    ...
+
+# 不会运行
+r = example_coroutine_function(1, 2, 3)
+```
+
+async def创建一个带有名字的可调用对象（callable object），当对象被调用时，函数的代码块不会运行，而是创建了一个Coroutine类实例并分配给r。
