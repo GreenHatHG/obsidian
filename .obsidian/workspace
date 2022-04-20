@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
+            "file": "CMU213/11-The-Memory-Hierarchy.md",
             "mode": "source",
             "source": false
           }
@@ -57,8 +57,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -78,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
+                "file": "CMU213/11-The-Memory-Hierarchy.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MIT6.824/LEC14-Optimistic-Concurrency-Control.md"
+                "file": "CMU213/11-The-Memory-Hierarchy.md"
               }
             }
           }
@@ -109,6 +108,7 @@
   },
   "active": "2d2dfe475f1b9e79",
   "lastOpenFiles": [
+    "CMU213/11-The-Memory-Hierarchy.md",
     "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
     "MIT6.824/Lab3-KVRaft.md",
     "Golang/Pipelines-and-cancellation.md",
@@ -117,7 +117,6 @@
     "journal/2022-01-20.md",
     "journal/2022-01-18.md",
     "journal/2022-01-17.md",
-    "journal/2022-01-16.md",
-    "journal/2022-01-15.md"
+    "journal/2022-01-16.md"
   ]
 }
