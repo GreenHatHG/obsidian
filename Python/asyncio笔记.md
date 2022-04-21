@@ -41,4 +41,8 @@ def example_function(a, b):
 r = example_coroutine_function(1, 2, 3)
 ```
 
-async def创建一个带有名字的可调用对象（callable object），当对象被调用时，函数的代码块不会运行，而是创建了一个Coroutine类实例并分配给r。
+async def创建一个带有名字的可调用对象（callable object），当对象被调用时，函数的代码块不会运行，而是创建了一个Coroutine类实例并分配给r。要使代码块真正运行，需要使用asyncio提供的用于运行协程的工具，最常见的就是await关键字。
+
+### await and awaitable
+
+
