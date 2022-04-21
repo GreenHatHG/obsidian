@@ -156,3 +156,4 @@ int sum_array_cols(int a[M][N])
 - Cold(compulsory) miss: 缓存中没有任何内容，随着往里面添加更多数据，增加了命中的可能性，这叫预热数据
 - Capacity miss：缓存大小是固定的，当局限性需要的缓存大于缓存本身就会不够空间，导致miss
 - Conflict miss：大多数高速缓存限制k+1级的block在k级存放的位置，例如k+1级的block i必须放在k级的block i % 4处。但是可能block j，block k的数据也得放在该位置，就会出现冲突。这个与放置block的算法有关。
+
