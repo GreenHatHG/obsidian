@@ -122,3 +122,22 @@ RDMA（remote direct memory access）：远程直接内存调用，使用到一�
 
 FaRM不支持SQL，而是使用了相对简单的api来支持事务。
 
+```python
+txCreate() # 创建一个事务
+o = txRead(oid) #传入对象id，RDMA
+o.f += 1
+txWrite(oid, o) #更新对象，修改本地buffer数据
+ok = txCommit() #验证成功后提交
+```
+
+occ重试失败后可以添加一定的延迟后再试，避免大量重试。
+
+### oid
+
+`<region#, address>`
+
+- 所有服务器上的内存会被拆分到不同的区域进行管理，配置管理器会去跟踪服务器所复制的区域编号（`region#`）是什么。
+- 根据给定的区域编号，client可以根据当前primary和backup中的表进行查找，address是该区域的地址。
+
+## server memory layout
+
