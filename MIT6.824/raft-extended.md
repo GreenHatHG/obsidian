@@ -174,6 +174,9 @@ leader不能立刻断定previous term（相对于current term）是否是committ
 
 ## Log compaction
 
-- 快照（shapshot）是实现日志压缩最简单的方法。当前整个系统的状态都被保存在快照中，而快照的数据则持久化在硬盘，然后Raft就可以丢弃快照对应的点之前的日志了。
+![figure12](raft-extended/20220422-103141%402x.png)
 
-- 每个server都单独保存快照，Raft中的日志只包括committed部分。
+- 快照（shapshot）是实现日志压缩最简单的方法。当前整个系统的状态都被保存在快照中，而快照的数据则持久化在硬盘，然后就可以丢弃之前的快照和快照对应的点之前的Raft日志。
+
+- 每个server都单独保存快照，Raft中的日志只包括committed部分。快照还包括lastIncludedIndex和lastIncludedTerm，代表快照中最新一条日志的信息，用于快照后AppendEntries第一个日志项的一致性检查。
+
