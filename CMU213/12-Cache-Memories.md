@@ -90,3 +90,5 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
     | **Set 2** |      |       |  |
     | **Set 3** | 1 | 0 | M[6-7] |
 
+### E-way Set Associative Cache(E=2)
+
