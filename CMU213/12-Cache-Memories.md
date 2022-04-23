@@ -165,3 +165,14 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
 - 一般使用：
   - Write-through+No-write-allocate
   - Write-back+Write-allocate：不会立马将数据写回内存，每当出现一个write miss，就在写入到cache，是一个比较简单的模型。
+
+### Intel Core i7 Cache Hierarchy
+
+![png](12-Cache-Memories/2022-04-23_172623.png)
+
+- regs：寄存器
+- d-cache：数据缓存
+- i-cache：指令缓存
+- L2 unified cache：统一包含了数据和指令
+- L1找不到cache到L2、L3、Main memory
+
