@@ -174,5 +174,3 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
 - d-cache：数据缓存
 - i-cache：指令缓存
 - L2 unified cache：统一包含了数据和指令
-- L1找不到cache到L2、L3、Main memory
-
