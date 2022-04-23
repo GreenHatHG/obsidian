@@ -152,3 +152,16 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
 
 ## Cache Write
 
+- 存在多个数据副本：L1、L2、L3 cache，Main Memory，Disk。k层会建立k+1层数据的缓存。
+
+- 对缓存中的block进行写入的时候（write hit），有两种选择：
+  - Write-through：更新缓存，然后立即将其写入内存中，让缓存和内存的内容始终保持一致，但是访问内存很慢（相对于高速缓存来讲）。
+  - Write-back：不会立马写回内存，直到缓存想要覆盖该数据为止。需要在line中有一个dirty bit记录block的数据是否已经更新过。
+
+- write-miss（正在写的数据并不包含在缓存中的任何block中）时候：
+  - Write-allocate：从内存中获取数据，更新cache line
+  - No-write-allocate：直接写入到内存，不加载到缓存
+
+- 一般使用：
+  - Write-through+No-write-allocate
+  - Write-back+Write-allocate：不会立马将数据写回内存，每当出现一个write miss，就在写入到cache，是一个比较简单的模型。
