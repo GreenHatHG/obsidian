@@ -174,3 +174,69 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
 - d-cache：数据缓存
 - i-cache：指令缓存
 - L2 unified cache：统一包含了数据和指令
+
+## Memory Mountain
+
+memory mountain 绘制了一个名叫读取吞吐量（read throughput）或读取带宽（read bandwidth）的度量图，即每秒从内存读取的字节数。主要用于测量程序的spatial、temporal locality。
+
+### Memory Mountain Test Function
+
+```c++
+//mountain/mountain.c
+long data[MAXELEMS];  /* Global array to traverse */
+
+// test - Iterate over first "elems" elements of array “data” with stride of "stride", using using 4x4 loop unrolling.    
+int test(int elems, int stride) {
+    long i, sx2=stride*2, sx3=stride*3, sx4=stride*4;
+    long acc0 = 0, acc1 = 0, acc2 = 0, acc3 = 0;
+    long length = elems, limit = length - sx4;
+    /* Combine 4 elements at a time */
+    for (i = 0; i < limit; i += sx4) {
+        acc0 = acc0 + data[i];
+        acc1 = acc1 + data[i+stride];
+        acc2 = acc2 + data[i+sx2];
+        acc3 = acc3 + data[i+sx3];
+    }
+    /* Finish any remaining elements */
+    for (; i < length; i++) {
+        acc0 = acc0 + data[i];
+    }
+    return ((acc0 + acc1) + (acc2 + acc3));
+}
+```
+
+示例输出：
+
+```c++
+elems=length=[20], stride=[2], limit=[12]
+access i=[0] i+stride=[2] i+sx2=[4] i+sx3=[6]
+access i=[8] i+stride=[10] i+sx2=[12] i+sx3=[14]
+access i=[16]
+access i=[17]
+access i=[18]
+access i=[19]
+
+0 2 4 6 8 10 12 14 16 17 18 19
+```
+
+```c++
+elems=length=[60], stride=[7], limit=[32]
+access i=[0] i+stride=[7] i+sx2=[14] i+sx3=[21]
+access i=[28] i+stride=[35] i+sx2=[42] i+sx3=[49]
+access i=[56]
+access i=[57]
+access i=[58]
+access i=[59]
+
+0 7 14 21 28 35 42 49 56 57 58 59
+```
+
+使用不同的步长测试，首先调用test()预热一次缓存（warm up the caches），然后再调用test()测试读取吞吐量，记录每执行一次test读取所消耗的时间，将其转换为MB/s。
+
+![png](12-Cache-Memories/2022-04-26_191234.png)
+
+- y轴：数组所读元素数量 
+- 随着步长增加，空间局限性影响减少
+- 随着读取数量变多，空间和时间局限性影响减少
+- 在山顶吞吐量最大，具有最好的空间时间局部性，达到14GB/s吞吐量。在山底，只有大概100MB/s，需要不断去内存中读取数据
+- 空间局限性山脊（Ridges of temporal locality），L1抖动小，性能稳定（从左到右看）。因为步长的原因，时间局部性降低，L2，L3,Mem就会很抖。
