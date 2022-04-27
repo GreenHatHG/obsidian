@@ -280,3 +280,8 @@ store：写入数据到原数组，但是写入比读取有更大的灵活性，
 ![png](12-Cache-Memories/2022-04-27_091216.png)
 
 纵坐标：每个内循环的需要的周期，越大越慢
+
+### Using blocking to improve temporal locality
+
+为了改善时间局部性（temporal locality），必须使用blocking技术
+
