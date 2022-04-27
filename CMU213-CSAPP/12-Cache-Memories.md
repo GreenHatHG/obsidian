@@ -246,5 +246,37 @@ access i=[59]
 ### Rearranging loops to improve spatial locality
 
 - N*N矩阵算法，矩阵中每个元素都是double类型（8bytes）
-- 假设每个block是32bytes
+- 假设每个block是32bytes，能够容纳4个double类型变量
 
+#### Matrix Multiplication (ijk)
+
+![png](12-Cache-Memories/2022-04-27_082556.png)
+
+- 对于A的访问是按行的`a[i][*]`，B的访问是按列`b[*][j]`，C没有利用到cache
+- 每个内循环的cache未命中率：
+  - 对于A：第一个数据会miss，然后根据空间局部性，会把第一个和后面的三个放入cache，所以接下来的三个会hit，然后一个block就满了，接着循环这种情况，所以未命中率为`1/4=0.25`
+  - B的访问是按列的，所以每个数据访问都是miss
+  - 每次循环的平均未命中数为1.25
+
+#### Matrix Multiplication (kij)
+
+![png](12-Cache-Memories/2022-04-27_084056.png)
+
+- 对于B的访问是按行的`b[k][*]`，对于C的访问是按行的`c[i][*]`，对a的访问利用时间局限性更多于空间（读取之后就一直被内循环利用）
+- 每次循环的平均未命中率为0.5
+
+#### Matrix Multiplication (jki)
+
+![png](12-Cache-Memories/2022-04-27_090757.png)
+
+- 对于A和C都是按列访问
+
+#### Summary of Matrix Multiplication
+
+![png](12-Cache-Memories/2022-04-27_091216.png)
+
+store：写入数据到原数组，但是写入比读取有更大的灵活性，可以立即写回或者延迟写回（直到利用到写的值才写回），但是读可能会被卡住。
+
+![png](12-Cache-Memories/2022-04-27_091216.png)
+
+纵坐标：每个内循环的需要的周期，越大越慢
