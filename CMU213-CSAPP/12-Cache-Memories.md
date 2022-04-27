@@ -175,11 +175,13 @@ tag不匹配的话，旧的line将被新的line覆盖，并且tag也要更新
 - i-cache：指令缓存
 - L2 unified cache：统一包含了数据和指令
 
-## Memory Mountain
+## Performance impact of caches
+
+### Memory Mountain
 
 memory mountain 绘制了一个名叫读取吞吐量（read throughput）或读取带宽（read bandwidth）的度量图，即每秒从内存读取的字节数。主要用于测量程序的spatial、temporal locality。
 
-### Memory Mountain Test Function
+#### Memory Mountain Test Function
 
 ```c++
 //mountain/mountain.c
@@ -235,8 +237,14 @@ access i=[59]
 
 ![png](12-Cache-Memories/2022-04-26_191234.png)
 
-- y轴：数组所读元素数量 
+- y轴：数组所读元素数量
 - 随着步长增加，空间局限性影响减少
 - 随着读取数量变多，空间和时间局限性影响减少
 - 在山顶吞吐量最大，具有最好的空间时间局部性，达到14GB/s吞吐量。在山底，只有大概100MB/s，需要不断去内存中读取数据
 - 空间局限性山脊（Ridges of temporal locality），L1抖动小，性能稳定（从左到右看）。因为步长的原因，时间局部性降低，L2，L3,Mem就会很抖。
+
+### Rearranging loops to improve spatial locality
+
+- N*N矩阵算法，矩阵中每个元素都是double类型（8bytes）
+- 假设每个block是32bytes
+
