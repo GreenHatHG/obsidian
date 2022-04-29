@@ -73,3 +73,19 @@ Examples：
 - Faults：无意引起但是可能可以恢复的。例如page faults（程序引用的地址空间部分的数据实际上不存在，需要从磁盘中将对应的page复制到内存，然后重新执行指令，recoverable）。中断后要么重新执行当前指令要么中止。
 - Aborts：无意且不可恢复的，例如非法指令、硬件错误等，中断后不会返回到程序中。
 
+#### System Calls
+
+Each x86-64 system call has a unique ID number
+
+![png](14-ECF:Exceptions&Processes/2022-04-29_220536.png)
+
+#### System Call Example:opening file
+
+![png](14-ECF:Exceptions&Processes/2022-04-29_221456.png)
+
+- 实际执行系统调用的是syscall指令（不能直接调用这些指令，Linux 将这些指令包装在系统级函数中，通过调用这些函数来实际调用它）。例如打开文件调用系统级函数open()
+- cmp用来判断函数返回有没有异常，负数异常，正数意味着正常。
+- open会返回一个文件描述符(file descriptor，整数)，在后续调用中使用它来读取和写入。
+
+#### Fault Example: Page Fault
+
