@@ -55,9 +55,9 @@ Exists at all levels of a computer system
 
 ### Asynchronous Exceptions (Interrupts)
 
-发生在处理器之外的状态变化，通过在处理器上设置一个中断引脚来通知处理器这些状态变化（例如，当磁盘控制器完成直接内存访问并将数据从磁盘复制到内存时，通过设置中断引脚为high来通知处理已经完成复制）
+由发生在处理器之外的状态变化引起，通过在处理器上设置一个中断引脚来通知处理器这些状态变化（例如，当磁盘控制器完成直接内存访问并将数据从磁盘复制到内存时，通过设置中断引脚为high来通知处理已经完成复制）
 
-中断发生后，handler返回，接着执行中断前的下一条指令
+中断发生后，handler返回，接着执行用户程序next指令
 
 Examples：
 
@@ -66,4 +66,10 @@ Examples：
 - I/O interrupt from external device：Hitting Ctrl-C at the keyboard、Arrival of a packet from a network、Arrival of data from a disk
 
 ### Synchronous Exceptions
+
+由执行指令后发生的事件引起的
+
+- Traps：由程序故意引起的exception，例如system calls（允许用户程序调用内核的函数，将控制权转移给内核）。中断返回后执行用户程序的next指令。
+- Faults：无意引起但是可能可以恢复的。例如page faults（程序引用的地址空间部分的数据实际上不存在，需要从磁盘中将对应的page复制到内存，然后重新执行指令，recoverable）。中断后要么重新执行当前指令要么中止。
+- Aborts：无意且不可恢复的，例如非法指令、硬件错误等，中断后不会返回到程序中。
 
