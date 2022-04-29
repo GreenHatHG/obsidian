@@ -7,7 +7,7 @@
 - cpu只做一件事情：从开始和结束，CPU只是读取和执行一系列指令，一次一条。如果有多个内核，每个内核都会一个接一个地执行指令。
 - 指令序列称为控制流(control flow)，硬件正在执行的实际指令序列称为物理控制流（physical control flow)。
 
-## Altering the Control Flow
+### Altering the Control Flow
 
 对program state的改变做出的反应：
 
@@ -23,7 +23,7 @@
 
 为此系统需要一种机制：exceptional control flow
 
-## Exceptional Control Flow
+### Exceptional Control Flow
 
 Exists at all levels of a computer system
 
@@ -89,3 +89,12 @@ Each x86-64 system call has a unique ID number
 
 #### Fault Example: Page Fault
 
+![png](14-ECF:Exceptions&Processes/2022-04-29_233305.png)
+
+`a[500]`这个地址的内存不可用（即movl第二个参数地址），触发page fault，exception handler会将该page从磁盘复制到内存，返回时会重试执行movl指令。
+
+#### Fault Example: Invalid Memory Reference
+
+![png](14-ECF:Exceptions&Processes/2022-04-29_234322.png)
+
+内核检测到是一个无效的地址，没有任何东西可以从磁盘加载，向进程发送一个signal，然后永远也不会返回。
