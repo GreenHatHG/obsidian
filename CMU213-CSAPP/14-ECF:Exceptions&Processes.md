@@ -98,3 +98,38 @@ Each x86-64 system call has a unique ID number
 ![png](14-ECF:Exceptions&Processes/2022-04-29_234322.png)
 
 内核检测到是一个无效的地址，没有任何东西可以从磁盘加载，向进程发送一个signal，然后永远也不会返回。
+
+## Processes
+
+A process is an instance of a running program.
+
+Process provides each program with two key abstractions:
+
+- Logical control flow
+  - Each program seems to have exclusive use of the CPU。给程序一种错觉，可以独占访问CPU和寄存器，永远不必担心任何其他程序会修改你的寄存器。
+  - Provided by kernel mechanism called context switching
+
+- Private address space
+  - Each program seems to have exclusive use of main memory.
+  - Provided by kernel mechanism called virtual memory
+
+每个正在运行的程序都有独属于自己的code、data、heap、stack，看不到其他进程正在使用的内存，因此进程(process)会给程序一种错觉，程序拥有所有内存和处理器独占的访问权限。
+
+### Multiprocessing
+
+假设只有一个cpu核心
+
+错觉：
+
+![png](14-ECF:Exceptions&Processes/2022-04-30_155407.png)
+
+即使在单核的系统上，实际在同一时间也存在着许多进程。每个进程都有一个process ID(PID)。
+
+![png](14-ECF:Exceptions&Processes/2022-04-30_161434.png)
+
+这些进程实际上是在共享着cpu，由操作系统管理着。在某个时候，由timer interrupt或者trap等而发生exception，然后操作系统会获得系统的控制权，假设在这种情况下它决定要运行另外一个进程。
+
+![png](14-ECF:Exceptions&Processes/2022-04-30_161919.png)
+
+它会将当前寄存器值复制到内存中保存，然后调度下一个运行。它会读取上次进程运行时保存的寄存器的值，并将它们加载到cpu寄存器中，然后将地空间切换(address space)到这个进程的地址空间。所谓的上下文切换就是地址空间和寄存器的变化。
+
