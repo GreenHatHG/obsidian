@@ -133,3 +133,5 @@ Process provides each program with two key abstractions:
 
 它会将当前寄存器值复制到内存中保存，然后调度下一个运行。它会读取上次进程运行时保存的寄存器的值，并将它们加载到cpu寄存器中，然后将地空间切换(address space)到这个进程的地址空间。所谓的上下文切换就是地址空间和寄存器的变化。
 
+![png](14-ECF:Exceptions&Processes/2022-04-30_170840.png)
+在现代的多核系统中，操作系统会在这些多核上调度进程，如果没有足够的cpu内核来处理进程，就会出现上下文切换。
