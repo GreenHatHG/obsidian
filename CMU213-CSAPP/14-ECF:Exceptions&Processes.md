@@ -106,7 +106,7 @@ A process is an instance of a running program.
 Process provides each program with two key abstractions:
 
 - Logical control flow
-  - Each program seems to have exclusive use of the CPU。给程序一种错觉，可以独占访问CPU和寄存器，永远不必担心任何其他程序会修改你的寄存器。
+  - Each program seems to have exclusive use of the CPU。给程序一种错觉，可以独占访问CPU和寄存器，永远不必担心任何其他程序会修改你的寄存器。这里与物理控制流相对，物理控制流是CPU正在执行的指令序列，但是CPU实际是共享的，这里引出逻辑控制流，让程序误以为自己的指令是独占运行在CPU上面。
   - Provided by kernel mechanism called context switching
 
 - Private address space
@@ -135,3 +135,73 @@ Process provides each program with two key abstractions:
 
 ![png](14-ECF:Exceptions&Processes/2022-04-30_170840.png)
 在现代的多核系统中，操作系统会在这些多核上调度进程，如果没有足够的cpu内核来处理进程，就会出现上下文切换。
+
+### Concurrent Processes
+
+- Each process is a logical control flow.
+- Two processes run concurrently (are concurrent) if their flows(逻辑指令执行序列，但是物理执行序列不重叠) overlap in time.Otherwise, they are sequential.无论cpu内核数量多少，这种并发性定义都成立。
+
+三个进程，进程A运行了一段时间，然后被进程B和进程C中断，最后它继续运行，然后终止。进程B中断进程A，然后它运行一段时间然后终止。当进程B完成时，进程C会运行一段时间。然后进程A运行一段时间，然后进程C终止。（纵坐标是时间轴，黑的竖线代表此时哪个进程在运行）
+
+![png](14-ECF:Exceptions&Processes/2022-05-01_152952.png)
+
+B和C不是并发的，B在C开始之前就结束了。但是在用户看来是并行的。
+
+![png](14-ECF:Exceptions&Processes/2022-05-01_153758.png)
+
+### Context Switching
+
+上下文切换由内核管理，内核不是一个单独的进程在运行，而是在一些现有进程的上下文中运行，是由于exception而执行的位于地址空间上的代码。
+
+![png](14-ECF:Exceptions&Processes/2022-05-01_155813.png)
+
+A进程发生了exception，处理完之后调度器决定运行进程B，执行代码然后重新指向B的地址空间，在进程B的上下文中运行，它完成了进程B通用寄存器的加载，然后将控制权转移到B，B从它上一次停止的地方开始。
+
+## Process Control
+
+### System Call Error Handling
+
+![png](14-ECF:Exceptions&Processes/2022-05-01_160904.png)
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_29.JPG)
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_30.JPG)
+
+### Obtaining Process IDs
+
+- `pid_t getpid(void)`：Returns PID of current process
+- `pid_t getppid(void)`：Returns PID of parent process
+
+### Creating and Terminating Processes
+
+From a programmer’s perspective, we can think of a process as being in one of three states
+
+- Running：Process is either executing, or waiting to be executed and will eventually be scheduled (i.e., chosen to execute) by the kernel.
+- Stopped：Process execution is suspended and will not be scheduled until further notice.
+- Terminated：Process is stopped permanently.
+
+进程状态是stopped，意味着进程被挂起，在等待进一步通知之前不会被安排进调度队列，通常是因为收到了某种信号（signal），然后以某种方式停止。
+
+#### Terminating Processes
+
+Process becomes terminated for one of three reasons:
+
+- Receiving a signal whose default action is to terminate
+- Returning from the `main` routine.可以理解为main函数
+- Calling the `exit` function.
+
+`void exit(int status)`：Convention: normal return status is 0, nonzero on error
+
+#### Creating Processes
+
+Parent process creates a new running child process by calling fork.
+
+`int fork(void)`
+
+- Returns 0 to the child process, child’s PID to parent process. 调用一次返回两次，在父进程中，fork返回新创建子进程的进程ID。在子进程中，fork返回0。如果出现错误，fork返回一个负值。
+- 子进程和父进程基本相同
+  - Child get an identical (but separate) copy of the parent’s virtual address space. 这意味着所有的变量（包括全局变量）、stack、code，一切都是相同的。
+  - Child gets identical copies of the parent’s open file descriptors. 子进程可以访问任何父进程打开的文件，包括父进程拥有的标准输入和标准输出。
+  - Child has a different PID than the parent
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_35.JPG)
