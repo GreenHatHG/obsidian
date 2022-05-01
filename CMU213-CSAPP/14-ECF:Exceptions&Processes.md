@@ -205,3 +205,55 @@ Parent process creates a new running child process by calling fork.
   - Child has a different PID than the parent
 
 ![png](14-ECF:Exceptions&Processes/14-ecf-procs_35.JPG)
+
+#### Modeling fork with Process Graphs
+
+process graph工具可以捕获调用fork时可能发生的情况。
+
+- 每个顶点对应一条语句的执行
+- a -> b means a happens before b
+- 边的值为变量的当前值
+- printf顶点代表输出
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_37.JPG)
+
+调用两个fork的情况
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_39.JPG)
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_40.JPG)
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_41.JPG)
+
+### Reaping Child Processes
+
+When process terminates, it still consumes system resources.
+
+任何进程终止时，系统并不会完全从系统中删除它（父进程可能希望等待子进程完成并检查其退出状态），会在一些os table中记录着该子进程的退出状态。这些进程被称为僵尸(zombie)进程。
+
+父进程对已经终止的子进程执行wait或者waitpid函数，父进程将获得其退出状态，然后内核将删除该僵尸进程。
+
+如果父进程一直没有处理僵尸进程，然后父进程终止了，这时候进程变为孤儿进程(orphaned child)，系统会让该系统存在的第一个进程(init进程，PID=1)reap该孤儿进程。
+
+只有在有长期运行的父进程(shells或者servers)的情况下，才要担心僵尸进程。在这种情况下，服务器可能会创建很多个子进程，这些子进程中的每一个在它们终止时都会变成僵尸并且它们的状态占用了内核中的空间，这是内存泄漏的一种形式。
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_43.JPG)
+
+父进程永远没有机会reap子进程
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_44.JPG)
+
+如果子进程没有终止（上一个调用了exit），即使父进程终止了，子进程依旧运行中。必须手动kill掉变为僵尸进程后由init进程reap。
+
+#### wait:Synchronizing with Children
+
+Parent reaps a child by calling the wait function.
+
+`int wait(int *child_status)`
+
+- Suspends current process until one of its children terminates.没有指定是哪个。
+- Return value is the pid of the child process that terminated
+- 如果`child_status != NULL`，那么该值将被赋值为子进程终止的原因。代表原因的一些值被定义在wait.h：WIFEXITED，WEXITSTATUS, WIFSIGNALED,
+WTERMSIG, WIFSTOPPED, WSTOPSIG,
+WIFCONTINUED。
+
