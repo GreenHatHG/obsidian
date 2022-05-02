@@ -1,8 +1,8 @@
-# ECF: Exceptions & Processes
+# 14-ECF-Exceptions&Processes
 
 ## Control Flow
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_152213.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_152213.png)
 
 - cpu只做一件事情：从开始和结束，CPU只是读取和执行一系列指令，一次一条。如果有多个内核，每个内核都会一个接一个地执行指令。
 - 指令序列称为控制流(control flow)，硬件正在执行的实际指令序列称为物理控制流（physical control flow)。
@@ -43,11 +43,11 @@ Exists at all levels of a computer system
 
 - 异常处理之后可能会发生三件事件：返回并重新执行当前指令（对page fault之类的很有用）、执行下一条指令或者中止
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_170952.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_170952.png)
 
 ### Exception Tables
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_171844.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_171844.png)
 
 - 每种类型的事件都有一个唯一的exception number k
 - k = index into exception table。当事件k发生的时候，硬件使用k作为该表的索引进行查找，并获取对应的exception handler地址
@@ -77,11 +77,11 @@ Examples：
 
 Each x86-64 system call has a unique ID number
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_220536.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_220536.png)
 
 #### System Call Example:opening file
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_221456.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_221456.png)
 
 - 实际执行系统调用的是syscall指令（不能直接调用这些指令，Linux 将这些指令包装在系统级函数中，通过调用这些函数来实际调用它）。例如打开文件调用系统级函数open()
 - cmp用来判断函数返回有没有异常，负数异常，正数意味着正常。
@@ -89,13 +89,13 @@ Each x86-64 system call has a unique ID number
 
 #### Fault Example: Page Fault
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_233305.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_233305.png)
 
 `a[500]`这个地址的内存不可用（即movl第二个参数地址），触发page fault，exception handler会将该page从磁盘复制到内存，返回时会重试执行movl指令。
 
 #### Fault Example: Invalid Memory Reference
 
-![png](14-ECF:Exceptions&Processes/2022-04-29_234322.png)
+![png](14-ECF-Exceptions&Processes/2022-04-29_234322.png)
 
 内核检测到是一个无效的地址，没有任何东西可以从磁盘加载，向进程发送一个signal，然后永远也不会返回。
 
@@ -121,19 +121,19 @@ Process provides each program with two key abstractions:
 
 错觉：
 
-![png](14-ECF:Exceptions&Processes/2022-04-30_155407.png)
+![png](14-ECF-Exceptions&Processes/2022-04-30_155407.png)
 
 即使在单核的系统上，实际在同一时间也存在着许多进程（单个核心一次只执行一个进程）。每个进程都有一个process ID(PID)。
 
-![png](14-ECF:Exceptions&Processes/2022-04-30_161434.png)
+![png](14-ECF-Exceptions&Processes/2022-04-30_161434.png)
 
 这些进程实际上是在共享着cpu，由操作系统管理着。在某个时候，由timer interrupt或者trap等而发生exception，然后操作系统会获得系统的控制权，假设在这种情况下它决定要运行另外一个进程。
 
-![png](14-ECF:Exceptions&Processes/2022-04-30_161919.png)
+![png](14-ECF-Exceptions&Processes/2022-04-30_161919.png)
 
 它会将当前寄存器值复制到内存中保存，然后调度下一个运行。它会读取上次进程运行时保存的寄存器的值，并将它们加载到cpu寄存器中，然后将地空间切换(address space)到这个进程的地址空间。所谓的上下文切换就是地址空间和寄存器的变化。
 
-![png](14-ECF:Exceptions&Processes/2022-04-30_170840.png)
+![png](14-ECF-Exceptions&Processes/2022-04-30_170840.png)
 在现代的多核系统中，操作系统会在这些多核上调度进程，如果没有足够的cpu内核来处理进程，就会出现上下文切换。
 
 ### Concurrent Processes
@@ -143,17 +143,17 @@ Process provides each program with two key abstractions:
 
 三个进程，进程A运行了一段时间，然后被进程B和进程C中断，最后它继续运行，然后终止。进程B中断进程A，然后它运行一段时间然后终止。当进程B完成时，进程C会运行一段时间。然后进程A运行一段时间，然后进程C终止。（纵坐标是时间轴，黑的竖线代表此时哪个进程在运行）
 
-![png](14-ECF:Exceptions&Processes/2022-05-01_152952.png)
+![png](14-ECF-Exceptions&Processes/2022-05-01_152952.png)
 
 B和C不是并发的，B在C开始之前就结束了。但是在用户看来是并行的。
 
-![png](14-ECF:Exceptions&Processes/2022-05-01_153758.png)
+![png](14-ECF-Exceptions&Processes/2022-05-01_153758.png)
 
 ### Context Switching
 
 上下文切换由内核管理，内核不是一个单独的进程在运行，而是在一些现有进程的上下文中运行，是由于exception而执行的位于地址空间上的代码。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_26.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_26.JPG)
 
 A进程发生了exception，处理完之后调度器决定运行进程B，执行代码然后重新指向B的地址空间，在进程B的上下文中运行，它完成了进程B通用寄存器的加载，然后将控制权转移到B，B从它上一次停止的地方开始。
 
@@ -161,11 +161,11 @@ A进程发生了exception，处理完之后调度器决定运行进程B，执行
 
 ### System Call Error Handling
 
-![png](14-ECF:Exceptions&Processes/2022-05-01_160904.png)
+![png](14-ECF-Exceptions&Processes/2022-05-01_160904.png)
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_29.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_29.JPG)
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_30.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_30.JPG)
 
 ### Obtaining Process IDs
 
@@ -204,7 +204,7 @@ Parent process creates a new running child process by calling fork.
   - Child gets identical copies of the parent’s open file descriptors. 子进程可以访问任何父进程打开的文件，包括父进程拥有的标准输入和标准输出。
   - Child has a different PID than the parent
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_35.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_35.JPG)
 
 #### Modeling fork with Process Graphs
 
@@ -215,15 +215,15 @@ process graph工具可以捕获调用fork时可能发生的情况。
 - 边的值为变量的当前值
 - printf顶点代表输出
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_37.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_37.JPG)
 
 调用两个fork的情况
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_39.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_39.JPG)
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_40.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_40.JPG)
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_41.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_41.JPG)
 
 ### Reaping Child Processes
 
@@ -237,11 +237,11 @@ When process terminates, it still consumes system resources.
 
 只有在有长期运行的父进程(shells或者servers)的情况下，才要担心僵尸进程。在这种情况下，服务器可能会创建很多个子进程，这些子进程中的每一个在它们终止时都会变成僵尸并且它们的状态占用了内核中的空间，这是内存泄漏的一种形式。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_43.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_43.JPG)
 
 父进程永远没有机会reap子进程
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_44.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_44.JPG)
 
 如果子进程没有终止（上一个调用了exit），即使父进程终止了，子进程依旧运行中。必须手动kill掉变为僵尸进程后由init进程reap。
 
@@ -257,9 +257,9 @@ Parent reaps a child by calling the wait function.
 WTERMSIG, WIFSTOPPED, WSTOPSIG,
 WIFCONTINUED等。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_46.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_46.JPG)
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_47.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_47.JPG)
 
 创建一堆子进程，等待所有子进程终止。
 
@@ -267,19 +267,19 @@ WIFCONTINUED等。
 
 这里可用waitpid去等待具体某个子进程。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_48.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_48.JPG)
 
 ### execve:Loading and Running Programs
 
 对于fork，只是创建了一堆和父进程类似的子进程，要在进程中运行不同的程序，得使用execve函数。它的第一行以#号开头，然后是某个解释器的路径。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_49.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_49.JPG)
 
 它会完全覆盖虚拟地址空间，一旦在一个进程中调用execve，它就代替了当前程序，保留了PID，打开的文件等。
 
 #### Structure of the stack when a new program starts
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_50.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_50.JPG)
 
 execve会创建一个新的stack，加载新的code和数据。
 
@@ -291,7 +291,7 @@ main的第二个参数argv是一个指针列表，在寄存器%rsi中，最后�
 
 环境列表(envp)也包含在栈中，它也包含一个指针列表，每个指针指向一个环境字符串，该字符串是一组键值对。全局变量environ指向`envp[0]`。
 
-![png](14-ECF:Exceptions&Processes/14-ecf-procs_51.JPG)
+![png](14-ECF-Exceptions&Processes/14-ecf-procs_51.JPG)
 
 environ为父进程的环境变量。
 
