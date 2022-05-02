@@ -100,9 +100,24 @@ A signal is **pending** if sent but not yet received
 
 ### Sending Signals: Process Groups
 
-每个进程都属于一个进程组，进程组有一个好处是可以同时向组中的进程发送信号。
+每个进程都属于一个进程组。
 
 ![png](15-ECF-Signals/15-ecf-signals_15.JPG)
 
 上图shell创建了一个前台子进程，并将该子进程的pgid修改为其pid（pgid=pid=20）。当这个子进程创建另外一个子进程时，继承了相同的pgid。
 
+#### Sending Signals with /bin/kill Program
+
+进程组有一个好处是可以同时向组中的进程发送信号。
+
+![png](15-ECF-Signals/15-ecf-signals_16.JPG)
+
+kill第一个参数表示要发送什么信号
+
+#### Sending Signals from the Keyboard
+
+另一种发送信号的方法是在命令行这里输入ctrl-c(SIGINT)或ctrl-z(SIGTSTP，直到收到SIGCONT)
+
+![png](15-ECF-Signals/15-ecf-signals_17.JPG)
+
+![png](15-ECF-Signals/15-ecf-signals_18.JPG)
