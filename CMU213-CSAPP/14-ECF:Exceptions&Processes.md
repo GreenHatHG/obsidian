@@ -123,7 +123,7 @@ Process provides each program with two key abstractions:
 
 ![png](14-ECF:Exceptions&Processes/2022-04-30_155407.png)
 
-即使在单核的系统上，实际在同一时间也存在着许多进程。每个进程都有一个process ID(PID)。
+即使在单核的系统上，实际在同一时间也存在着许多进程（单个核心一次只执行一个进程）。每个进程都有一个process ID(PID)。
 
 ![png](14-ECF:Exceptions&Processes/2022-04-30_161434.png)
 
@@ -153,7 +153,7 @@ B和C不是并发的，B在C开始之前就结束了。但是在用户看来是�
 
 上下文切换由内核管理，内核不是一个单独的进程在运行，而是在一些现有进程的上下文中运行，是由于exception而执行的位于地址空间上的代码。
 
-![png](14-ECF:Exceptions&Processes/2022-05-01_155813.png)
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_26.JPG)
 
 A进程发生了exception，处理完之后调度器决定运行进程B，执行代码然后重新指向B的地址空间，在进程B的上下文中运行，它完成了进程B通用寄存器的加载，然后将控制权转移到B，B从它上一次停止的地方开始。
 
@@ -253,7 +253,48 @@ Parent reaps a child by calling the wait function.
 
 - Suspends current process until one of its children terminates.没有指定是哪个。
 - Return value is the pid of the child process that terminated
-- 如果`child_status != NULL`，那么该值将被赋值为子进程终止的原因。代表原因的一些值被定义在wait.h：WIFEXITED，WEXITSTATUS, WIFSIGNALED,
+- 如果`child_status != NULL`，那么该值将被赋值为子进程终止的原因，用整数表示，可以用一些宏去查看终止的原因，宏被定义在wait.h：WIFEXITED，WEXITSTATUS, WIFSIGNALED,
 WTERMSIG, WIFSTOPPED, WSTOPSIG,
-WIFCONTINUED。
+WIFCONTINUED等。
 
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_46.JPG)
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_47.JPG)
+
+创建一堆子进程，等待所有子进程终止。
+
+如果WIFEXITED为false，则这意味着子进程因其他原因终止，而不是因为它调用了exit。
+
+这里可用waitpid去等待具体某个子进程。
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_48.JPG)
+
+### execve:Loading and Running Programs
+
+对于fork，只是创建了一堆和父进程类似的子进程，要在进程中运行不同的程序，得使用execve函数。它的第一行以#号开头，然后是某个解释器的路径。
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_49.JPG)
+
+它会完全覆盖虚拟地址空间，一旦在一个进程中调用execve，它就代替了当前程序，保留了PID，打开的文件等。
+
+#### Structure of the stack when a new program starts
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_50.JPG)
+
+execve会创建一个新的stack，加载新的code和数据。
+
+第一个执行的函数是一个名为libc_start_main的函数，它有一个栈帧(stack frame)。
+
+main的第一个参数是参数数量，在寄存器%rdi中(x86-64)。
+
+main的第二个参数argv是一个指针列表，在寄存器%rsi中，最后一个元素是空指针，这些指针中的每一个都指向一个对应于参数的字符串。
+
+环境列表(envp)也包含在栈中，它也包含一个指针列表，每个指针指向一个环境字符串，该字符串是一组键值对。全局变量environ指向`envp[0]`。
+
+![png](14-ECF:Exceptions&Processes/14-ecf-procs_51.JPG)
+
+environ为父进程的环境变量。
+
+为什么不只使用一个命令来创建一个新进程并在该进程中运行一个程序？为什么有这两个独立的 fork和execve？
+
+事实上windows就是这样做的，windows有一个类似的命令来创建一个进程并执行。但事实证明，拥有像 fork 这样的单独函数来创建进程实际上非常有用。有时只想创建当前进程的副本，比如想创建一个并发服务器，想创建服务器的多个副本，只需要fork。并且还允许在调用execve之前在子进程中执行代码，处理信号之类的一些事情。
