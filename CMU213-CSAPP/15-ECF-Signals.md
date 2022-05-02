@@ -106,7 +106,7 @@ A signal is **pending** if sent but not yet received
 
 上图shell创建了一个前台子进程，并将该子进程的pgid修改为其pid（pgid=pid=20）。当这个子进程创建另外一个子进程时，继承了相同的pgid。
 
-#### Sending Signals with /bin/kill Program
+### Sending Signals with /bin/kill Program
 
 进程组有一个好处是可以同时向组中的进程发送信号。
 
@@ -114,10 +114,84 @@ A signal is **pending** if sent but not yet received
 
 kill第一个参数表示要发送什么信号
 
-#### Sending Signals from the Keyboard
+### Sending Signals from the Keyboard
 
 另一种发送信号的方法是在命令行这里输入ctrl-c(SIGINT)或ctrl-z(SIGTSTP，直到收到SIGCONT)
 
 ![png](15-ECF-Signals/15-ecf-signals_17.JPG)
 
 ![png](15-ECF-Signals/15-ecf-signals_18.JPG)
+
+### Sending Signals with kill Function
+
+![png](15-ECF-Signals/15-ecf-signals_19.JPG)
+
+### Receiving Signals
+
+前提：Suppose kernel is returning from an exception handler and is ready to pass control to process p
+
+- 内核通过一个公式计算`pnb = pending & ~blocked`
+
+  - The set of pending nonblocked signals for process p
+
+- `If (pnb == 0)`: Pass control to next instruction in the logical flow for p。代表没有待处理的信号。
+- `else`
+  - Choose least nonzero bit k(*最小非零位*) in pnb and force process p to receive signal k.
+  - 收到信号后，p会触发一些操作(action)
+  - Repeat for all nonzero k in pnb.遍历完所有的非零位。
+  - Pass control to next instruction in logical flow for p.
+  
+#### Default Actions
+
+Each signal type has a predefined default action, which is one of:
+
+- The process terminates
+- The process stops until restarted by a SIGCONT signal
+- The process ignores the signal
+
+### Installing Signal Handlers
+
+可以通过使用`signal`函数系统调用来修改信号默认操作
+
+`handler_t *signal(int signum, handler_t *handler)`
+
+handler参数：
+
+- **SIG_IGN**: ignore signals of type signum
+- **SIG_DFL**: revert to the default action on receipt of signals of type signum
+- **Otherwise**, handler is the address of a user-level signal handler
+  - Called when process receives signal of type signum
+  - 又可以称为"installing" the handler
+  - 当处理程序执行它的return 语句时，控制权将返回到因接收信号而中断的进程的控制流中的指令并继续执行
+
+![png](15-ECF-Signals/15-ecf-signals_24.JPG)
+
+### Signals Handlers as Concurrent Flows
+
+![png](15-ECF-Signals/15-ecf-signals_26.JPG)
+
+### Nested Signal Handlers
+
+![png](15-ECF-Signals/15-ecf-signals_27.JPG)
+
+### Blocking and Unblocking Signals
+
+隐式阻塞机制: handler不能因接收到相同类型的另一个信号而打断，可以被另外一种类型打断。
+
+内核提供了一个系统调用Sigprocmask函数，允许显式阻塞和解除阻塞信号
+
+阻塞和解除阻塞一组信号:
+
+- Sigemptyset: Create empty set
+- Sigfillset: Add every signal number to set
+- Sigaddset: Add signal number to set
+- Sigdelset: Delete signal number from set
+
+![png](15-ECF-Signals/15-ecf-signals_29.JPG)
+
+使用Sigemptyset创建一个空的mask（全为零的mask）。
+
+使用Sigprocmask暂时停止接收mask集合中的信号，&mask被更新，之前的值被复制到了&prev_mask。
+
+之后再次调用Sigprocmask恢复
+
