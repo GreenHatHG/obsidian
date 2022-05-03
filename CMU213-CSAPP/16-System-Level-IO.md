@@ -300,5 +300,36 @@ int main(int argc, char **argv) {
 
 ### How the Unix Kernel Represents Open Files
 
-任何进程都有一个相关联的描述符表(Descriptor table)每一个
+![png](16-System-Level-IO/16-io_28.JPG)
+
+- Descriptor table：
+  - 任何进程都有一个相关联的描述符表(Descriptor table)。
+  - Descriptor table中的每一条记录都存了一个指向特定打开的文件的引用。
+  - 除了文件描述符0、1、2，其他描述符代表在程序执行过程中打开但尚未关闭的文件。
+
+- open file table
+  - 由操作系统全局维护，用于描述每个打开的文件。
+  - 每打开一个文件都会在table中分配一条记录。
+  - table中存储了下一次读或者写起始的位置(File pos)
+  - 引用计数(refcnt)用于操作系统对打开的文件的引用追踪，可以了解何时不再需要该entry，当该文件不再访问，意味着entry也不需要了。
+
+- v-node table
+  - 每个打开的文件还关联着一个virtual node，里面包含了一些可以通过stat函数获取到的文件信息，比如文件存储的位置、文件的大小等
+  - 实际上系统中的每个文件不论是否打开，都会在v-node table中有一个对应的entry
+
+### File Sharing
+
+![png](16-System-Level-IO/16-io_29.JPG)
+
+如果在程序调用open()同一个文件两次，会得到两个不同的文件描述符。
+
+这两个文件描述符访问的是同一个文件，只是它在Descriptor table中的不同位置存在了两份。但是在open file table中的File pos可能不一样。
+
+如果对同一个文件使用两次open，并分别对其进行写操作，可能会严重破坏文件，操作系统不会阻止这样的操作，但是这种行为是很不好的。
+
+![png](16-System-Level-IO/16-io_30.JPG)
+
+![png](16-System-Level-IO/16-io_31.JPG)
+
+在fork的情况下，子进程会得到和父进程的一样的Descriptor table，父进程读取了部分文件内容，open file table中的file pos发生了变化，会影响到子进程。想要真正关闭文件，每个文件就得调用close()。
 
