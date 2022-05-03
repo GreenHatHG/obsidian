@@ -333,3 +333,11 @@ int main(int argc, char **argv) {
 
 在fork的情况下，子进程会得到和父进程的一样的Descriptor table，父进程读取了部分文件内容，open file table中的file pos发生了变化，会影响到子进程。想要真正关闭文件，每个文件就得调用close()。
 
+### I/O Redirection
+
+![png](16-System-Level-IO/16-io_32.JPG)
+
+操作系统启动程序后调用dup2，使得该进程的fd1不再对应于标准输出
+
+## Standard I/O
+
