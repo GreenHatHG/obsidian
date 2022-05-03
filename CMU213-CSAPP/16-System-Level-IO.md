@@ -159,7 +159,7 @@ int main(void)
   - Writing to disk files
 - 编写代码的时候需要始终考虑short counts的情况
 
-## The RIO Package
+## RIO (robust I/O) package
 
 RIO is a set of wrappers that provide efficient and robust I/O in apps
 
@@ -213,4 +213,92 @@ ssize_t rio_readn(int fd, void *usrbuf, size_t n)
 ```
 
 ### Buffered RIO Input Functions
+
+File has associated buffer to hold bytes that have been read from file but not yet read by user code
+
+![png](16-System-Level-IO/16-io_22.JPG)
+
+```c
+typedef struct {
+    int rio_fd;                /* descriptor for this internal buf */
+    int rio_cnt;               /* unread bytes in internal buf */
+    char *rio_bufptr;          /* next unread byte in internal buf */
+    char rio_buf[RIO_BUFSIZE]; /* internal buffer */
+} rio_t;
+```
+
+### RIO Example
+
+Copying the lines of a text file from standard input to standard output
+
+```c
+#include "csapp.h"
+
+int main(int argc, char **argv) 
+{
+    int n;
+    rio_t rio;
+    char buf[MAXLINE];
+
+    Rio_readinitb(&rio, STDIN_FILENO);
+    while((n = Rio_readlineb(&rio, buf, MAXLINE)) != 0) 
+        Rio_writen(STDOUT_FILENO, buf, n);
+    exit(0);
+}
+```
+
+## Metadata,sharing,redirection
+
+### File Metadata
+
+Metadata is data about data, in this case file data.
+
+Per-file metadata maintained by kernel.
+
+Accessed by users with the `stat` and `fstat` functions.
+
+```c
+/* Metadata returned by the stat and fstat functions */
+struct stat {
+    dev_t st_dev;      /* Device */
+    ino_t st_ino;      /* inode */
+    mode_t st_mode;     /* Protection and file type */
+    nlink_t st_nlink;    /* Number of hard links */
+    uid_t st_uid;      /* User ID of owner */
+    gid_t st_gid;      /* Group ID of owner */
+    dev_t st_rdev;     /* Device type (if inode device) */
+    off_t st_size;     /* Total size, in bytes */
+    unsigned long st_blksize;  /* Blocksize for filesystem I/O */
+    unsigned long st_blocks;   /* Number of blocks allocated */
+    time_t st_atime;    /* Time of last access */
+    time_t st_mtime;    /* Time of last modification */
+    time_t st_ctime;    /* Time of last change */
+};
+```
+
+Example of Accessing File Metadata
+
+```c
+int main(int argc, char **argv) {
+    struct stat stat;
+    char *type, *readok;
+    Stat(argv[1], &stat);
+    if (S_ISREG(stat.st_mode))     /* Determine file type */
+        type = "regular";
+    else if (S_ISDIR(stat.st_mode))
+        type = "directory";
+    else
+        type = "other";
+    if ((stat.st_mode & S_IRUSR)) /* Check read access */
+        readok = "yes";
+    else
+        readok = "no";
+    printf("type: %s, read: %s\n", type, readok);
+    exit(0);
+}
+```
+
+### How the Unix Kernel Represents Open Files
+
+任何进程都有一个相关联的描述符表(Descriptor table)每一个
 
