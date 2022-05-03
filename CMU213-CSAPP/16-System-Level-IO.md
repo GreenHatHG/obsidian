@@ -338,6 +338,3 @@ int main(int argc, char **argv) {
 ![png](16-System-Level-IO/16-io_32.JPG)
 
 操作系统启动程序后调用dup2，使得该进程的fd1不再对应于标准输出
-
-## Standard I/O
-
