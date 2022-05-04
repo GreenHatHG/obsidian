@@ -8,7 +8,7 @@
 
 Why Virtual Memory (VM)?
 
-- Uses main memory efficiently: 参考局部性使用一部分DRAM容量来作为缓存提高效率
+- Uses main memory efficiently: 参考局部性缓存一部分虚拟地址空间内容到DRAM以提高效率。
 - Simplifies memory management: 每个进程都有相似的虚拟地址空间
 - Isolates address spaces
   - One process can’t interfere with another’s memory
@@ -81,4 +81,36 @@ page table中的PTE5还没有分配：先在磁盘上分配这个page(vp5)，PT5
 在任何时间点，程序因为局部性去访问一组page(set of active virtual pages called the working set)，具有更好的时间局部性程序的working set会更小。
 
 - If (working set size < main memory size): 当前所有的page都在主存
-- If (SUM(working set sizes) > main memory size)。当所有进程的working set之和大于主存大小，就会导致Thrashing：页面不断的在内存和磁盘之间来回复制。 
+- If (SUM(working set sizes) > main memory size)。当所有进程的working set之和大于主存大小，就会导致Thrashing：页面不断的在内存和磁盘之间来回复制。
+
+## VM as a Tool for Memory Management
+
+- Key idea: each process has its own virtual address space。
+  - It can view memory as a simple linear array.
+  - 内核通过为每个进程的上下文中提供属于自己的单独页表来实现。
+- Simplifying memory allocation
+  - Each virtual page can be mapped to any physical page
+  - 每个进程的页表映射了该进程的虚拟地址空间，虚拟地址空间中的page可以映射到物理地址空间(DRAM)中的任何位置。不同的虚拟页(vp)和不同的进程可以映射到不同的物理页(pp)。
+  - 相同的虚拟页也可以在不同的时间存储在不同的物理页中。
+  - 每个进程都有一个非常相似的虚拟地址空间，相同大小的地址空间、code和data都从相同的位置开始，但是随后进程使用的page可以分散在内存中，以最有效的方式使用内存。
+  - 没有虚拟内存以前，是按物理内存分区的形式为进程分配内存，增加进程及其麻烦，无法知道物理空间位于内存中的哪个地方，需要重新定位等。
+- Sharing code and data among processes
+  - Map virtual pages to the same physical page (here: PP 6)
+  - 这就是共享库的实现方式，比如共享lib.c，只需要在物理内存中加载一次即可。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_21.JPG)
+
+### Simplifying Linking and Loading
+
+程序代码和数据一开始没有被加载到内存，只有出现未命中才会进行真正的加载，demand paging。
+
+loading其实是一个非常有效率的机制，可能有一个包含大型数组的程序，但是只访问数组的一部分，可以延迟加载。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_22.JPG)
+
+## VM as a Tool for Memory Protection
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_24.JPG)
+
+sup：supervisor，是否必须由内核访问
+
