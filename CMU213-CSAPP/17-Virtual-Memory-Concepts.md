@@ -6,6 +6,8 @@
 - **Virtual address space**: Set of N = 2^n virtual addresses `{0, 1, 2, 3, …, N-1}`
 - **Physical address space**: Set of M = 2m physical addresses `{0, 1, 2, 3, …, M-1}`
 
+（N通常大于M）
+
 Why Virtual Memory (VM)?
 
 - Uses main memory efficiently: 参考局部性缓存一部分虚拟地址空间内容到DRAM以提高效率。
@@ -113,4 +115,18 @@ loading其实是一个非常有效率的机制，可能有一个包含大型数�
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_24.JPG)
 
 sup：supervisor，是否必须由内核访问
+
+## VM Address Translation
+
+### Address Translation With a Page Table
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_28.JPG)
+
+在intel系统中，页表的起始地址保存在一个特殊的CPU寄存器页表基址寄存器(Page Table Base Register，PTBR)中，它被称为CR3(control register 3：控制寄存器3)
+
+虚拟块中的offset与物理块中的offset相同
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_29.JPG)
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_30.JPG)
 
