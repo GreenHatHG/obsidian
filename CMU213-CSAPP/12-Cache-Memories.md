@@ -20,7 +20,7 @@
 ![png](12-Cache-Memories/2022-04-22_222707.png)
 
 1. 定位set：从地址中提取set index找到特定set
-2. 检查tag：查看set中所有line的tag，找到与地址中tag一样的tag，并检查是否有效，这样就对应到了具体某个line
+2. 检查tag：查看set中所有line的tag，找到与地址中tag一样的tag，并检查是否有效，这样就对应到了具体某个line。硬件实际上在set中并行搜索cache line。
 3. 使用block offset定位数据从line中第几个block开始读，具体读多少个看是什么类型的，比如int就4bytes
 
 ### Example: Direct Mapped Cache(E=1)

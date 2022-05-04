@@ -1,0 +1,70 @@
+# 17-Virtual-Memory-Concepts
+
+## Address spaces
+
+- **Linear address space**: 连续非负整数地址的有序集 `{0, 1, 2, 3 … }`
+- **Virtual address space**: Set of N = 2^n virtual addresses `{0, 1, 2, 3, …, N-1}`
+- **Physical address space**: Set of M = 2m physical addresses `{0, 1, 2, 3, …, M-1}`
+
+Why Virtual Memory (VM)?
+
+- Uses main memory efficiently: 参考局部性使用一部分DRAM容量来作为缓存提高效率
+- Simplifies memory management: 每个进程都有相似的虚拟地址空间
+- Isolates address spaces
+  - One process can’t interfere with another’s memory
+  - User program cannot access privileged kernel information and code
+
+## VM as a Tool for Caching
+
+**virtual memory** is an array of N contiguous(*连续的*) bytes stored on **disk**.
+
+The contents of the array on disk are cached in **physical memory (DRAM cache)**
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_8.JPG)
+
+在DRAM的某处缓存了三个virtual page，一些page没有被缓存依旧存储在磁盘上(比如vp2)，有些page甚至没有分配，所以在磁盘上不存在。
+
+### DRAM Cache Organization
+
+- 若未命中DRAM cache，从磁盘中获取数据的代价是非常大的。
+
+  - DRAM is about **10x** slower than SRAM.
+  - Disk is about **10,000x** slower than DRAM.
+
+造成的影响：
+
+- Large page (block) size: typically 4 KB, sometimes 4 MB
+- Fully associative
+  - Any VP can be placed in any PP.
+  - Requires a “large” mapping function – different from cache memories.
+- 更复杂的替换算法（替换page），无法在硬件中实现，而替换算法相对简单的cache memory则利用了硬件并行查找。替换失误造成未命中的成本远远大于复杂算法执行的成本。
+- Write-back rather than write-through
+
+### Page table
+
+A page table(页表) is an array of page table entries (PTEs) that maps virtual pages to physical pages.
+
+内核会将它作为每一个进程上下文的一部分进行维护，所以每个进程都有自己的页表。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_10.JPG)
+
+### Page hit
+
+CPU执行move指令，会生成一个虚拟地址。MMU(Memory Management Unit)会在页表中查找。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_11.JPG)
+
+### Handling Page Fault
+
+- **Page fault**: reference to VM word that is not in physical memory (DRAM cache miss)
+
+1. Page miss causes page fault (an exception)。硬件触发异常。
+2. 导致控制权转移到内核中的page fault handler的代码块
+3. 从Physical memory选择出一个page需要被替换，比如pp4
+4. 从磁盘上获取vp3加载到内存中，并更新Physical memory和页表。如果vp4被修改过，还需要将数据写回到磁盘。
+5. 当内核中的Page fault handler返回时，它返回到导致错误的指令位置，然后重新执行该指令，page hit。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_14.JPG)
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_16.JPG)
+
