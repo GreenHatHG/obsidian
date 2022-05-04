@@ -68,3 +68,17 @@ CPU执行move指令，会生成一个虚拟地址。MMU(Memory Management Unit)�
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_16.JPG)
 
+### Allocating Pages
+
+page table中的PTE5还没有分配：先在磁盘上分配这个page(vp5)，PT5指向vp5。并不会一开始就存放在DRMA缓存中，直到被使用到为止。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_17.JPG)
+
+### Locality to the Rescue Again
+
+虚拟内存因为要复制数据、分配内存、修改页表看起来看低效，但是因为局部性原理并不是这样的。
+
+在任何时间点，程序因为局部性去访问一组page(set of active virtual pages called the working set)，具有更好的时间局部性程序的working set会更小。
+
+- If (working set size < main memory size): 当前所有的page都在主存
+- If (SUM(working set sizes) > main memory size)。当所有进程的working set之和大于主存大小，就会导致Thrashing：页面不断的在内存和磁盘之间来回复制。 
