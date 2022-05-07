@@ -1,3 +1,15 @@
+---
+title: 玩客云部署beancount-telegram-bot
+date: 2022-05-07 22:06:43
+categories: 
+- Linux
+tags:
+- 玩客云
+- beancount
+- tgbot
+- Docker
+---
+
 # 玩客云
 
 捡垃圾，40块钱还行，民间大佬弄出了刷Linux的方法，可惜是32位，不过也凑合用，比斐讯N1折腾了那么一点。
