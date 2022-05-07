@@ -130,3 +130,41 @@ sup：supervisor，是否必须由内核访问
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_30.JPG)
 
+### Speeding up Translation with a TLB
+
+- Page table entries (PTEs) are cached in L1 like any other memory word
+  - PTEs may be evicted(*驱逐*) by other data references
+  - PTE hit still requires a small L1 delay
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_31.JPG)
+
+- Solution: **Translation Lookaside Buffer** (TLB)
+  - Small set-associative hardware cache in MMU
+  - Maps virtual page numbers to  physical page numbers
+  - Contains complete page table entries for small number of pages
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_33.JPG)
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_34.JPG)
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_35.JPG)
+
+### Multi-Level Page Tables
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_36.JPG)
+
+一个页表需要的空间很大，见图，需要512GB，因为如果想用一个页表映射虚拟地址空间，需要为每个page的地址提供一个PTE，不管page有没有被使用过，比如48位地址空间，则需要512GB，但是很多都没有使用到，为此使用多级页表可以避免创建不必要的页表。
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_37.JPG)
+
+上图已经为这个程序的代码和数据分配了2k个page，还有6个没有分配的page，低下有一个为栈分配的1024个page，但是大部分没有使用，只为栈顶分配了一个page。
+
+2个level 2的页表覆盖了这分配的2k个page，1个level 2页表覆盖栈page(1023个null PTEs，因为大部分没有使用到)，1个level 1页表，共需要4个页表。
+
+足够的level 2的页表就能覆盖实际使用的虚拟地址空间部分。没有用到的page就放到Gap区域，无需为它搞一个页表。
+
+### Translating with a k-level Page Table
+
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_38.JPG)
+
+MMU做的这些都是硬件逻辑，包括有多少级页表，由硬件架构定义。
