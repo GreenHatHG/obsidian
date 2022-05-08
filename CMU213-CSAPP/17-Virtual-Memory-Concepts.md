@@ -52,7 +52,7 @@ A page table(页表) is an array of page table entries (PTEs) that maps virtual 
 
 ### Page hit
 
-CPU执行move指令，会生成一个虚拟地址。MMU(Memory Management Unit)会在页表中查找。
+CPU执行move指令、call指令、ret指令、或者任何类型的控制转移指令，会生成一个虚拟地址。MMU(Memory Management Unit)会在页表中查找。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_11.JPG)
 
@@ -72,9 +72,11 @@ CPU执行move指令，会生成一个虚拟地址。MMU(Memory Management Unit)�
 
 ### Allocating Pages
 
-page table中的PTE5还没有分配：先在磁盘上分配这个page(vp5)，PT5指向vp5。并不会一开始就存放在DRMA缓存中，直到被使用到为止。
+page table中的PTE5还没有分配，如果需要分配则要调用malloc函数：先在磁盘上分配这个page(vp5)，PT5指向vp5。并不会一开始就存放在DRMA缓存中，直到被使用到为止。所谓的分配只是修改PTE而已。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_17.JPG)
+
+分配新page的时候大多是都会有一个选项，可以分配全为0的page，这样的page不需要存储在磁盘上，它会在内存中，就好像它是在磁盘上创建然后加载到内存中一样，磁盘上不存在这些全为零的pages。page可以映射到文件，code对应的page实际上映射到二进制文件中包含code的部分，当未命中page时候，会将这些code pages加载进来。
 
 ### Locality to the Rescue Again
 
@@ -116,6 +118,8 @@ loading其实是一个非常有效率的机制，可能有一个包含大型数�
 
 sup：supervisor，是否必须由内核访问
 
+在x86-64系统上，指针和地址都是64位的，但是虚拟地址空间则是48位的，超过48位的bit要么全是0要么全是1，这是intel制定的规则，高位全为1的地址为内核保留（地址指向内核中的代码或者数据），高位全为0的地址为用户代码保留。
+
 ## VM Address Translation
 
 ### Address Translation With a Page Table
@@ -146,6 +150,8 @@ sup：supervisor，是否必须由内核访问
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_33.JPG)
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_34.JPG)
+
+PTE中valid为0或者指向的是磁盘地址
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_35.JPG)
 

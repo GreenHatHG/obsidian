@@ -14,3 +14,10 @@ PPN实际不存在页表中
 4. cache将该字节通过MMU返回给CPU，并将其存到一个寄存器中。
 
 ### Address Translation Example #2
+
+![png](18-Virtual-Memory-Systems/20220508131850.png)
+
+1. VA中的VPN的TLBI=TLBT=0，TLB的set=0&tag=0的line的valid=0，TLB miss
+2. 通过VPN=0查找页表，valid=1有效，内存将PTE返回给MMU构造物理地址。
+3. MMU用物理地址请求cache，CI=0x8,CT=0x28，set 8中不存在tag为28的line，cache miss
+4. 将物理地址传递给内存获取数据，
