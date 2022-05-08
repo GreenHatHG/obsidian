@@ -126,7 +126,7 @@ sup：supervisor，是否必须由内核访问
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_28.JPG)
 
-在intel系统中，页表的起始地址保存在一个特殊的CPU寄存器页表基址寄存器(Page Table Base Register，PTBR)中，它被称为CR3(control register 3：控制寄存器3)
+在intel系统中，页表的起始地址(物理地址)保存在一个特殊的CPU寄存器页表基址寄存器(Page Table Base Register，PTBR)中，它被称为CR3(control register 3：控制寄存器3)
 
 虚拟块中的offset与物理块中的offset相同
 
