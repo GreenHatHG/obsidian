@@ -210,3 +210,47 @@ Simplifying memory allocation. Virtual memory provides a simple mechanism for al
 
 简化内存分配。虚拟内存提供了一种向用户进程分配额外内存的简单机制。当运行在用户进程中的程序请求额外的堆空间(例如，由于调用malloc)时，操作系统分配适当的数量，例如k，连续的虚拟内存页，并将它们映射到物理内存中任意位置的k个物理页。由于页表的工作方式，操作系统不需要定位物理内存中的k个连续页。页面可以随机地分散在物理内存中。
 
+### 9.5 VM as a Tool for Memory Protection
+
+Any modern computer system must provide the means for the operating system to control access to the memory system. A user process should not be allowed to modify its read-only code section. Nor should it be allowed to read or modify any of the code and data structures in the kernel. It should not be allowed to read or write the private memory of other processes, and it should not be allowed to modify any virtual pages that are shared with other processes, unless all parties explicitly allow it (via calls to explicit interprocess communication system calls).
+
+任何现代计算机系统都必须为操作系统提供控制访问内存系统的手段。一个用户进程不应该被允许修改其只读的代码部分。也不应该允许它读取或修改内核中的任何代码和数据结构。它不应该被允许读写其他进程的私有内存，也不应该被允许修改任何与其他进程共享的虚拟页，除非各方都明确允许（通过调用明确的进程间通信系统调用）。
+
+As we have seen, providing separate virtual address spaces makes it easy to isolate the private memories of different processes. But the address translation mechanism can be extended in a natural way to provide even finer access control. Since the address translation hardware reads a PTE each time the CPU generates an address, it is straightforward to control access to the contents of a virtual page by adding some additional permission bits to the PTE. Figure 9.10 shows the general idea.
+
+正如我们所见，提供单独的虚拟地址空间可以很容易地隔离不同进程的私有内存。但是地址转换机制可以以一种自然的方式进行扩展，以提供更精细的访问控制。由于每次 CPU 生成地址时地址转换硬件都会读取 PTE，因此可以直接通过向 PTE 添加一些额外的权限位来控制对虚拟页面内容的访问。图 9.10 显示了总体思路。
+
+In this example, we have added three permission bits to each PTE. The SUP bit indicates whether processes must be running in kernel (supervisor) mode to access the page. Processes running in kernel mode can access any page, but processes running in user mode are only allowed to access pages for which SUP is 0. The READ and WRITE bits control read and write access to the page. For example, if process i is running in user mode, then it has permission to read VP 0 and to read or write VP 1. However, it is not allowed to access VP 2.
+
+在此示例中，我们为每个 PTE 添加了三个权限位。 SUP 位指示进程是否必须在内核（主管）模式下运行才能访问页面。在内核模式下运行的进程可以访问任何页面，但在用户模式下运行的进程只允许访问 SUP 为 0 的页面。READ 和 WRITE 位控制对页面的读写访问。例如，如果进程 i 在用户模式下运行，则它有权读取 VP 0 和读取或写入 VP 1。但是，它不允许访问 VP 2。
+
+If an instruction violates these permissions, then the CPU triggers a general protection fault that transfers control to an exception handler in the kernel, which sends a SIGSEGV signal to the offending process. Linux shells typically report this exception as a "segmentation fault."
+
+如果一条指令违反了这些权限，那么 CPU 会触发一个通用保护错误，将控制权转移到内核中的异常处理程序，该处理程序向有问题的进程发送一个 SIGSEGV 信号。 Linux shell 通常将此异常报告为“分段错误”。
+
+## 9.6 Address Translation
+
+This section covers the basics of address translation. Our aim is to give you an appreciation of the hardware's role in supporting virtual memory, with enough detail so that you can work through some concrete examples by hand. However, keep in mind that we are omitting a number of details, especially related to timing,
+
+本节介绍地址翻译的基础知识。我们的目标是让您了解硬件在支持虚拟内存方面的作用，并提供足够的详细信息，以便您可以手动完成一些具体的示例。但是，请记住，我们忽略了一些细节，尤其是与时间有关的细节，
+
+Formally, address translation is a mapping between the elements of an N-element virtual address space (VAS) and an M-element physical address space (PAS),
+
+从形式上讲，地址转换是N元素虚拟地址空间（VAS）和M元素物理地址空间（PAS）元素之间的映射，
+
+Figure 9.12 shows how the MMU uses the page table to perform this mapping. A control register in the CPU, the page table base register (PTBR) points to the current page table. The n-bit virtual address has two components: a p-bit virtual page offset (VPO) and an (n -- p)-bit virtual page number (VPN). The MMU uses the VPN to select the appropriate PTE. For example, VPN 0 selects PTE 0, VPN 1 selects PTE 1, and so on. The corresponding physical address is the concatenation of the physical page number (PPN) from the page table entry and the VPO from the virtual address. Notice that since the physical and virtual pages are both P bytes, the physical page offset (PPO) is identical to the VPO.
+
+图 9.12 显示了 MMU 如何使用页表来执行此映射。 CPU中的一个控制寄存器，页表基址寄存器（PTBR）指向当前页表。 n 位虚拟地址有两个组成部分：一个 p 位虚拟页偏移量 (VPO) 和一个 (n -- p) 位虚拟页号 (VPN)。 MMU 使用 VPN 来选择合适的 PTE。例如，VPN 0 选择 PTE 0，VPN 1 选择 PTE 1，依此类推。对应的物理地址是来自页表条目的物理页号 (PPN) 和来自虚拟地址的 VPO 的串联。请注意，由于物理页和虚拟页都是 P 字节，因此物理页偏移 (PPO) 与 VPO 相同。
+
+Figure 9.13(a) shows the steps that the CPU hardware performs when there is a page hit. Step 1. The processor generates a virtual address and sends it to the MMU. Step 2. The MMU generates the PTE address and requests it from the cache/main memory. Step 3. The cache/main memory returns the PTE to the MMU. Step 4. The MMU constructs the physical address and sends it to the cache/main memory. Step 5. The cache/main memory returns the requested data word to the processor.
+
+图 9.13(a) 显示了当页面命中时 CPU 硬件执行的步骤。步骤 1. 处理器生成一个虚拟地址并将其发送给 MMU。步骤 2. MMU 生成 PTE 地址并从缓存/主存储器请求它。步骤 3. 高速缓存/主存储器将 PTE 返回给 MMU。步骤 4. MMU 构造物理地址并将其发送到缓存/主存储器。步骤 5. 高速缓存/主存储器将请求的数据字返回给处理器。
+
+Unlike a page hit, which is handled entirely by hardware, handling a page fault requires cooperation between hardware and the operating system kernel (Figure 9.13(b) ).
+
+与完全由硬件处理的页面命中不同，处理页面错误需要硬件和操作系统内核之间的合作（图9.13（b））。
+
+Steps 1 to 3. The same as steps 1 to 3 in Figure 9.13(a) . Step 4. The valid bit in the PTE is zero, so the MMU triggers an exception, which transfers control in the CPU to a page fault exception handler in the operating system kernel. Step 5. The fault handler identifies a victim page in physical memory, and if that page has been modified, pages it out to disk. Step 6. The fault handler pages in the new page and updates the PTE in memory. Step 7. The fault handler returns to the original process, causing the faulting instruction to be restarted. The CPU resends the offending virtual address to the MMU. Because the virtual page is now cached in physical memory, there is a hit, and after the MMU performs the steps in Figure 9.13(a) , the main memory returns the requested word to the processor.
+
+步骤 1 至 3。与图 9.13(a) 中的步骤 1 至 3 相同。步骤 4. PTE 中的有效位为零，因此 MMU 触发异常，将 CPU 中的控制权转移到操作系统内核中的缺页异常处理程序。第 5 步：故障处理程序识别物理内存中的受害者页面，如果该页面已被修改，则将其分页到磁盘。步骤 6. 故障处理程序在新页面中分页并更新内存中的 PTE。步骤 7. 故障处理程序返回原来的进程，导致故障指令重新启动。 CPU 将有问题的虚拟地址重新发送到 MMU。因为虚拟页面现在缓存在物理内存中，所以有一个命中，在 MMU 执行图 9.13(a) 中的步骤之后，主内存将请求的字返回给处理器。
+
