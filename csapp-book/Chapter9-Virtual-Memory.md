@@ -254,3 +254,161 @@ Steps 1 to 3. The same as steps 1 to 3 in Figure 9.13(a) . Step 4. The valid bit
 
 步骤 1 至 3。与图 9.13(a) 中的步骤 1 至 3 相同。步骤 4. PTE 中的有效位为零，因此 MMU 触发异常，将 CPU 中的控制权转移到操作系统内核中的缺页异常处理程序。第 5 步：故障处理程序识别物理内存中的受害者页面，如果该页面已被修改，则将其分页到磁盘。步骤 6. 故障处理程序在新页面中分页并更新内存中的 PTE。步骤 7. 故障处理程序返回原来的进程，导致故障指令重新启动。 CPU 将有问题的虚拟地址重新发送到 MMU。因为虚拟页面现在缓存在物理内存中，所以有一个命中，在 MMU 执行图 9.13(a) 中的步骤之后，主内存将请求的字返回给处理器。
 
+### 9.6.1 Integrating Caches and VM
+
+In any system that uses both virtual memory and SRAM caches, there is the issue of whether to use virtual or physical addresses to access the SRAM cache. Although a detailed discussion of the trade-offs is beyond our scope here, most systems opt for physical addressing. With physical addressing, it is straightforward for multiple processes to have blocks in the cache at the same time and to share blocks from the same virtual pages. Further, the cache does not have to deal with protection issues, because access rights are checked as part of the address translation process.
+
+在同时使用虚拟内存和SRAM缓存的任何系统中，都存在使用虚拟地址还是物理地址来访问SRAM缓存的问题。虽然关于权衡的详细讨论超出了我们的讨论范围，但大多数系统都选择物理寻址。通过物理寻址，多个进程可以直接在缓存中同时拥有块，并共享来自同一虚拟页面的块。此外，缓存不必处理保护问题，因为访问权限是作为地址转换过程的一部分进行检查的。
+
+Figure 9.14 shows how a physically addressed cache might be integrated with virtual memory. The main idea is that the address translation occurs before the cache lookup. Notice that page table entries can be cached, just like any other data words
+
+图9.14显示了如何将物理寻址缓存与虚拟内存集成。其主要思想是地址转换在高速缓存查找之前进行。请注意，页表条目可以被缓存，就像任何其他数据字一样
+
+### 9.6.2 Speeding Up Address Translation with a TLB
+
+As we have seen, every time the CPU generates a virtual address, the MMU must refer to a PTE in order to translate the virtual address into a physical address. In the worst case, this requires an additional fetch from memory, at a cost of tens to hundreds of cycles. If the PTE happens to be cached in L1, then the cost goes down to a handful of cycles. However, many systems try to eliminate even this cost by including a small cache of PTEs in the MMU called a translation lookaside buffer (TLB).
+
+正如我们所看到的，每次 CPU 生成一个虚拟地址时，MMU 必须引用一个 PTE 才能将虚拟地址转换为物理地址。在最坏的情况下，这需要从内存中进行额外的提取，代价是数十到数百个周期。如果 PTE 恰好缓存在 L1 中，那么成本会下降到几个周期。然而，许多系统试图通过在 MMU 中包含一个称为转换后备缓冲区 (TLB) 的小型 PTE 缓存来消除这种成本。
+
+A TLB is a small, virtually addressed cache where each line holds a block consisting of a single PTE. A TLB usually has a high degree of associativity. As shown in Figure 9.15 , the index and tag fields that are used for set selection and line matching are extracted from the virtual page number in the virtual address. If the TLB has T = 2 sets, then the TLB index (TLBI) consists of the t least significant bits of the VPN, and the TLB tag (TLBT) consists of the remaining bits in the VPN.
+
+TLB是一个小的、虚拟寻址的缓存，其中每一行保存一个由单个PTE组成的块，TLB通常具有高度的结合性。如图9.15所示，用于集选择和行匹配的索引和标记字段是从虚拟地址中的虚拟页码中提取的。如果TLB有T = 2个集合，则TLB索引(TLBI)由VPN的T个最低有效位组成，TLB标签(TLBT)由VPN中剩余的位组成。
+
+Figure 9.16(a) shows the steps involved when there is a TLB hit (the usual case). The key point here is that all of the address translation steps are performed inside the on-chip MMU and thus are fast.  Step 1. The CPU generates a virtual address. Steps 2 and 3. The MMU fetches the appropriate PTE from the TLB. Step 4. The MMU translates the virtual address to a physical address and sends it to the cache/main memory. Step 5. The cache/main memory returns the requested data word to the CPU.
+
+图9.16(A)显示了出现TLB命中时所涉及的步骤(通常情况下)。这里的关键点是，所有地址转换步骤都在片上MMU内执行，因此速度很快。步骤1.CPU生成虚拟地址。步骤2和3.MMU从TLB取回适当的PTE。步骤4.MMU将虚拟地址转换为物理地址，并将其发送到高速缓存/主存储器。步骤5.高速缓存/主存储器将所请求的数据字返回给CPU。
+
+When there is a TLB miss, then the MMU must fetch the PTE from the L1 cache, as shown in Figure 9.16(b) . The newly fetched PTE is stored in the TLB, possibly overwriting an existing entry
+
+当存在TLB未命中时，MMU必须从L1缓存获取PTE，如图9.16(B)所示。新获取的PTE存储在TLB中，可能覆盖现有条目
+
+### 9.6.3 Multi-Level Page Tables
+
+Thus far, we have assumed that the system uses a single page table to do address translation. But if we had a 32-bit address space, 4 KB pages, and a 4-byte PTE, then we would need a 4 MB page table resident in memory at all times, even if the application referenced only a small chunk of the virtual address space. The problem is compounded for systems with 64-bit address spaces.
+
+到目前为止，我们假设系统使用单个页表来执行地址转换。但是，如果我们有一个32位的地址空间、4KB的页面和一个4字节的PTE，那么我们将需要一个始终驻留在内存中的4MB页表，即使应用程序只引用了虚拟地址空间的一小部分。对于具有64位地址空间的系统来说，这个问题更加复杂。
+
+The common approach for compacting the page table is to use a hierarchy of page tables instead. The idea is easiest to understand with a concrete example. Consider a 32-bit virtual address space partitioned into 4 KB pages, with page table entries that are 4 bytes each. Suppose also that at this point in time the virtual address space has the following form: The first 2 K pages of memory are allocated for code and data, the next 6 K pages are unallocated, the next 1,023 pages are also unallocated, and the next page is allocated for the user stack. Figure 9.17 shows how we might construct a two-level page table hierarchy for this virtual address space.
+
+压缩页表的常用方法是使用页表的层次结构。通过一个具体的例子，这个想法最容易理解。考虑一个32位的虚拟地址空间，它被划分为4KB的页面，每个页面表条目有4个字节。还假设此时虚拟地址空间具有以下形式：前2k页内存分配给代码和数据，接下来的6k页未分配，接下来的1023页也未分配，下一页分配给用户堆栈。图9.17显示了我们如何为这个虚拟地址空间构建两级页表层次结构。
+
+Each PTE in the level 1 table is responsible for mapping a 4 MB chunk of the virtual address space, where each chunk consists of 1,024 contiguous pages. For example, PTE 0 maps the first chunk, PTE 1 the next chunk, and so on. Given that the address space is 4 GB, 1,024 PTEs are sufficient to cover the entire space.
+
+级别1表中的每个PTE负责映射一个4MB的虚拟地址空间块，其中每个块由1024个连续页面组成。例如，PTE 0映射第一个块，PTE 1映射下一个块，依此类推。假设地址空间为4GB，1024个PTE足以覆盖整个空间。
+
+If every page in chunk i is unallocated, then level 1 PTE i is null. For example, in Figure 9.17 , chunks 2--7 are unallocated. However, if at least one page in chunk i is allocated, then level 1 PTE i points to the base of a level 2 page table. For example, in Figure 9.17 , all or portions of chunks 0,1, and 8 are allocated, so their level 1 PTEs point to level 2 page tables.
+
+如果chunk i中的每个页面都未分配，则level 1 PTE i为空。例如，在图9.17中，块2-7是未分配的。然而，如果区块i中至少分配了一个页面，则级别1 PTE i指向级别2页面表的底部。例如，在图9.17中，分配了块0、1和8的全部或部分，因此它们的1级PTE指向2级页面表。
+
+Each PTE in a level 2 page table is responsible for mapping a 4-KB page of virtual memory, just as before when we looked at single-level page tables. Notice that with 4-byte PTEs, each level 1 and level 2 page table is 4 kilobytes, which conveniently is the same size as a page.
+
+二级页表中的每个PTE负责映射一个4KB页的虚拟内存，就像我们之前研究单级页表时一样。请注意，对于4字节的PTE，每个级别1和级别2的页面表都是4KB，方便地与页面大小相同。
+
+This scheme reduces memory requirements in two ways. First, if a PTE in the level 1 table is null, then the corresponding level 2 page table does not even have to exist. This represents a significant potential savings, since most of the 4 GB virtual address space for a typical program is unallocated. Second, only the level 1 table needs to be in main memory at all times. The level 2 page tables can be created and paged in and out by the VM system as they are needed, which reduces pressure on main memory. Only the most heavily used level 2 page tables need to be cached in main memory.
+
+该方案从两个方面降低了内存需求。首先，如果级别1表中的PTE为空，则相应的级别2页表甚至不必存在。这意味着一个显著的潜在节约，因为一个典型程序的大部分4GB虚拟地址空间是未分配的。其次，只有级别1的表始终需要在主内存中。二级页面表可以根据需要由VM系统创建和调出，这减少了主内存的压力。只有使用最频繁的2级页面表需要缓存在主内存中。
+
+Figure 9.18 summarizes address translation with a k-level page table hierarchy. The virtual address is partitioned into k VPNs and a VPO. Each VPN i, 1 ≤ i ≤ k, is an index into a page table at level i. Each PTE in a level j table, 1 ≤ j ≤ k − 1, points to the base of some page table at level j + 1. Each PTE in a level k table contains either the PPN of some physical page or the address of a disk block. To construct the physical address, the MMU must access k PTEs before it can determine the PPN. As with a single-level hierarchy, the PPO is identical to the VPO
+
+图9.18总结了具有k级页表层次结构的地址转换。该虚拟地址被划分为k个VPN和一个VPO。每个VPNi，1≤i≤k是到第i级的页表的索引。j级表1≤j≤k−1中的每个PTE指向在j+1级的某个页表的基址。k级表中的每个PTE包含某个物理页的PPN或磁盘块的地址。为了构造物理地址，MMU必须先访问k个PTE，然后才能确定PPN。与单级分层结构一样，PPO与VPO相同
+
+Accessing k PTEs may seem expensive and impractical at first glance. However, the TLB comes to the rescue here by caching PTEs from the page tables at the different levels. In practice, address translation with multi-level page tables is not significantly slower than with single-level page tables.
+
+乍一看，访问k PTE可能会显得昂贵且不切实际。然而，TLB通过在不同级别缓存页面表中的PTE来解救这个问题。实际上，使用多级页表进行地址转换并不比使用单层页表慢多少。
+
+## 9.7 Case Study: The Intel Core i7/Linux Memory System
+
+We conclude our discussion of virtual memory mechanisms with a case study of a real system: an Intel Core i7 running Linux. Although the underlying Haswell microarchitecture allows for full 64-bit virtual and physical address spaces, the current Core i7 implementations (and those for the foreseeable future) support a 48-bit (256 TB) virtual address space and a 52-bit (4 PB) physical address space, along with a compatibility mode that supports 32-bit (4 GB) virtual and physical address spaces.
+
+我们以一个实际系统的案例研究来结束我们对虚拟内存机制的讨论：运行Linux的Intel Corei7。尽管底层的Haswell微体系结构允许完整的64位虚拟和物理地址空间，但当前的Core i7实现(以及可预见的未来)支持48位(256 TB)虚拟地址空间和52位(4 PB)物理地址空间，以及支持32位(4 GB)虚拟和物理地址空间的兼容模式。
+
+Figure 9.21 gives the highlights of the Core i7 memory system. The processor package (chip) includes four cores, a large L3 cache shared by all of the cores, and a DDR3 memory controller. Each core contains a hierarchy of TLBs, a hierarchy of data and instruction caches, and a set of fast point-topoint links, based on the QuickPath technology, for communicating directly with the other cores and the external I/O bridge. The TLBs are virtually addressed, and 4-way set associative. The L1, L2, and L3 caches are physically addressed, with a block size of 64 bytes. L1 and L2 are 8-way set associative, and L3 is 16-way set associative. The page size can be configured at start-up time as either 4 KB or 4 MB. Linux uses 4 KB pages.
+
+图9.21给出了Core i7内存系统的亮点。处理器包（芯片）包括四个内核，一个所有内核共享的大型L3缓存，以及一个DDR3内存控制器。每个内核都包含一个TLB的层次结构，一个数据和指令缓存的层次结构，以及一套基于QuickPath技术的快速点对点链接，用于与其他内核和外部I/O桥直接通信。TLB是虚拟寻址的，并且是4路集合关联的。L1、L2和L3缓存是物理寻址的，块大小为64字节。L1和L2是8路设置关联的，L3是16路设置关联的。页面大小可以在启动时被配置为4KB或4MB。Linux使用4KB的页面。
+
+### 9.7.1 Core i7 Address Translation
+
+Figure 9.22 summarizes the entire Core i7 address translation process, from the time the CPU generates a virtual address until a data word arrives from memory. The Core i7 uses a four-level page table hierarchy. Each process has its own private page table hierarchy. When a Linux process is running, the page tables associated with allocated pages are all memory-resident, although the Core i7 architecture allows these page tables to be swapped in and out. The CR3 control register contains the physical address of the beginning of the level 1 (L1) page table. The value of CR3 is part of each process context, and is restored during each context switch
+
+图9.22总结了整个Core i7的地址转换过程，从CPU生成虚拟地址开始，直到数据字从内存到达。Core i7使用了一个四级页表层次结构。每个进程都有自己的私有页表层次结构。当Linux进程运行时，与分配的页面相关的页表都是驻留在内存中的，尽管Core i7架构允许这些页表被换入和换出。CR3控制寄存器包含第一级（L1）页表开始的物理地址。CR3的值是每个进程上下文的一部分，并在每次上下文切换时被恢复。
+
+Figure 9.23 shows the format of an entry in a level 1, level 2, or level 3 page table. When P = 1 (which is always the case with Linux), the address field contains a 40-bit physical page number (PPN) that points to the beginning of the appropriate page table. Notice that this imposes a 4 KB alignment requirement on page tables
+
+图9.23显示了1级、2级或3级页面表格中条目的格式。当P=1时（Linux总是这样），地址字段包含一个40位物理页码（PPN），它指向相应页表的开头。请注意，这对页表提出了4KB的对齐要求
+
+Figure 9.24 shows the format of an entry in a level 4 page table. When P = 1, the address field contains a 40-bit PPN that points to the base of some page in physical memory. Again, this imposes a 4 KB alignment requirement on physical pages.
+
+图9.24显示了4级页面表格中条目的格式。当P=1时，地址字段包含一个40位PPN，它指向物理内存中某个页面的底部。同样，这对物理页面提出了4KB的对齐要求。
+
+The PTE has three permission bits that control access to the page. The R/W bit determines whether the contents of a page are read/write or read-only. The U/S bit, which determines whether the page can be accessed in user mode, protects code and data in the operating system kernel from user programs. The XD (execute disable) bit, which was introduced in 64-bit systems, can be used to disable instruction fetches from individual memory pages. This is an important new feature that allows the operating system kernel to reduce the risk of buffer overflow attacks by restricting execution to the read-only code segment.
+
+PTE有三个权限位来控制对页面的访问。R/W位决定页面的内容是读/写还是只读。决定页面是否可以以用户模式访问的U/S位，保护操作系统内核中的代码和数据不受用户程序的影响。在64位系统中引入的XD(禁用执行)位可用于禁用从单个内存页提取指令。这是一个重要的新特性，它允许操作系统内核通过限制执行只读代码段来减少缓冲区溢出攻击的风险。
+
+As the MMU translates each virtual address, it also updates two other bits that can be used by the kernel's page fault handler. The MMU sets the A bit, which is known as a reference bit, each time a page is accessed. The kernel can use the reference bit to implement its page replacement algorithm. The MMU sets the D bit, or dirty bit, each time the page is written to. A page that has been modified is sometimes called a dirty page. The dirty bit tells the kernel whether or not it must write back a victim page before it copies in a replacement page. The kernel can call a special kernel-mode instruction to clear the reference or dirty bits.
+
+当MMU转换每个虚拟地址时，它也更新其他两个位，以供内核的页面错误处理程序使用。MMU在每次访问一个页面时设置A位，这被称为一个参考位。内核可以使用引用位来实现它的页面替换算法。MMU在每次写入页面时设置D位，即脏位。被修改过的页面有时被称为脏页面。脏位告诉内核在复制替换页之前是否必须回写受害者页。内核可以调用一个特殊的内核模式指令来清除引用或脏位。
+
+Figure 9.25 shows how the Core i7 MMU uses the four levels of page tables to translate a virtual address to a physical address. The 36-bit VPN is partitioned into four 9-bit chunks, each of which is used as an offset into a page table. The CR3 register contains the physical address of the L1 page table. VPN 1 provides an offset to an L1 PTE, which contains the base address of the L2 page table. VPN 2 provides an offset to an L2 PTE, and so on
+
+图9.25展示了Core i7 MMU如何使用四层页表将虚拟地址转换为物理地址。36位VPN被划分为4个9位的块，每个块作为页表的偏移量。CR3寄存器包含L1页表的物理地址。VPN 1提供了一个到L1 PTE的偏移量，它包含L2页表的基址。VPN 2提供一个到L2 PTE的偏移量，依此类推
+
+### 9.7.2 Linux Virtual Memory System
+
+A virtual memory system requires close cooperation between the hardware and the kernel. Details vary from version to version, and a complete description is beyond our scope. Nonetheless, our aim in this section is to describe enough of the Linux virtual memory system to give you a sense of how a real operating system organizes virtual memory and how it handles page faults.
+
+虚拟内存系统需要硬件和内核之间的密切合作。细节因版本而异，完整的描述超出了我们的范围。尽管如此，我们在本节中的目标是描述足够多的Linux虚拟内存系统，让您了解真实操作系统如何组织虚拟内存，以及它如何处理页面错误。
+
+Linux maintains a separate virtual address space for each process of the form shown in Figure 9.26 . We have seen this picture a number of times already, with its familiar code, data, heap, shared library, and stack segments. Now that we understand address translation, we can fill in some more details about the kernel virtual memory that lies above the user stack.
+
+Linux为每个进程维护一个单独的虚拟地址空间，如图9.26所示。我们已经多次看到过这幅图，以及它熟悉的代码、数据、堆、共享库和堆栈段。现在，我们已经了解了地址转换，我们可以详细介绍位于用户堆栈之上的内核虚拟内存。
+
+The kernel virtual memory contains the code and data structures in the kernel. Some regions of the kernel virtual memory are mapped to physical pages that are shared by all processes. For example, each process shares the kernel's code and global data structures. Interestingly, Linux also maps a set of contiguous virtual pages (equal in size to the total amount of DRAM in the system) to the corresponding set of contiguous physical pages. This provides the kernel with a convenient way to access any specific location in physical memory—for example, when it needs to access page tables or to perform memory-mapped I/O operations on devices that are mapped to particular physical memory locations.
+
+内核虚拟内存包含内核中的代码和数据结构。内核虚拟内存的某些区域映射到所有进程共享的物理页。例如，每个进程共享内核的代码和全局数据结构。有趣的是，Linux还将一组连续的虚拟页（大小等于系统中的DRAM总量）映射到相应的一组连续物理页。这为内核提供了访问物理内存中任何特定位置的方便方法，例如，当内核需要访问页表或在映射到特定物理内存位置的设备上执行内存映射I/O操作时。
+
+In our discussion of address translation, we have described a sequential two-step process where the MMU (1) translates the virtual address to a physical address and then (2) passes the physical address to the L1 cache. However, real hardware implementations use a neat trick that allows these steps to be partially overlapped, thus speeding up accesses to the L1 cache. For example, a virtual address on a Core i7 with 4 KB pages has 12 bits of VPO, and these bits are identical to the 12 bits of PPO in the corresponding physical address. Since the 8way set associative physically addressed L1 caches have 64 sets and 64-byte cache blocks, each physical address has 6 (log 64) cache offset bits and 6 (log 64) index bits. These 12 bits fit exactly in the 12-bit VPO of a virtual address, which is no accident! When the CPU needs a virtual address translated, it sends the VPN to the MMU and the VPO to the L1 cache. While the MMU is requesting a page table entry from the TLB, the L1 cache is busy using the VPO bits to find the appropriate set and read out the eight tags and corresponding data words in that set. When the MMU gets the PPN back from the TLB, the cache is ready to try to match the PPN to one of these eight tags.
+
+在我们对地址转换的讨论中，我们描述了一个连续的两步过程，其中MMU（1）将虚拟地址转换为物理地址，然后（2）将物理地址传递给一级缓存。然而，真正的硬件实现使用了一种巧妙的技巧，允许这些步骤部分重叠，从而加快了对一级缓存的访问。例如，具有4KB页面的Core i7上的虚拟地址有12位VPO，这些位与相应物理地址中的12位PPO相同。由于8路集关联物理寻址一级缓存有64个集和64字节缓存块，每个物理地址有6个（日志64）缓存偏移位和6个（日志64）索引位。这12位正好适合虚拟地址的12位VPO，这绝非偶然！当CPU需要转换虚拟地址时，它会将VPN发送到MMU，将VPO发送到一级缓存。当MMU从TLB请求页面表条目时，一级缓存正忙于使用VPO位来找到适当的集合，并读取该集合中的八个标记和相应的数据字。当MMU从TLB获取PPN时，缓存准备好尝试将PPN与这八个标记中的一个匹配。
+
+Other regions of kernel virtual memory contain data that differ for each process. Examples include page tables, the stack that the kernel uses when it is executing code in the context of the process, and various data structures that keep track of the current organization of the virtual address space.
+
+内核虚拟内存的其他区域包含每个进程不同的数据。示例包括页表、内核在进程上下文中执行代码时使用的堆栈，以及跟踪虚拟地址空间的当前组织的各种数据结构。
+
+#### Linux Virtual Memory Areas
+
+Linux organizes the virtual memory as a collection of areas (also called segments). An area is a contiguous chunk of existing (allocated) virtual memory whose pages are related in some way. For example, the code segment, data segment, heap, shared library segment, and user stack are all distinct areas. Each existing virtual page is contained in some area, and any virtual page that is not part of some area does not exist and cannot be referenced by the process. The notion of an area is important because it allows the virtual address space to have gaps. The kernel does not keep track of virtual pages that do not exist, and such pages do not consume any additional resources in memory, on disk, or in the kernel itself.
+
+Linux 将虚拟内存组织为一组区域（也称为段）。区域是现有（分配的）虚拟内存的连续块，其页面以某种方式相关。例如，代码段、数据段、堆、共享库段和用户栈都是不同的区域。每个现有的虚拟页面都包含在某个区域中，任何不属于某个区域的虚拟页面都不存在并且不能被进程引用。区域的概念很重要，因为它允许虚拟地址空间存在间隙。内核不会跟踪不存在的虚拟页面，并且这些页面不会消耗内存、磁盘或内核本身中的任何额外资源。
+
+Figure 9.27 highlights the kernel data structures that keep track of the virtual memory areas in a process. The kernel maintains a distinct task structure ( task_struct in the source code) for each process in the system. The elements of the task structure either contain or point to all of the information that the kernel needs to run the process (e.g., the PID, pointer to the user stack, name of the executable object file, and program counter).
+
+图 9.27 突出显示了跟踪进程中的虚拟内存区域的内核数据结构。内核为系统中的每个进程维护一个独特的任务结构（源代码中的 task_struct）。任务结构的元素包含或指向内核运行进程所需的所有信息（例如，PID、指向用户堆栈的指针、可执行目标文件的名称和程序计数器）。
+
+One of the entries in the task structure points to an mm_struct that characterizes the current state of the virtual memory. The two fields of interest to us are pgd , which points to the base of the level 1 table (the page global directory), and mmap , which points to a list of vm_area_structs (area structs), each of which characterizes an area of the current virtual address space. When the kernel runs this process, it stores pgd in the CR3 control register.
+
+任务结构中的一个条目指向表征虚拟内存当前状态的mm_struct。我们感兴趣的两个字段是pgd和mmap，前者指向Level 1表(页面全局目录)的基址，后者指向一组vm_area_structs(区域结构)，每个结构都表示当前虚拟地址空间的一个区域。当内核运行此进程时，它会将PGD存储在CR3控制寄存器中。
+
+For our purposes, the area struct for a particular area contains the following fields: fvm_start . Points to the beginning of the area. vm_end . Points to the end of the area. vm_prot . Describes the read/write permissions for all of the pages contained in the area. vm_flags . Describes (among other things) whether the pages in the area are shared with other processes or private to this process. vm_next . Points to the next area struct in the list.
+
+出于我们的目的，特定区域的区域结构包含以下字段：FVM_START。指向区域的起点。Vm_end。指向区域的末端。Vm_prot。描述区域中包含的所有页面的读/写权限。VM_FLAGS。描述区域中的页面是与其他进程共享还是此进程专用。Vm_Next。指向列表中的下一个区域结构。
+
+#### Linux Page Fault Exception Handling
+
+Suppose the MMU triggers a page fault while trying to translate some virtual address A. The exception results in a transfer of control to the kernel's page fault handler, which then performs the following steps:
+
+假设MMU在尝试转换某个虚拟地址a时触发了一个页面错误。异常会导致控制权转移到内核的页面错误处理程序，该处理程序随后执行以下步骤：
+
+Is virtual address A legal? In other words, does A lie within an area defined by some area struct? To answer this question, the fault handler searches the list of area structs, comparing A with the vm_start and vm_end in each area struct. If the instruction is not legal, then the fault handler triggers a segmentation fault, which terminates the process. This situation is labeled "1" in Figure 9.28 . Because a process can create an arbitrary number of new virtual memory areas (using the mmap function described in the next section), a sequential search of the list of area structs might be very costly. So in practice, Linux superimposes a tree on the list, using some fields that we have not shown, and performs the search on this tree.
+
+虚拟地址A合法吗?换句话说，A是否位于某个区域结构定义的区域内?为了回答这个问题，故障处理程序搜索区域结构的列表，将A与每个区域结构中的vm_start和vm_end进行比较。如果指令不合法，则故障处理程序触发分段故障，从而终止进程。这种情况在图9.28中被标记为“1”。由于进程可以创建任意数量的新虚拟内存区域(使用下一节中描述的mmap函数)，因此对区域结构列表的顺序搜索可能代价非常高。所以在实践中，Linux使用一些我们没有显示的字段，将树叠加到列表上，并在这棵树上执行搜索。
+
+Is the attempted memory access legal? In other words, does the process have permission to read, write, or execute the pages in this area? For example, was the page fault the result of a store instruction trying to write to a read-only page in the code segment? Is the page fault the result of a process running in user mode that is attempting to read a word from kernel virtual memory? If the attempted access is not legal, then the fault handler triggers a protection exception, which terminates the process. This situation is labeled "2" in Figure 9.28 .
+
+尝试的内存访问是否合法？换句话说，进程是否有权读取、写入或执行该区域中的页面？例如，页面错误是存储指令试图写入代码段中的只读页面的结果吗？页面错误是否是在用户模式下运行的进程试图从内核虚拟内存中读取单词的结果？如果尝试的访问不合法，则故障处理程序会触发保护异常，从而终止进程。这种情况在图 9.28 中标记为“2”。
+
+At this point, the kernel knows that the page fault resulted from a legal operation on a legal virtual address. It handles the fault by selecting a victim page, swapping out the victim page if it is dirty, swapping in the new page, and updating the page table. When the page fault handler returns, the CPU restarts the faulting instruction, which sends A to the MMU again. This time, the MMU translates A normally, without generating a page fault.
+
+此时，内核知道页面错误是由对合法虚拟地址的合法操作引起的。它通过选择一个受害者页面、如果它是脏的则换出受害者页面、换入新页面以及更新页表来处理故障。当页面错误处理程序返回时，CPU 重新启动错误指令，该指令再次将 A 发送到 MMU。这一次，MMU 正常翻译 A，而不会产生页面错误。
+
+## 9.8 Memory Mapping
+
