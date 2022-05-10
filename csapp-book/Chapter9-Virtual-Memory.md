@@ -73,3 +73,102 @@ M不一定是2的幂，但为了简化讨论，我们假设M = 2。
 The concept of an address space is important because it makes a clean distinction between data objects (bytes) and their attributes (addresses). Once we recognize this distinction, then we can generalize and allow each data object to have multiple independent addresses, each chosen from a different address space. This is the basic idea of virtual memory. Each byte of main memory has a virtual address chosen from the virtual address space, and a physical address chosen from the physical address space.
 
 地址空间的概念很重要，因为它明确区分了数据对象(字节)和它们的属性(地址)。一旦我们认识到这种区别，那么我们就可以一般化并允许每个数据对象有多个独立的地址，每个地址都是从不同的地址空间中选择的。这就是虚拟内存的基本思想。主存中的每个字节都有一个从虚拟地址空间中选择的虚拟地址和一个从物理地址空间中选择的物理地址。
+
+## 9.3 VM as a Tool for Caching
+
+Conceptually, a virtual memory is organized as an array of N contiguous byte-size cells stored on disk. Each byte has a unique virtual address that serves as an index into the array. The contents of the array on disk are cached in main memory. As with any other cache in the memory hierarchy, the data on disk (the lower level) is partitioned into blocks that serve as the transfer units between the disk and the main memory (the upper level). VM systems handle this by partitioning the virtual memory into fixed-size blocks called virtual pages (VPs). Each virtual page is P = 2 bytes in size. Similarly, physical memory is partitioned into physical pages (PPs), also P bytes in size. (Physical pages are also referred to as page frames.)
+
+从概念上讲，虚拟内存被组织为存储在磁盘上的 N 个连续字节大小单元的数组。每个字节都有一个唯一的虚拟地址，用作数组的索引。磁盘上数组的内容缓存在主内存中。与内存层次结构中的任何其他缓存一样，磁盘（较低级别）上的数据被划分为块，这些块用作磁盘和主内存（较高级别）之间的传输单元。 VM 系统通过将虚拟内存划分为称为虚拟页面 (VP) 的固定大小块来处理此问题。每个虚拟页面的大小为 P = 2 字节。类似地，物理内存被划分为物理页面 (PP)，大小也是 P 字节。 （物理页面也称为页框。）
+
+At any point in time, the set of virtual pages is partitioned into three disjoint subsets:
+
+在任何时间点，虚拟页面集都被划分为三个不相交的子集：
+
+Unallocated. Pages that have not yet been allocated (or created) by the VM system. Unallocated blocks do not have any data associated with them, and thus do not occupy any space on disk.
+
+未分配。 VM 系统尚未分配（或创建）的页面。未分配的块没有与它们关联的任何数据，因此不会占用磁盘上的任何空间。
+
+Cached. Allocated pages that are currently cached in physical memory.
+
+缓存。当前缓存在物理内存中的已分配页面。
+
+Uncached. Allocated pages that are not cached in physical memory.
+
+未缓存。未缓存在物理内存中的已分配页面。
+
+The example in Figure 9.3 shows a small virtual memory with eight virtual pages. Virtual pages 0 and 3 have not been allocated yet, and thus do not yet exist on disk. Virtual pages 1,4, and 6 are cached in physical memory. Pages 2,5, and 7 are allocated but are not currently cached in physical memory.
+
+图 9.3 中的示例显示了一个带有 8 个虚拟页面的小型虚拟内存。虚拟页面 0 和 3 尚未分配，因此尚不存在磁盘上。虚拟页面 1、4 和 6 缓存在物理内存中。第 2、5 和 7 页已分配，但当前未缓存在物理内存中。
+
+### 9.3.1 DRAM Cache Organization
+
+To help us keep the different caches in the memory hierarchy straight, we will use the term SRAM cache to denote the L1, L2, and L3 cache memories between the CPU and main memory, and the term DRAM cache to denote the VM system's cache that caches virtual pages in main memory.
+
+为了帮助我们保持内存层次结构中的不同缓存，我们将使用术语SRAM cache来表示CPU和主存之间的一级、二级和三级缓存，使用术语DRAM cache来表示在主存中缓存虚拟页面的VM系统缓存。
+
+The position of the DRAM cache in the memory hierarchy has a big impact on the way that it is organized. Recall that a DRAM is at least 10 times slower than an SRAM and that disk is about 100,000 times slower than a DRAM. Thus, misses in DRAM caches are very expensive compared to misses in SRAM caches because DRAM cache misses are served from disk, while SRAM cache misses are usually served from DRAM-based main memory. Further, the cost of reading the first byte from a disk sector is about 100,000 times slower than reading successive bytes in the sector. The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.
+
+DRAM缓存在内存层次结构中的位置对其组织方式有很大影响。回想一下，DRAM的速度至少是SRAM的10倍，而磁盘的速度大约是DRAM的10万倍。因此，与SRAM缓存中的未命中相比，DRAM缓存中的未命中非常昂贵，因为DRAM缓存未命中是从磁盘提供的，而SRAM缓存未命中通常是从基于DRAM的主内存提供的。此外，从磁盘扇区读取第一个字节的成本大约是读取扇区中连续字节的100000倍。归根结底，DRAM缓存的组织完全是由巨大的未命中成本驱动的。
+
+Because of the large miss penalty and the expense of accessing the first byte, virtual pages tend to be large—typically 4 KB to 2 MB. Due to the large miss penalty, DRAM caches are fully associative; that is, any virtual page can be placed in any physical page. The replacement policy on misses also assumes greater importance, because the penalty associated with replacing the wrong virtual page is so high. Thus, operating systems use much more sophisticated replacement algorithms for DRAM caches than the hardware does for SRAM caches. (These replacement algorithms are beyond our scope here.) Finally, because of the large access time of disk, DRAM caches always use write-back instead of write-through.
+
+由于大量的未命中惩罚和访问第一个字节的开销，虚拟页面往往很大，通常为4KB到2MB。由于较大的未命中惩罚，DRAM缓存是完全关联的；也就是说，任何虚拟页面都可以放置在任何物理页面中。关于未命中的替换策略也具有更大的重要性，因为替换错误的虚拟页面的代价非常高。因此，操作系统使用的DRAM缓存替换算法比硬件使用的SRAM缓存替换算法复杂得多。（这些替换算法超出了我们的范围。）最后，由于磁盘的访问时间较长，DRAM缓存总是使用回写而不是直写。
+
+### 9.3.2 Page Tables
+
+As with any cache, the VM system must have some way to determine if a virtual page is cached somewhere in DRAM. If so, the system must determine which physical page it is cached in. If there is a miss, the system must determine where the virtual page is stored on disk, select a victim page in physical memory, and copy the virtual page from disk to DRAM, replacing the victim page.
+
+与任何缓存一样，VM系统必须有某种方法来确定是否将虚拟页缓存在DRAM中的某处。如果是，系统必须确定它缓存在哪个物理页中。如果出现错误，系统必须确定虚拟页存储在磁盘上的位置，在物理内存中选择一个受害者页，然后将虚拟页从磁盘复制到DRAM中，替换受害者页。
+
+These capabilities are provided by a combination of operating system software, address translation hardware in the MMU (memory management unit), and a data structure stored in physical memory known as a page table that maps virtual pages to physical pages. The address translation hardware reads the page table each time it converts a virtual address to a physical address. The operating system is responsible for maintaining the contents of the page table and transferring pages back and forth between disk and DRAM.
+
+这些功能是由操作系统软件、MMU(内存管理单元)中的地址转换硬件和存储在物理内存中的数据结构(称为将虚拟页面映射到物理页面的页表)组合提供的。地址转换硬件每次将虚拟地址转换为物理地址时都要读取页表。操作系统负责维护页表的内容，并在磁盘和DRAM之间来回传输页。
+
+Figure 9.4 shows the basic organization of a page table. A page table is an array of page table entries (PTEs). Each page in the virtual address space has a PTE at a fixed offset in the page table. For our purposes, we will assume that each PTE consists of a valid bit and an n-bit address field. The valid bit indicates whether the virtual page is currently cached in DRAM. If the valid bit is set, the address field indicates the start of the corresponding physical page in DRAM where the virtual page is cached. If the valid bit is not set, then a null address indicates that the virtual page has not yet been allocated. Otherwise, the address points to the start of the virtual page on disk.
+
+图9.4显示了页表的基本组织。页表是一个页表项(pte)数组。虚拟地址空间中的每个页在页表的固定偏移位置上都有一个PTE。出于我们的目的，我们将假设每个PTE由一个有效位和一个n位地址字段组成。有效位指示当前是否将虚拟页缓存在DRAM中。如果设置了有效位，则address字段表示缓存虚拟页的DRAM中相应物理页的起始位置。如果未设置有效位，则null地址表示尚未分配虚拟页。否则，地址指向磁盘上虚拟页的开始。
+
+The example in Figure 9.4 shows a page table for a system with eight virtual pages and four physical pages. Four virtual pages (VP 1, VP 2, VP 4, and VP 7) are currently cached in DRAM. Two pages (VP 0 and VP 5) have not yet been allocated, and the rest (VP 3 and VP 6) have been allocated but are not currently cached. An important point to notice about Figure 9.4 is that because the DRAM cache is fully associative, any physical page can contain any virtual page.
+
+图9.4中的示例显示了一个具有8个虚拟页面和4个物理页面的系统的页面表。四个虚拟页(vp1、vp2、vp4和vp7)目前缓存在DRAM中。有两个页面(VP 0和VP 5)还没有被分配，其余的(VP 3和VP 6)已经分配，但是目前没有被缓存。关于图9.4需要注意的重要一点是，由于DRAM缓存是完全关联的，任何物理页都可以包含任何虚拟页。
+
+### 9.3.3 Page Hits
+
+Consider what happens when the CPU reads a word of virtual memory contained in VP 2, which is cached in DRAM (Figure 9.5 ). Using a technique we will describe in detail in Section 9.6 , the address translation hardware uses the virtual address as an index to locate PTE 2 and read it from memory. Since the valid bit is set, the address translation hardware knows that VP 2 is cached in memory. So it uses the physical memory address in the PTE (which points to the start of the cached page in PP 1) to construct the physical address of the word.
+
+考虑一下当CPU读取VP2中包含的虚拟内存的一个字时会发生什么，该虚拟内存缓存在DRAM中(图9.5)。使用我们将在第9.6节中详细描述的技术，地址转换硬件使用虚拟地址作为索引来定位PTE 2并从存储器中读取它。由于设置了有效位，因此地址转换硬件知道VP 2被高速缓存在存储器中。因此，它使用PTE中的物理内存地址(指向PP 1中缓存页面的开始)来构造字的物理地址。
+
+### 9.3.4 Page Faults
+
+In virtual memory parlance, a DRAM cache miss is known as a page fault. Figure 9.6 shows the state of our example page table before p the fault. The CPU has referenced a word in VP 3, which is not cached in DRAM. The address translation hardware reads PTE 3 from memory, infers from the valid bit that VP 3 is not cached, and triggers a page fault exception. The page fault exception invokes a page fault exception handler in the kernel, which selects a victim page—in this case, VP 4 stored in PP 3. If VP 4 has been modified, then the kernel copies it back to disk. In either case, the kernel modifies the page table entry for VP 4 to reflect the fact that VP 4 is no longer cached in main memory.
+
+在虚拟内存术语中，DRAM缓存未命中称为页面错误。图9.6显示了我们的示例页表在p故障之前的状态。CPU在VP 3中引用了一个词，该词未缓存在DRAM中。地址转换硬件从存储器中读取PTE 3，从有效位推断VP 3未被高速缓存，并触发页面错误异常。页面错误异常调用内核中的页面错误异常处理程序，该处理程序选择一个牺牲页-在本例中，是存储在PP 3中的VP 4。如果VP 4已被修改，则内核会将其复制回磁盘。在这两种情况下，内核都会修改VP4的页表条目，以反映VP4不再缓存在主内存中的事实。
+
+Next, the kernel copies VP 3 from disk to PP 3 in memory, updates PTE 3, and then returns. When the handler returns, it restarts the faulting instruction, which resends the faulting virtual address to the address translation hardware. But now, VP 3 is cached in main memory, and the page hit is handled normally by the address translation hardware. Figure 9.7 shows the state of our example page table after the page fault.
+
+接下来，内核将 VP 3 从磁盘复制到内存中的 PP 3，更新 PTE 3，然后返回。当处理程序返回时，它重新启动出错指令，将出错的虚拟地址重新发送到地址转换硬件。但是现在，VP 3 缓存在主存中，页面命中由地址转换硬件正常处理。图 9.7 显示了页面错误后示例页表的状态。
+
+Virtual memory was invented in the early 1960s, long before the widening CPU-memory gap spawned SRAM caches. As a result, virtual memory systems use a different terminology from SRAM caches, even though many of the ideas are similar. In virtual memory parlance, blocks are known as pages. The activity of transferring a page between disk and memory is known as swapping or paging. Pages are swapped in (paged in) from disk to DRAM, and swapped out (paged out) from DRAM to disk. The strategy of waiting until the last moment to swap in a page, when a miss occurs, is known as demand paging. Other approaches, such as trying to predict misses and swap pages in before they are actually referenced, are possible. However, all modern systems use demand paging.
+
+虚拟内存是在 1960 年代初发明的，早在 CPU 内存差距扩大催生 SRAM 缓存之前。因此，虚拟内存系统使用与 SRAM 缓存不同的术语，尽管许多想法是相似的。在虚拟内存用语中，块被称为页。在磁盘和内存之间传输页面的活动称为交换或分页。页面从磁盘换入（paged in）到 DRAM，并从 DRAM 换出（paged out）到磁盘。当发生未命中时，等到最后一刻换入页面的策略称为请求分页。其他方法，例如在实际引用之前尝试预测未命中和交换页面，也是可能的。然而，所有现代系统都使用按需寻呼。
+
+### 9.3.5 Allocating Pages
+
+Figure 9.8 shows the effect on our example page table when the operating system allocates a new page of virtual memory—for example, as a result of calling malloc . In the example, VP 5 is allocated by creating room on disk and updating PTE 5 to point to the newly created page on disk.
+
+图9.8显示了当操作系统分配一个新的虚拟内存页面时对我们的示例页表的影响--例如，作为调用Malloc的结果。在本例中，通过在磁盘上创建空间并更新PTE5以指向磁盘上新创建的页面来分配VP5。
+
+### 9.3.6 Locality to the Rescue Again
+
+When many of us learn about the idea of virtual memory, our first impression is often that it must be terribly inefficient. Given the large miss penalties, we worry that paging will destroy program performance. In practice, virtual memory works well, mainly because of our old friend locality.
+
+当我们中的许多人了解虚拟内存的概念时，我们的第一印象往往是它一定非常低效。考虑到大量的未命中惩罚，我们担心分页会破坏程序性能。在实践中，虚拟内存运行良好，主要是因为我们的老朋友 locality。
+
+Although the total number of distinct pages that programs reference during an entire run might exceed the total size of physical memory, the principle of locality promises that at any point in time they will tend to work on a smaller set of active pages known as the working set or resident set. After an initial overhead where the working set is paged into memory, subsequent references to the working set result in hits, with no additional disk traffic.
+
+尽管程序在整个运行期间引用的不同页面的总数可能会超过物理内存的总大小，但局部性原则承诺，在任何时间点，它们都将倾向于在称为工作集或驻留集的较小的活动页面集上工作。在将工作集分页到内存的初始开销之后，对工作集的后续引用将导致命中，而不会产生额外的磁盘流量。
+
+As long as our programs have good temporal locality, virtual memory systems work quite well. But of course, not all programs exhibit good temporal locality. If the working set size exceeds the size of physical memory, then the program can produce an unfortunate situation known as thrashing, where pages are swapped in and out continuously. Although virtual memory is usually efficient, if a program's performance slows to a crawl, the wise programmer will consider the possibility that it is thrashing.
+
+只要我们的程序具有良好的时间局部性，虚拟内存系统就可以很好地工作。但当然，并不是所有的程序都表现出良好的时间局部性。如果工作集大小超过了物理内存的大小，那么程序可能会产生一种称为颠簸的不幸情况，即不断地换入和换出页面。虽然虚拟内存通常是高效的，但如果程序的性能下降到爬行的程度，明智的程序员会考虑到它正在抖动的可能性。
+
