@@ -172,3 +172,41 @@ As long as our programs have good temporal locality, virtual memory systems work
 
 只要我们的程序具有良好的时间局部性，虚拟内存系统就可以很好地工作。但当然，并不是所有的程序都表现出良好的时间局部性。如果工作集大小超过了物理内存的大小，那么程序可能会产生一种称为颠簸的不幸情况，即不断地换入和换出页面。虽然虚拟内存通常是高效的，但如果程序的性能下降到爬行的程度，明智的程序员会考虑到它正在抖动的可能性。
 
+### 9.4 VM as a Tool for Memory Management
+
+In the last section, we saw how virtual memory provides a mechanism for using the DRAM to cache pages from a typically larger virtual address space. Interestingly, some early systems such as the DEC PDP-11/70 supported a virtual address space that was smaller than the available physical memory. Yet virtual memory was still a useful mechanism because it greatly simplified memory management and provided a natural way to protect memory.
+
+在上一节中，我们了解了虚拟内存如何提供一种使用DRAM从通常较大的虚拟地址空间缓存页面的机制。有趣的是，一些早期的系统，如DEC PDP-11/70，支持小于可用物理内存的虚拟地址空间。然而，虚拟内存仍然是一种有用的机制，因为它大大简化了内存管理，并提供了一种自然的方式来保护内存。
+
+Thus far, we have assumed a single page table that maps a single virtual address space to the physical address space. In fact, operating systems provide a separate page table, and thus a separate virtual address space, for each process. Figure 9.9 shows the basic idea. In the example, the page table for process i maps VP 1 to PP 2 and VP 2 to PP 7. Similarly, the page table for process j maps VP 1 to PP 7 and VP 2 to PP 10. Notice that multiple virtual pages can be mapped to the same shared physical page.
+
+到目前为止，我们假设了一个将单个虚拟地址空间映射到物理地址空间的单页表。事实上，操作系统为每个进程提供了单独的页表，因此也提供了单独的虚拟地址空间。图9.9显示了基本思想。在本例中，进程i的页表将VP 1映射到PP 2，VP 2映射到PP 7。类似地，进程j的页表将VP 1映射到PP 7，VP 2映射到PP 10。请注意，多个虚拟页可以映射到同一共享物理页。
+
+The combination of demand paging and separate virtual address spaces has a profound impact on the way that memory is used and managed in a system. In particular, VM simplifies linking and loading, the sharing of code and data, and allocating memory to applications.
+
+请求分页和单独的虚拟地址空间的组合对系统中内存的使用和管理方式产生了深远的影响。特别是，VM简化了链接和加载、代码和数据的共享以及为应用程序分配内存。
+
+Simplifying linking. A separate address space allows each process to use the same basic format for its memory image, regardless of where the code and data actually reside in physical memory. For example, as we saw in Figure 8.13 , every process on a given Linux system has a similar memory format. For 64-bit address spaces, the code segment always starts at virtual address 0x400000 . The data segment follows the code segment after a suitable alignment gap. The stack occupies the highest portion of the user process address space and grows downward. Such uniformity greatly simplifies the design and implementation of linkers, allowing them to produce fully linked executables that are independent of the ultimate location of the code and data in physical memory.
+
+简化链接。一个独立的地址空间允许每个进程对其内存映像使用相同的基本格式，而不管代码和数据在物理内存中实际位于何处。例如，正如我们在图8.13中看到的，在一个给定的Linux系统上的每个进程都有类似的内存格式。对于64位地址空间，代码段总是从虚拟地址0x400000开始。数据段在一个合适的对齐间隙后紧随代码段。堆栈占据了用户进程地址空间的最高部分并向下增长。这种统一性大大简化了链接器的设计和实现，使它们能够产生完全链接的可执行文件，而这些文件与物理内存中的代码和数据的最终位置无关。
+
+Simplifying loading. Virtual memory also makes it easy to load executable and shared object files into memory. To load the .text and .data sections of an object file into a newly created process, the Linux loader allocates virtual pages for the code and data segments, marks them as invalid (i.e., not cached), and points their page table entries to the appropriate locations in the object file. The interesting point is that the loader never actually copies any data from disk into memory. The data are paged in automatically and on demand by the virtual memory system the first time each page is referenced, either by the CPU when it fetches an instruction or by an executing instruction when it references a memory location.
+
+简化装载。虚拟内存还可以轻松地将可执行文件和共享对象文件加载到内存中。来加载。文本和文本。在新创建的进程中，Linux加载程序为代码和数据段分配虚拟页面，将它们标记为无效（即未缓存），并将它们的页面表条目指向对象文件中的适当位置。有趣的是，加载程序从未将任何数据从磁盘复制到内存中。当每个页面第一次被引用时，数据会被虚拟内存系统自动按需分页，无论是由CPU在获取指令时，还是由执行指令在引用内存位置时。
+
+This notion of mapping a set of contiguous virtual pages to an arbitrary location in an arbitrary file is known as memory mapping. Linux provides a system call called mmap that allows application programs to do their own memory mapping. We will describe application-level memory mapping in more detail in Section 9.8 .
+
+将一组连续的虚拟页映射到任意文件中的任意位置的概念称为内存映射。Linux提供了一个名为mmap的系统调用，允许应用程序自己进行内存映射。我们将在第9.8节中更详细地描述应用程序级内存映射。
+
+Simplifying sharing. Separate address spaces provide the operating system with a consistent mechanism for managing sharing between user processes and the operating system itself. In general, each process has its own private code, data, heap, and stack areas that are not shared with any other process. In this case, the operating system creates page tables that map the corresponding virtual pages to disjoint physical pages.
+
+简化共享。单独的地址空间为操作系统提供了一致的机制，用于管理用户进程和操作系统本身之间的共享。通常，每个进程都有自己的私有代码、数据、堆和堆栈区域，这些区域不与任何其他进程共享。在这种情况下，操作系统会创建页表，将相应的虚拟页映射到不相交的物理页。
+
+However, in some instances it is desirable for processes to share code and data. For example, every process must call the same operating system kernel code, and every C program makes calls to routines in the standard C library such as printf . Rather than including separate copies of the kernel and standard C library in each process, the operating system can arrange for multiple processes to share a single copy of this code by mapping the appropriate virtual pages in different processes to the same physical pages, as we saw in Figure 9.9 .
+
+然而，在某些情况下，希望进程共享代码和数据。例如，每个进程必须调用相同的操作系统内核代码，并且每个C程序都调用标准C库中的例程，如printf。操作系统可以通过将不同进程中的适当虚拟页映射到相同的物理页来安排多个进程共享该代码的单个副本，而不是在每个进程中包括内核和标准C库的单独副本，如图9.9所示。
+
+Simplifying memory allocation. Virtual memory provides a simple mechanism for allocating additional memory to user processes. When a program running in a user process requests additional heap space (e.g., as a result of calling malloc ), the operating system allocates an appropriate number, say, k, of contiguous virtual memory pages, and maps them to k arbitrary physical pages located anywhere in physical memory. Because of the way page tables work, there is no need for the operating system to locate k contiguous pages of physical memory. The pages can be scattered randomly in physical memory.
+
+简化内存分配。虚拟内存提供了一种向用户进程分配额外内存的简单机制。当运行在用户进程中的程序请求额外的堆空间(例如，由于调用malloc)时，操作系统分配适当的数量，例如k，连续的虚拟内存页，并将它们映射到物理内存中任意位置的k个物理页。由于页表的工作方式，操作系统不需要定位物理内存中的k个连续页。页面可以随机地分散在物理内存中。
+
