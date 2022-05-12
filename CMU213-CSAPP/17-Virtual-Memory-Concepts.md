@@ -1,20 +1,50 @@
 # 17-Virtual-Memory-Concepts
 
-## Address spaces
+## Physical and Virtual Addressing
 
-- **Linear address space**: 连续非负整数地址的有序集 `{0, 1, 2, 3 … }`
+- **Main memory**: an array of M contiguous(*连续的*) byte-size cells(*单元*). Each byte has a unique physical address (PA) `{0, 1, 2, 3 … }`
+
+- The most natural way for a **CPU to access memory** would be to use physical addresses. We call this approach **physical addressing**.
+
+- When the CPU executes the load instruction, it **generates an effective physical address** and **passes it to main memory** over the memory bus. The **main memory fetches the 4-byte word** starting at physical address 4 and **returns it to the CPU**, which **stores it in a register**.
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_3.JPG)
+
+- Modern processors use a form of addressing known as virtual addressing
+
+- The CPU accesses main memory by generating a **virtual address** (VA), which is **converted to the appropriate physical address before being sent to main memory**.
+![png](17-Virtual-Memory-Concepts/17-vm-concepts_4.JPG)
+
+## Address Spaces
+
+- An **address space** is an ordered set of nonnegative integer addresses.(*一个非负整数的有序集合*)
+- **Linear address space**: Ordered set of contiguous non-negative integer
+addresses `{0, 1, 2, 3 … }`。为了简化讨论，后面均采用线性地址空间。
 - **Virtual address space**: Set of N = 2^n virtual addresses `{0, 1, 2, 3, …, N-1}`
-- **Physical address space**: Set of M = 2m physical addresses `{0, 1, 2, 3, …, M-1}`
-
+- **Physical address space**: Set of M = 2^m physical addresses `{0, 1, 2, 3, …, M-1}`
 （N通常大于M）
+- 地址空间明确区分了数据对象data objects (bytes)和它们的attributes (addresses)。
+- Basic idea of virtual memory: allow **each data object** to have **multiple independent addresses**, each chosen from a **different address space**.
+- Each byte of main memory has a virtual address chosen from the virtual address space, and a physical address chosen from the physical address space.
 
-Why Virtual Memory (VM)?
+## Why Virtual Memory
 
-- Uses main memory efficiently: 参考局部性缓存一部分虚拟地址空间内容到DRAM以提高效率。
-- Simplifies memory management: 每个进程都有相似的虚拟地址空间
+- It **uses main memory efficiently** by
+  - treating it as **a cache** for an address space stored on disk
+  - keeping only the active areas in main memory
+  - transferring data back and forth between disk and memory as needed.
+- It **simplifies memory management** by providing each process with a uniform address space.
 - Isolates address spaces
-  - One process can’t interfere with another’s memory
+  - One process can’t interfere(*干涉*) with another’s memory
   - User program cannot access privileged kernel information and code
+
+虚拟地址为应用程序提供的功能：
+
+- create and destroy chunks of memory
+- map chunks of memory to portions of disk files
+  - read or modify the contents of a disk file by reading and writing memory locations
+  - load the contents of a file into memory without doing any explicit copying
+- share memory with other processes
+
 
 ## VM as a Tool for Caching
 
