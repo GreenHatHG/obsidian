@@ -48,9 +48,8 @@ addresses `{0, 1, 2, 3 … }`。为了简化讨论，后面均采用线性地址
 
 ## VM as a Tool for Caching
 
-**virtual memory** is an array of N contiguous(*连续的*) bytes stored on **disk**.
-
-The contents of the array on disk are cached in **physical memory (DRAM cache)**
+- **Virtual memory** is an array of N contiguous(*连续的*) bytes stored on **disk**. Each byte has a unique virtual address that serves as an index into the array. The contents of the array on disk are cached in **physical memory (DRAM cache)**
+- The data on disk is partitioned into **blocks** that serve as the transfer units between the disk and the main memory.
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_8.JPG)
 
