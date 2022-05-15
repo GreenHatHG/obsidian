@@ -45,11 +45,15 @@ addresses `{0, 1, 2, 3 … }`。为了简化讨论，后面均采用线性地址
   - load the contents of a file into memory without doing any explicit copying
 - share memory with other processes
 
-
 ## VM as a Tool for Caching
 
 - **Virtual memory** is an array of N contiguous(*连续的*) bytes stored on **disk**. Each byte has a unique virtual address that serves as an index into the array. The contents of the array on disk are cached in **physical memory (DRAM cache)**
 - The data on disk is partitioned into **blocks** that serve as the transfer units between the disk and the main memory.
+- VM systems handle this by partitioning the virtual memory into **fixed-size blocks** called **virtual pages**. Similarly, physical memory is partitioned into **physical pages**.
+- virtual page有三种
+  - **Unallocated**: have not yet been allocated (or created) by the VM system, do not occupy(*占用*) any space on disk.
+  - **Cached**. Allocated pages that are currently cached in physical memory.
+  - **Uncached**. Allocated pages that are not cached in physical memory.
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_8.JPG)
 
@@ -73,11 +77,13 @@ addresses `{0, 1, 2, 3 … }`。为了简化讨论，后面均采用线性地址
 
 ### Page table
 
-A page table(页表) is an array of page table entries (PTEs) that maps virtual pages to physical pages.
+A page table(*页表*) is an array of page table entries (PTEs) that maps virtual pages to physical pages.
 
 内核会将它作为每一个进程上下文的一部分进行维护，所以每个进程都有自己的页表。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_10.JPG)
+
+valid: 1代表当前vp在DRAM中，0且地址不为空代表在磁盘上，0且地址为null代表unallocated page。
 
 ### Page hit
 
@@ -91,13 +97,16 @@ CPU执行move指令、call指令、ret指令、或者任何类型的控制转移
 
 1. Page miss causes page fault (an exception)。硬件触发异常。
 2. 导致控制权转移到内核中的page fault handler的代码块
-3. 从Physical memory选择出一个page需要被替换，比如pp4
-4. 从磁盘上获取vp3加载到内存中，并更新Physical memory和页表。如果vp4被修改过，还需要将数据写回到磁盘。
+3. 从Physical memory选择出一个page需要被替换，比如pp4。如果vp4被修改过，内核还需要将数据写回到磁盘。
+4. 内核从磁盘上获取vp3加载到内存中，并更新Physical memory和页表
 5. 当内核中的Page fault handler返回时，它返回到导致错误的指令位置，然后重新执行该指令，page hit。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_14.JPG)
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_16.JPG)
+
+- The activity of transferring a page between disk and memory is- known as swapping or paging.
+- All modern systems use **demand paging**.
 
 ### Allocating Pages
 
