@@ -105,7 +105,7 @@ CPU执行move指令、call指令、ret指令、或者任何类型的控制转移
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_16.JPG)
 
-- The activity of transferring a page between disk and memory is- known as swapping or paging.
+- The activity of transferring a page between disk and memory is- known as **swapping** or **paging**.
 - All modern systems use **demand paging**.
 
 ### Allocating Pages
@@ -118,9 +118,11 @@ page table中的PTE5还没有分配，如果需要分配则要调用malloc函数
 
 ### Locality to the Rescue Again
 
-虚拟内存因为要复制数据、分配内存、修改页表看起来看低效，但是因为局部性原理并不是这样的。
+虚拟内存因为要复制数据、分配内存、修改页表，甚至可能会出现大量的cache miss而导致swapping，看起来很低效，但是因为局部性原理并不会上面讲的那样低效。
 
-在任何时间点，程序因为局部性去访问一组page(set of active virtual pages called the working set)，具有更好的时间局部性程序的working set会更小。
+在任何时间点，程序因为局部性倾向于在working set(set of active virtual pages)上工作，具有更好的时间局部性程序的working set会更小。一般来讲，开销比较大的情况只有初始化working set时候将在磁盘的page加载到内存的时候，后续使用working set将会是page hit。
+
+只要程序具有良好的局部性，虚拟内存系统就可以很好地工作，但并不是所有的程序都这样，可能会出现thrashing(*抖动*)的情况：
 
 - If (working set size < main memory size): 当前所有的page都在主存
 - If (SUM(working set sizes) > main memory size)。当所有进程的working set之和大于主存大小，就会导致Thrashing：页面不断的在内存和磁盘之间来回复制。
@@ -139,14 +141,13 @@ page table中的PTE5还没有分配，如果需要分配则要调用malloc函数
 - Sharing code and data among processes
   - Map virtual pages to the same physical page (here: PP 6)
   - 这就是共享库的实现方式，比如共享lib.c，只需要在物理内存中加载一次即可。
-
-![png](17-Virtual-Memory-Concepts/17-vm-concepts_21.JPG)
+  ![png](17-Virtual-Memory-Concepts/17-vm-concepts_21.JPG)
 
 ### Simplifying Linking and Loading
 
 程序代码和数据一开始没有被加载到内存，只有出现未命中才会进行真正的加载，demand paging。
 
-loading其实是一个非常有效率的机制，可能有一个包含大型数组的程序，但是只访问数组的一部分，可以延迟加载。
+loading其实是一个非常有效率的机制，可能有一个包含大型数组的程序，但是只访问数组的一部分，延迟加载可以提高性能。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_22.JPG)
 
@@ -154,7 +155,9 @@ loading其实是一个非常有效率的机制，可能有一个包含大型数�
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_24.JPG)
 
-sup：supervisor，是否必须由内核访问
+- sup: supervisor. Processes running in **kernel mode** can access **any page**, but processes running in **user mode** are only allowed to access **pages for which SUP is 0**.
+- READ and WRITE: control read and write access to the page (i.e., process i is running in user mode: `r: vp0/1, rw: vp1, not allowed: vp2`)
+- 如果一条指令违背了这些权限，CPU将触发一个exception(通常是segmentation fault)，将控制权转向exception handler，该handler将发送SIGSEGV信号给该进程
 
 在x86-64系统上，指针和地址都是64位的，但是虚拟地址空间则是48位的，超过48位的bit要么全是0要么全是1，这是intel制定的规则，高位全为1的地址为内核保留（地址指向内核中的代码或者数据），高位全为0的地址为用户代码保留。
 
@@ -174,22 +177,21 @@ sup：supervisor，是否必须由内核访问
 
 ### Speeding up Translation with a TLB
 
-- Page table entries (PTEs) are cached in L1 like any other memory word
+- Page table entries (PTEs) are cached in SRAM(L1/L2/L3) like any other memory word
   - PTEs may be evicted(*驱逐*) by other data references
   - PTE hit still requires a small L1 delay
 
-![png](17-Virtual-Memory-Concepts/17-vm-concepts_31.JPG)
+  ![png](17-Virtual-Memory-Concepts/17-vm-concepts_31.JPG)
+  (In any system that uses both virtual memory and SRAM caches, there is the issue of whether to use virtual or physical addresses to access the SRAM cache. Most systems opt for **physical addressing**.)
 
 - Solution: **Translation Lookaside Buffer** (TLB)
   - Small set-associative hardware cache in MMU
   - Maps virtual page numbers to  physical page numbers
-  - Contains complete page table entries for small number of pages
+  - Contains **complete page table entries** for small number of pages
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_33.JPG)
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_34.JPG)
-
-PTE中valid为0或者指向的是磁盘地址
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_35.JPG)
 
@@ -197,15 +199,20 @@ PTE中valid为0或者指向的是磁盘地址
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_36.JPG)
 
-一个页表需要的空间很大，见图，需要512GB，因为如果想用一个页表映射虚拟地址空间，需要为每个page的地址提供一个PTE，不管page有没有被使用过，比如48位地址空间，则需要512GB，但是很多都没有使用到，为此使用多级页表可以避免创建不必要的页表。
+一个页表需要的空间很大，见图，需要512GB，因为如果想用一个页表映射虚拟地址空间，需要为每个page的地址提供一个PTE，不管page有没有被使用过，因为不确定这些地址空间哪些需要被覆盖，比如48位地址空间，则需要512GB，但是很多都没有使用到，为此使用多级页表可以避免创建不必要的页表。
 
 ![png](17-Virtual-Memory-Concepts/17-vm-concepts_37.JPG)
 
-上图已经为这个程序的代码和数据分配了2k个page，还有6个没有分配的page，低下有一个为栈分配的1024个page，但是大部分没有使用，只为栈顶分配了一个page。
+上图已经为这个程序的代码和数据分配了2k个page，还有6个没有分配的page，底下有一个为栈分配的1024个page，但是大部分没有使用，只为栈顶分配了一个page。
 
 2个level 2的页表覆盖了这分配的2k个page，1个level 2页表覆盖栈page(1023个null PTEs，因为大部分没有使用到)，1个level 1页表，共需要4个页表。
 
 足够的level 2的页表就能覆盖实际使用的虚拟地址空间部分。没有用到的page就放到Gap区域，无需为它搞一个页表。
+
+reduces memory requirements in two ways
+
+1. if a PTE in the level 1 table is null, then the corresponding level 2 page table does not even have to exist.
+2. The level 2 page tables can be **created and paged in and out** by the VM system as they are needed, which reduces pressure on main memory. **Only the most heavily used level 2 page tables need to be cached in main memory.**
 
 ### Translating with a k-level Page Table
 
