@@ -103,12 +103,15 @@ MMU尝试转换虚拟地址A的时候触发了一个page fault，随后将控制
 
 ## Memory Mapping
 
-memory mapping: VM areas initialized by associating them with disk objects.
+Linux **initializes the contents of a virtual memory area** by associating it with **an object on disk**, a process known as **memory mapping**.
 
-Area can be backed(*支持*) by (i.e., get its initial values from) :
+ Areas can be mapped to one of two types of objects:
 
-- Regular file on disk (e.g., an executable object file)
-  - Initial page bytes come from a section(*某部分*) of a file。比如对于code area，映射了可执行二进制文件的一部分。
+- **Regular file on disk** (e.g., an executable object file)
+  - An area can be mapped to a **contiguous section** of a regular disk file.
+  - The file section is divided into **page-size pieces**, with each piece containing the initial contents of a virtual page.
+  - Demand paging
+  - If the area is larger than the file section, then the area is **padded with zeros**.
 - Anonymous file (e.g., nothing)
   - First fault will allocate a physical page full of 0's (demand-zero page)
   - Once the page is written to (dirtied), it is like any other page
