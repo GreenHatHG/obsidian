@@ -54,7 +54,7 @@ XD为disable意味着无法从这个page上加载到任何指令
 
 ![png](18-Virtual-Memory-Systems/18-vm-systems_18.JPG)
 
-因为VPO和PPO都是一样的，所以CI也是一样的，在MMU进行地址转换的同时将CI发送给L1 cache，然后cache做set的查找，找到所有的line后并且MMU完成地址转换，此时就可以根据tag找到特定的line了，有那么一点并行的存在。
+因为VPO和PPO都是一样的，所以CI也是一样的。当CPU需要转换虚拟地址时，它会将VPN发送到MMU，将VPO发送到L1 cache，MMU查询TLB的时候cache可以并行做set的查找，找到所有的line后并且MMU完成地址转换，此时就可以根据tag找到特定的line了。
 
 ### Virtual Address Space of a Linux Process
 
@@ -69,19 +69,37 @@ XD为disable意味着无法从这个page上加载到任何指令
 
 ### Linux Organizes VM as Collection of "Areas"
 
+- Linux organizes the virtual memory as a **collection of areas** (also called segments). An area is a **contiguous chunk** of existing (allocated) virtual memory whose pages are related in some way.
+
+- The code segment, data segment, heap, shared library segment, and user stack are all distinct areas.
+
+- It allows the virtual address space to have **gaps**. The kernel **does not keep track of virtual pages that do not exist**, and such pages do not consume any additional resources in memory, on disk, or in the kernel itself.
+
+the kernel data structures that keep track of the virtual memory areas in a process:
+
 ![png](18-Virtual-Memory-Systems/18-vm-systems_20.JPG)
 
-Linux将虚拟内存相关区域组合成为areas，每个area是连续的一块内存。比如有code、stack、share lib相关的area。
+- 内核为每个进程维护了一个数据结构task_struct，包含或者指向了内核运行该进程需要的所有信息(e.g., the PID, pointer to the user stack, name of the executable object file, and program counter)
 
-为每个进程设定的数据结构task_struct，包含了一个指向mm struct的指针，mm_struct包含了指向L1 page table的地址，这是上下文的一部分，当这个进程被调度时，内核把pgd复制到CR3中（通过修改CR3进而修改虚拟地址空间地址）。
+- task_struct包含了一个指向代表VM当前状态的mm struct的指针，mm_struct包含了指向L1 page table的地址，这是上下文的一部分，当这个进程被调度时，内核把pgd复制到CR3中（通过修改CR3进而修改虚拟地址空间地址）。一旦CR3的值发生了改变，该进程不再有权访问之前进程的页表。
 
-一旦CR3的值发生了改变，该进程不再有权访问之前进程的页表。
+- area_struct通过vm_start标识该area的开始位置，通过vm_end标识该area结束的位置。
 
-area_struct 通过vm_start标识该区域的开始位置，通过vm_end标识该区域结束的位置。
+- vm_prot: Describes the read/write permissions for all of the pages contained in the area.
+
+- vm_flags: whether the pages in the area are shared with other processes or private to this process.
+
+- vm_next: Points to the next area struct in the list(图这里描述是链表，实际上在操作系统中的实现可能是树).
 
 ### Linux Page Fault Handling
 
 ![png](18-Virtual-Memory-Systems/18-vm-systems_21.JPG)
+
+MMU尝试转换虚拟地址A的时候触发了一个page fault，随后将控制权转向kernel's page fault handler，该handler会执行以下步骤：
+
+1. 判断A是否位于某个area_struct定义的area区间内。handler会搜索所有的area struct，将A与vm_start和vm_end比较。如果不合法，则handler触发segmentation fault，进而终止进程。
+2. 判断A是否有权读取或者写入该area中的page。比如写入一个只读的page，或者是运行在用户态的进程访问只能由内核访问的page。如果不合法，则handler触发protection exception，进而终止进程。
+3. 否则是normal page fault，即page不在DRAM，执行paging流程。
 
 ## Memory Mapping
 

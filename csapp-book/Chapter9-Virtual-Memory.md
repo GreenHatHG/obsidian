@@ -412,3 +412,19 @@ At this point, the kernel knows that the page fault resulted from a legal operat
 
 ## 9.8 Memory Mapping
 
+Linux initializes the contents of a virtual memory area by associating it with an object on disk, a process known as memory mapping. Areas can be mapped to one of two types of objects:
+
+Linux通过将虚拟内存区域与磁盘上的对象关联来初始化虚拟内存区域的内容，这一过程称为内存映射。区域可以映射到两种类型的对象之一：
+
+Regular file in the Linux file system: An area can be mapped to a contiguous section of a regular disk file, such as an executable object file. The file section is divided into page-size pieces, with each piece containing the initial contents of a virtual page. Because of demand paging, none of these virtual pages is actually swapped into physical memory until the CPU first touches the page (i.e., issues a virtual address that falls within that page's region of the address space). If the area is larger than the file section, then the area is padded with zeros.
+
+Linux文件系统中的常规文件：一个区域可以映射到常规磁盘文件的连续部分，例如可执行目标文件。文件节分为多个页面大小的片段，每个片段包含虚拟页面的初始内容。由于按需分页，这些虚拟页实际上都不会被交换到物理内存中，直到CPU第一次接触到该页(即发出一个落在该页的地址空间区域内的虚拟地址)。如果区域大于文件部分，则用零填充该区域。
+
+Anonymous file: An area can also be mapped to an anonymous file, created by the kernel, that contains all binary zeros. The first time the CPU touches a virtual page in such an area, the kernel finds an appropriate victim page in physical memory, swaps out the victim page if it is dirty, overwrites the victim page with binary zeros, and updates the page table to mark the page as resident. Notice that no data are actually transferred between disk and memory. For this reason, pages in areas that are mapped to anonymous files are sometimes called demand-zero pages.
+
+匿名文件:一个区域也可以映射到一个由内核创建的匿名文件，该文件包含所有二进制零。当CPU第一次接触到这个区域中的一个虚拟页时，内核会在物理内存中找到一个合适的“受害者”页，如果这个“受害者”页是脏的，就交换掉它，用二进制零覆盖这个“受害者”页，并更新页表，将该页标记为“常驻”。注意，磁盘和内存之间实际上没有传输数据。出于这个原因，映射到匿名文件的区域中的页面有时被称为零需求页面。
+
+In either case, once a virtual page is initialized, it is swapped back and forth between a special swap file maintained by the kernel. The swap file is also known as the swap space or the swap area. An important point to realize is that at any point in time, the swap space bounds the total amount of virtual pages that can be allocated by the currently running processes.
+
+在这两种情况下，一旦初始化了虚拟页，它就会在内核维护的一个特殊交换文件之间来回交换。交换文件也称为交换空间或交换区域。需要注意的一点是，在任何时候，交换空间都会限制当前运行的进程可以分配的虚拟页的总量。
+
