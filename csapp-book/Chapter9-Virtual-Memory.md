@@ -544,3 +544,33 @@ The munmap function deletes the area starting at virtual address start and consi
 
 munmap 函数删除从虚拟地址 start 开始并由下一个长度字节组成的区域。对已删除区域的后续引用会导致分段错误。
 
+## 9.9 Dynamic Memory Allocation
+
+While it is certainly possible to use the low-level mmap and munmap functions to create and delete areas of virtual memory, C programmers typically find it more convenient and more portable to use a dynamic memory allocator when they need to acquire additional virtual memory at run time.
+
+虽然当然可以使用低级的mmap和munmap函数来创建和删除虚拟内存区域，但C程序员通常发现，当他们需要在运行时获得额外的虚拟内存时，使用动态内存分配器更方便、更可移植。
+
+A dynamic memory allocator maintains an area of a process's virtual memory known as the heap (Figure 9.33 ). Details vary from system to system, but without loss of generality, we will assume that the heap is an area of demand-zero memory that begins immediately after the uninitialized data area and grows upward (toward higher addresses). For each process, the kernel maintains a variable brk (pronounced "break") that points to the top of the heap.
+
+动态内存分配器维护进程虚拟内存中的一个区域，称为堆(图9.33)。具体信息因系统而异，但在不丧失通用性的情况下，我们假定堆是一个需求为零的内存区域，它立即开始于未初始化的数据区域，并向上增长(向更高的地址)。对于每个进程，内核维护一个变量brk(发音为“break”)，该变量指向堆的顶部。
+
+An allocator maintains the heap as a collection of various-size blocks. Each block is a contiguous chunk of virtual memory that is either allocated or free. An allocated block has been explicitly reserved for use by the application. A free block is available to be allocated. A free block remains free until it is explicitly allocated by the application. An allocated block remains allocated until it is freed, either explicitly by the application or implicitly by the memory allocator itself.
+
+分配器将堆维护为各种大小块的集合。每个块都是一个连续的虚拟内存块，要么是分配的，要么是空闲的。已分配的块已明确保留供应用程序使用。有一个空闲块可供分配。空闲块在应用程序显式分配之前一直是空闲的。分配的块在被释放之前一直保持分配状态，无论是由应用程序显式释放还是由内存分配器本身隐式释放。
+
+Allocators come in two basic styles. Both styles require the application to explicitly allocate blocks. They differ about which entity is responsible for freeing allocated blocks.
+
+分配器有两种基本形式。这两种风格都要求应用程序显式分配块。它们的不同之处在于哪个实体负责释放分配的块。
+
+Explicit allocators require the application to explicitly free any allocated blocks. For example, the C standard library provides an explicit allocator called the malloc package. C programs allocate a block by calling the malloc function, and free a block by calling the free function. The new and delete calls in C++ are comparable.
+
+显式分配器要求应用程序显式释放任何已分配的块。例如，C标准库提供了一个名为malloc包的显式分配器。c程序通过调用malloc函数来分配块，通过调用free函数来释放块。C++中的new和delete调用是可以比较的。
+
+Implicit allocators, on the other hand, require the allocator to detect when an allocated block is no longer being used by the program and then free the block. Implicit allocators are also known as garbage collectors, and the process of automatically freeing unused allocated blocks is known as garbage collection. For example, higher-level languages such as Lisp, ML, and Java rely on garbage collection to free allocated blocks.
+
+另一方面，隐式分配器要求分配器检测程序何时不再使用已分配的块，然后释放该块。隐式分配器也称为垃圾收集器，自动释放未使用的已分配块的过程称为垃圾收集。例如，Lisp、ML和Java等高级语言依靠垃圾收集来释放分配的块。
+
+The remainder of this section discusses the design and implementation of explicit allocators. We will discuss implicit allocators in Section 9.10 . For concrete -ness, our discussion focuses on allocators that manage heap memory. However, you should be aware that memory allocation is a general idea that arises in a variety of contexts. For example, applications that do intensive manipulation of graphs will often use the standard allocator to acquire a large block of virtual memory and then use an application-specific allocator to manage the memory within that block as the nodes of the graph are created and destroyed.
+
+本节的剩余部分将讨论显式分配器的设计和实现。我们将在9.10节讨论隐式分配器。具体来说，我们的讨论集中在管理堆内存的分配器上。但是，您应该意识到内存分配是一个在各种环境中出现的一般概念。例如，对图形进行密集操作的应用程序通常会使用标准分配器来获取一大块虚拟内存，然后在创建和销毁图形节点时，使用特定于应用程序的分配器来管理该块内存。
+
