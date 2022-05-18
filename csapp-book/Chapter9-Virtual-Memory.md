@@ -466,3 +466,17 @@ By deferring the copying of the pages in private objects until the last possible
 
 通过将私有对象中的页面复制推迟到最后一刻，写时复制可以最有效地利用稀缺的物理内存。
 
+### 9.8.2 The fork Function Revisited
+
+Now that we understand virtual memory and memory mapping, we can get a clear idea of how the fork function creates a new process with its own independent virtual address space.
+
+既然我们理解了虚拟内存和内存映射，我们就可以清楚地了解fork函数是如何创建一个具有自己独立虚拟地址空间的新进程的。
+
+When the fork function is called by the current process, the kernel creates various data structures for the new process and assigns it a unique PID. To create the virtual memory for the new process, it creates exact copies of the current process's mm_struct , area structs, and page tables. It flags each page in both processes as read-only, and flags each area struct in both processes as private copy-on-write.
+
+当fork函数被当前进程调用时，内核会为新进程创建各种数据结构，并为其分配一个唯一的PID。要为新进程创建虚拟内存，需要创建当前进程mm_struct、area struct和page table的精确副本。它将两个进程中的每个页面标记为只读，并将两个进程中的每个区域结构标记为私有的copy-on-write。
+
+When the fork returns in the new process, the new process now has an exact copy of the virtual memory as it existed when the fork was called. When either of the processes performs any subsequent writes, the copy-on-write mechanism creates new pages, thus preserving the abstraction of a private address space for each process.
+
+当fork在新进程中返回时，新进程现在拥有了调用该fork时存在的虚拟内存的确切副本。当其中一个进程执行任何后续写操作时，即写即拷机制将创建新页面，从而为每个进程保留一个私有地址空间的抽象。
+

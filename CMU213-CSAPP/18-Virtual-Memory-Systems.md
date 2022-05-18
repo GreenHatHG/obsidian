@@ -151,7 +151,7 @@ write.PTEs in private areas are flagged as read-only.
 
 - Handler creates a new copy of the page in physical memory, updates the page table entry to point to the new copy, and then restores write permissions to the page. 返回时CPU重新执行写操作，将会在新的page上写。
 
-- Copying deferred  as long as  possible. 更有效利用内存。
+- Copying deferred as long a possible. 更有效利用内存。
 
 ### fork
 
