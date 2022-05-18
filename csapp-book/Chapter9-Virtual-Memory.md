@@ -512,3 +512,35 @@ The next time this process is scheduled, it will begin execution from the entry 
 
 下次安排此进程时，它将从入口点开始执行。 Linux 将根据需要交换代码和数据页。
 
+### 9.8.4 User-Level Memory Mapping with the mmap Function
+
+Linux processes can use the mmap function to create new areas of virtual memory and to map objects into these areas.
+
+Linux进程可以使用mmap函数创建虚拟内存的新区域，并将对象映射到这些区域。
+
+The mmap function asks the kernel to create a new virtual memory area, preferably one that starts at address start , and to map a contiguous chunk of the object specified by file descriptor fd to the new area. The contiguous object chunk has a size of length bytes and starts at an offset of offset bytes from the beginning of the file. The start address is merely a hint, and is usually specified as NULL. For our purposes, we will always assume a NULL start address. Figure 9.32 depicts the meaning of these arguments.
+
+mmap函数要求内核创建一个新的虚拟内存区域，最好是从地址start开始的，并将由文件描述符fd指定的对象的连续块映射到新区域。连续对象块的大小为长度字节，并且从文件开头的偏移字节的偏移量开始。起始地址仅仅是一个提示，通常被指定为NULL。出于我们的目的，我们总是假设起始地址为NULL。图9.32描述了这些参数的含义。
+
+The prot argument contains bits that describe the access permissions of the newly mapped virtual memory area (i.e., the vm_prot bits in the corresponding area struct).
+
+prot参数包含描述新映射的虚拟内存区域访问权限的位(即对应区域结构中的vm_prot位)。
+
+PROT_EXEC. Pages in the area consist of instructions that may be executed by the CPU. PROT_READ. Pages in the area may be read. PROT_WRITE. Pages in the area may be written. PROT_NONE. Pages in the area cannot be accessed.
+
+PROT_EXEC。该区域中的页面包含可由 CPU 执行的指令。 PROT_READ。可以阅读该区域中的页面。 PROT_WRITE。可以写入该区域中的页面。 PROT_NONE。无法访问该区域中的页面。
+
+The flags argument consists of bits that describe the type of the mapped object. If the MAP_ANON flag bit is set, then the backing store is an anonymous object and the corresponding virtual pages are demand-zero. MAP_PRIVATE indicates a private copy-on-write object, and MAP_SHARED indicates a shared object. For example,
+
+flags 参数由描述映射对象类型的位组成。如果设置了 MAP_ANON 标志位，则后备存储是一个匿名对象，并且相应的虚拟页面是零需求。 MAP_PRIVATE 表示私有写时复制对象，MAP_SHARED 表示共享对象。例如，
+
+bufp = Mmap(NULL, size, PROT_READ, MAP_PRIVATEIMAP_ANON, 0, 0);
+
+asks the kernel to create a new read-only, private, demand-zero area of virtual memory containing size bytes. If the call is successful, then bufp contains the address of the new area.
+
+要求内核创建一个新的只读、私有、需求为零的虚拟内存区域，其中包含 size 个字节。如果调用成功，则 bufp 包含新区域的地址。
+
+The munmap function deletes the area starting at virtual address start and consisting of the next length bytes. Subsequent references to the deleted region result in segmentation faults.
+
+munmap 函数删除从虚拟地址 start 开始并由下一个长度字节组成的区域。对已删除区域的后续引用会导致分段错误。
+
