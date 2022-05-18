@@ -203,20 +203,31 @@ void *mmap(void *start, int len,
     int prot, int flags, int fd, int offset)
 ```
 
-允许像内核一样进行内存映射(系统调用)，只是内存映射，没有copy，只是将虚拟地址空间中空闲的部分映射到文件
+- Linux processes can use the mmap function to **create new areas of virtual memory and to map objects into these areas**.只是内存映射，没有copy，只是将虚拟地址空间中空闲的部分映射到文件
 
-start：虚拟空间地址，mmap函数尝试将这个地址开始，长度为length 字节的区域，映射到由fd确定的某个文件的offset位置。
+- start：mmap函数尝试将从start处开始，创建长度为length 字节的区域，并映射到由fd确定的某个文件的offset位置。The start address is merely(*仅仅*) a hint, and is usually specified as NULL.
 
-prot: PROT_READ, PROT_WRITE, ....权限，只写只读读写
+- prot: 对应area_struct中的vm_prot, the access permissions of the newly mapped virtual memory area: PROT_READ, PROT_WRITE...
 
-flags: MAP_ANON, MAP_PRIVATE, MAP_SHARED, ...
+- flags: the type of the mapped object: MAP_ANON(anonymous object, corresponding virtual pages are demand-zero), MAP_PRIVATE(private copy-on-write object), MAP_SHARED(shared object)
 
-Return a pointer to start of mapped area (may not be start)
+- Return a pointer to start of mapped area (may not be start)
 
 ![png](18-Virtual-Memory-Systems/18-vm-systems_31.JPG)
 
-拷贝文件到标准输出，没有把数据拷贝到用户地址空间。标准做法是从标准输入中读，然后写到标准输出中去，需要用两个系统调用，read和write。用mmap只需要一个系统调用。
+Asks the kernel to create a new read-only, private, demand-zero area of virtual memory containing size bytes. If the call is successful, then bufp contains the address of the new area:
 
-从命令行得到一个文件名，然后打开这个文件，获取到文件的大小。调用mmap，传递fd、大小、长度，设置flag为私有。然后调用write，把buffer指向的内容拷贝到标准输出。write 函数会从bufp中一个字节一个字节地读取，执行的时候会出现异常，异常处理完成后，write把bufp写入到fd对应的文件，也就是stdout
+```c
+bufp = mmap(NULL, size, PROT_READ, 
+            MAP_PRIVATEIMAP_ANON, 0, 0);
+```
+
+The **munmap** function deletes the area starting at virtual address start and consisting of the next length bytes. Subsequent references to the deleted region result in segmentation faults.
+
+#### Example: Using mmap to Copy Files
+
+拷贝文件到标准输出，没有把数据拷贝到用户地址空间。标准做法是读取文件，然后写到标准输出中去，需要用两个系统调用，read和write。但只使用一个系统调用mmap就可以做到这点。
+
+从命令行得到一个文件名，然后打开这个文件，获取到文件的大小。调用mmap，传递fd、大小、长度，设置flag为私有。然后调用write，把buffer指向的内容拷贝到标准输出，设置拷贝的大小。write 函数会从bufp中一个字节一个字节地读取，执行的时候会出现异常，异常处理完成后，write把bufp写入到fd对应的文件，也就是stdout
 
 ![png](18-Virtual-Memory-Systems/18-vm-systems_32.JPG)
