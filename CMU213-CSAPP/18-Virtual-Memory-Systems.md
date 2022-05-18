@@ -112,29 +112,46 @@ Linux **initializes the contents of a virtual memory area** by associating it wi
   - The file section is divided into **page-size pieces**, with each piece containing the initial contents of a virtual page.
   - Demand paging
   - If the area is larger than the file section, then the area is **padded with zeros**.
-- Anonymous file (e.g., nothing)
-  - First fault will allocate a physical page full of 0's (demand-zero page)
+- **Anonymous file** (e.g., nothing, there isn't a file specified)
+  - The first time the CPU touches a virtual page in such an area, the kernel finds an appropriate victim page in physical memory, swaps out the victim page if it is dirty, **overwrites the victim page with binary zeros**, and updates the page table to mark the page as resident.
   - Once the page is written to (dirtied), it is like any other page
-  - Dirty pages are copied back and forth(*来回复制*) between memory and a special swap file.一个与匿名文件关联的page被修改后，当需要同步回文件的时候，会被回写到内核维护的swap file。
+  - No data are actually transferred between disk and memory.
+  - Pages in areas that are mapped to anonymous files are sometimes called **demand-zero pages**.
+
+In either case, once a virtual page is initialized, it is swapped back and forth(*来回*) between a special **swap file** maintained by the kernel.
 
 ### Shared Objects
 
-利用内存映射可以在进程间共享对象
+- Many programs need to access identical copies of readonly run-time library code. For example, every C program requires functions from the standard C library such as printf.
 
-![png](18-Virtual-Memory-Systems/18-vm-systems_25.JPG)
+- Memory mapping provides us with a clean mechanism for controlling how objects are shared by multiple processes.
 
-进程1映射某area到文件的某一部分(shared object)，进程2也可以映射到同一个对象，并且进程1的那个area和进程2的没有关系。
+- An object can be mapped into an area of virtual memory as either a **shared object** or a **private object**.
+
+- Since each object has a unique filename, the kernel can quickly determine that process has already mapped the object.
+
+如果一个进程对共享对象(shared object)对应的虚拟地址空间进行了写操作，那么这个写操作也会同步到磁盘上的文件，并且所有映射了该对象的进程都可见该修改。
+
+![png](18-Virtual-Memory-Systems/1.png)
+
+The key point is that only a single copy of the shared object needs to be stored in physical memory, even though the object is mapped into multiple shared areas.
 
 ### Private Copy-on-write (COW) Objects
 
-Two processes mapping a private copy-on-write (COW)  object.
+![png](18-Virtual-Memory-Systems/2.png)
 
-Area flagged as private copy-on-
+- Two processes have mapped a private object into different areas of their virtual memories but share the same physical copy of the object.
+
+- Area flagged as private copy-on-
 write.PTEs in private areas are flagged as read-only.
 
-![png](18-Virtual-Memory-Systems/18-vm-systems_27.JPG)
+- So long as neither(*只要两者都不*) process attempts to write to its respective(*各自的*) private area, they continue to share a single copy of the object in physical memory. 
 
-如果一个进程对共享对象对应的虚拟地址空间进行了写操作，那么这个写操作也会同步到磁盘上的文件。如果是COW对象，那么写不会同步到共享对象的物理内存，而是将page拷贝一份，并且把它映射到一个没有使用的物理地址。如果是读则是和共享对象一样，直接读取即可。
+- As soon as a process attempts to write to some page in the private area, the write triggers a **protection fault**.
+
+- Handler creates a new copy of the page in physical memory, updates the page table entry to point to the new copy, and then restores write permissions to the page. 返回时CPU重新执行写操作，将会在新的page上写。
+
+- Copying deferred  as long as  possible. 更有效利用内存。
 
 ### fork
 

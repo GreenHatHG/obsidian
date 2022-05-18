@@ -428,3 +428,41 @@ In either case, once a virtual page is initialized, it is swapped back and forth
 
 在这两种情况下，一旦初始化了虚拟页，它就会在内核维护的一个特殊交换文件之间来回交换。交换文件也称为交换空间或交换区域。需要注意的一点是，在任何时候，交换空间都会限制当前运行的进程可以分配的虚拟页的总量。
 
+### 9.8.1 Shared Objects Revisited
+
+The idea of memory mapping resulted from a clever insight that if the virtual memory system could be integrated into the conventional file system, then it could provide a simple and efficient way to load programs and data into memory.
+
+内存映射的想法源于一个聪明的想法:如果虚拟内存系统可以集成到传统的文件系统中，那么它就可以提供一种简单而有效的方式来将程序和数据加载到内存中。
+
+As we have seen, the process abstraction promises to provide each process with its own private virtual address space that is protected from errant writes or reads by other processes. However, many processes have identical read-only code areas. For example, each process that runs the Linux shell program bash has the same code area. Further, many programs need to access identical copies of readonly run-time library code. For example, every C program requires functions from the standard C library such as printf . It would be extremely wasteful for each process to keep duplicate copies of these commonly used codes in physical memory. Fortunately, memory mapping provides us with a clean mechanism for controlling how objects are shared by multiple processes.
+
+正如我们所看到的，进程抽象承诺为每个进程提供它自己的私有虚拟地址空间，以防止其他进程错误地写或读。但是，许多进程都有相同的只读代码区。例如，运行Linux shell程序bash的每个进程都有相同的代码区。而且，许多程序需要访问只读运行时库代码的相同副本。例如，每个C程序都需要来自标准C库的函数，如printf。对于每个进程来说，在物理内存中保留这些常用代码的副本是极其浪费的。幸运的是，内存映射为我们提供了一种干净的机制来控制多个进程如何共享对象。
+
+An object can be mapped into an area of virtual memory as either a shared object or a private object. If a process maps a shared object into an area of its virtual address space, then any writes that the process makes to that area are visible to any other processes that have also mapped the shared object into their virtual memory. Further, the changes are also reflected in the original object on disk.
+
+对象可以作为共享对象或私有对象映射到虚拟内存区域。如果一个进程将一个共享对象映射到它的虚拟地址空间的某个区域，那么该进程对该区域的任何写操作，对于同样将该共享对象映射到其虚拟内存中的其他进程都是可见的。此外，更改还反映在磁盘上的原始对象中。
+
+Changes made to an area mapped to a private object, on the other hand, are not visible to other processes, and any writes that the process makes to the area are not reflected back to the object on disk. A virtual memory area into which a shared object is mapped is often called a shared area. Similarly for a private area.
+
+另一方面，对映射到私有对象的区域所做的更改对其他进程不可见，进程对该区域所做的任何写入都不会反映回磁盘上的对象。共享对象映射到的虚拟内存区域通常称为共享区域。私人区域也是如此。
+
+Suppose that process 1 maps a shared object into an area of its virtual memory, as shown in Figure 9.29(a) . Now suppose that process 2 maps the same shared object into its address space (not necessarily at the same virtual address as process 1), as shown in Figure 9.29(b) .
+
+假设进程1将一个共享对象映射到它的虚拟内存中，如图9.29(a)所示。现在，假设进程2将同一个共享对象映射到它的地址空间(不一定与进程1在同一个虚拟地址)，如图9.29(b)所示。
+
+Since each object has a unique filename, the kernel can quickly determine that process 1 has already mapped this object and can point the page table entries in process 2 to the appropriate physical pages. The key point is that only a single copy of the shared object needs to be stored in physical memory, even though the object is mapped into multiple shared areas. For convenience, we have shown the physical pages as being contiguous, but of course this is not true in general.
+
+由于每个对象都有一个惟一的文件名，内核可以快速确定进程1已经映射了这个对象，并可以将进程2中的页表项指向适当的物理页。关键在于，即使对象被映射到多个共享区域，也只需要将共享对象的一个副本存储在物理内存中。为了方便起见，我们将物理页面显示为连续的，但当然一般情况下并非如此。
+
+Private objects are mapped into virtual memory using a clever technique known as copy-on-write. A private object begins life in exactly the same way as a shared object, with only one copy of the private object stored in physical memory. For example, Figure 9.30(a) shows a case where two processes have mapped a private object into different areas of their virtual memories but share the same physical copy of the object. For each process that maps the private object, the page table entries for the corresponding private area are flagged as read-only, and the area struct is flagged as private copyon-write. So long as neither process attempts to write to its respective private area, they continue to share a single copy of the object in physical memory. However, as soon as a process attempts to write to some page in the private area, the write triggers a protection fault.
+
+私有对象使用一种称为写时复制(copy-on-write)的聪明技术映射到虚拟内存。私有对象以与共享对象完全相同的方式开始生命，只有一个私有对象的副本存储在物理内存中。例如，图9.30(a)显示了这样一种情况:两个进程将一个私有对象映射到各自虚拟内存的不同区域，但共享该对象的相同物理副本。对于映射私有对象的每个进程，对应的私有区域的页表条目被标记为只读，区域结构被标记为私有copy- write。只要两个进程都没有尝试对各自的私有区域进行写操作，它们就会继续在物理内存中共享该对象的单个副本。但是，一旦进程试图对私有区域中的某个页进行写操作，就会触发保护故障。
+
+When the fault handler notices that the protection exception was caused by the process trying to write to a page in a private copy-onwrite area, it creates a new copy of the page in physical memory, updates the page table entry to point to the new copy, and then restores write permissions to the page, as shown in Figure 9.30(b) . When the fault handler returns, the CPU re-executes the write, which now proceeds normally on the newly created page.
+
+当故障处理程序注意到保护异常是由试图写入私有副本onwrite区域中的页面的进程引起时，它会在物理内存中创建页面的新副本，更新页面表条目以指向新副本，然后恢复对页面的写入权限，如图9.30（b）所示。当故障处理程序返回时，CPU会重新执行写入操作，写入操作现在会在新创建的页面上正常进行。
+
+By deferring the copying of the pages in private objects until the last possible moment, copy-on-write makes the most efficient use of scarce physical memory.
+
+通过将私有对象中的页面复制推迟到最后一刻，写时复制可以最有效地利用稀缺的物理内存。
+
