@@ -157,8 +157,8 @@ write.PTEs in private areas are flagged as read-only.
 
 fork时候会提供一个几乎一样但是独立的虚拟地址空间，如果将所有页表都复制一遍效率很低，COW就提供了一个高效的方法。
 
-- VM and memory mapping explain how fork provides private 
-address space for each process. 
+- VM and memory mapping explain how fork provides private
+address space for each process.
 
 - To create virtual address for new new process：
   - Create exact copies of current mm_struct, vm_area_struct, and page tables.内核只拷贝所有的内核数据结构，无法避免，但是不大。
@@ -173,11 +173,28 @@ address space for each process.
 
 ### execve
 
+Suppose that the program running in the current process makes the following call
+
+```c
+execve("a.out", NULL, NULL);
+```
+
+The execve function **loads and runs** the program contained in the executable object file a.out within the current process, effectively replacing the current program with the a.out program.
+
 ![png](18-Virtual-Memory-Systems/18-vm-systems_29.JPG)
 
-execve做的仅仅是创建一个新的area，映射到想执行的对象文件中，创建.bss和栈，映射到匿名函数，创建Memory mapped region，映射到libc，然后把程序计数器%rip设置为代码区域的入口点。
+- **Delete the existing area** structs in the **user portion** of the current process's virtual address: vm_area_struct’s and page tables
+- **Create vm_area_struct’s and page tables for new areas**
+  - **Map private areas**: Create new area(private copy-on-write) structs
+    - code, data area: mapped to the .text and .data sections of the a.out file.
+    - bss area: demand-zero, mapped to an anonymous file whose size is contained in a.out.
+    - stack, heap area: demand-zero, initially of zero length.
+  - **Map shared areas**: If the a.out program was linked with shared objects, such as the standard C library libc.so , then these objects are dynamically linked into the program, and then mapped into the shared region of the user's virtual address space.
+- **set the program counter** in the current process's context to point to the entry point in the code area.
 
-当程序运行时，并没有加载任何内容，只是在内核中创建了数据结构和内存映射，还没有任何内容拷贝到内存。
+The next time this process is scheduled, it will begin execution from the entry point. Linux will **swap in code and data pages as needed**.
+
+只是在内核中创建了数据结构和内存映射，还没有任何内容拷贝到内存。
 
 ### User-Level Memory Mapping
 
