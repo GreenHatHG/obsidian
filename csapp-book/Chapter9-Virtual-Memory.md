@@ -574,3 +574,69 @@ The remainder of this section discusses the design and implementation of explici
 
 本节的剩余部分将讨论显式分配器的设计和实现。我们将在9.10节讨论隐式分配器。具体来说，我们的讨论集中在管理堆内存的分配器上。但是，您应该意识到内存分配是一个在各种环境中出现的一般概念。例如，对图形进行密集操作的应用程序通常会使用标准分配器来获取一大块虚拟内存，然后在创建和销毁图形节点时，使用特定于应用程序的分配器来管理该块内存。
 
+### 9.9.1 The malloc and free Functions
+
+The C standard library provides an explicit allocator known as the malloc package. Programs allocate blocks from the heap by calling the malloc function.
+
+C标准库提供了一个显式的分配器，称为malloc包。程序通过调用malloc函数从堆中分配块。
+
+Aside How big is a word? Recall from our discussion of machine code in Chapter 3 that Intel refers to 4-byte objects as double words. However, throughout this section, we will assume that words are 4-byte objects and that double words are 8-byte objects, which is consistent with conventional terminology.
+
+一个词有多大?回想一下我们在第3章中对机器代码的讨论，Intel将4字节对象称为双字。然而，在本节中，我们将假设单词是4字节的对象，双单词是8字节的对象，这与传统术语是一致的。
+
+The malloc function returns a pointer to a block of memory of at least size bytes that is suitably aligned for any kind of data object that might be contained in the block. In practice, the alignment depends on whether the code is compiled to run in 32-bit mode ( gcc –m32 ) or 64bit mode (the default). In 32-bit mode, malloc returns a block whose address is always a multiple of 8. In 64-bit mode, the address is always a multiple of 16.
+
+malloc 函数返回一个指向内存块的指针，该内存块至少为 size 字节，该内存块针对可能包含在该块中的任何类型的数据对象进行了适当对齐。实际上，对齐方式取决于代码是编译为在 32 位模式（ gcc –m32 ）还是 64 位模式（默认）下运行。在 32 位模式下，malloc 返回一个地址始终是 8 的倍数的块。在 64 位模式下，地址始终是 16 的倍数。
+
+If malloc encounters a problem (e.g., the program requests a block of memory that is larger than the available virtual memory), then it returns NULL and sets errno . Malloc does not initialize the memory it returns. Applications that want initialized dynamic memory can use calloc , a thin wrapper around the malloc function that initializes the allocated memory to zero . Applications that want to change the size of a previously allocated block can use the realloc function.
+
+如果 malloc 遇到问题（例如，程序请求的内存块大于可用的虚拟内存），则它返回 NULL 并设置 errno 。 Malloc 不会初始化它返回的内存。需要初始化动态内存的应用程序可以使用 calloc，它是 malloc 函数的一个瘦包装器，可将分配的内存初始化为零。想要更改先前分配的块大小的应用程序可以使用 realloc 函数。
+
+Dynamic memory allocators such as malloc can allocate or deallocate heap memory explicitly by using the mmap and munmap functions, or they can use the sbrk function:
+
+动态内存分配器（例如 malloc）可以使用 mmap 和 munmap 函数显式分配或取消分配堆内存，也可以使用 sbrk 函数：
+
+The sbrk function grows or shrinks the heap by adding incr to the kernel's brk pointer. If successful, it returns the old value of brk , otherwise it returns –1 and sets errno to ENOMEM. If incr is zero, then sbrk returns the current value of brk . Calling sbrk with a negative incr is legal but tricky because the return value (the old value of brk ) points to abs (incr) bytes past the new top of the heap.
+
+sbrk函数通过向内核的brk指针添加incr来增加或减少堆。如果成功，它返回原来的brk值，否则返回-1并将errno设置为ENOMEM。如果incr为零，则sbrk返回brk的当前值。使用负的incr调用sbrk是合法的，但需要技巧，因为返回值(brk的旧值)指向堆新顶部之后的abs (incr)字节。
+
+Programs free allocated heap blocks by calling the free function.
+
+程序通过调用free函数来释放已分配的堆块。
+
+The ptr argument must point to the beginning of an allocated block that was obtained from malloc, calloc , or realloc . If not, then the behavior of free is undefined. Even worse, since it returns nothing, free gives no indication to the application that something is wrong. As we shall see in Section 9.11 , this can produce some baffling run-time errors.
+
+ptr参数必须指向从malloc、calloc或realloc获得的已分配块的开头。如果不是，那么自由的行为是未定义的。更糟糕的是，由于它不返回任何东西，free没有向应用程序提示哪里出了问题。正如我们将在第9.11节中看到的，这可能会产生一些令人困惑的运行时错误。
+
+Figure 9.34 Allocating and freeing blocks with malloc and free . Each square corresponds to a word. Each heavy rectangle corresponds to a block. Allocated blocks are shaded. Padded regions of allocated blocks are shaded with a darker blue. Free blocks are unshaded. Heap addresses increase from left to right.
+
+图9.34使用Malloc和FREE来分配和释放块。每个方块对应一个单词。每个较大的矩形对应一个块。已分配的块显示为阴影。已分配块的填充区域用较深的蓝色阴影。可用块未加阴影。堆地址从左到右递增。
+
+Figure 9.34 shows how an implementation of malloc and free might manage a (very) small heap of 16 words for a C program. Each box represents a 4-byte word. The heavy-lined rectangles correspond to allocated blocks (shaded) and free blocks (unshaded). Initially, the heap consists of a single 16-word double-word-aligned free block.
+
+图9.34显示了Malloc和Free的实现如何管理一个C程序的(非常)16个单词的小堆。每个框代表一个4字节字。粗线矩形对应于已分配块(带阴影)和空闲块(未带阴影)。最初，堆由一个16字、双字对齐的空闲块组成。
+
+1. Throughout this section, we will assume that the allocator returns blocks aligned to 8-byte double-word boundaries
+
+1.在本节中，我们假设分配器返回与8字节双字边界对齐的块
+
+Figure 9.34(a) . The program asks for a four-word block. Malloc responds by carving out a four-word block from the front of the free block and returning a pointer to the first word of the block.
+
+图9.34(A)。该程序要求四个字的区块。Malloc的响应是从空闲块的前面切出一个四字块，并返回指向该块第一个字的指针。
+
+Figure 9.34(b) . The program requests a five-word block. Malloc responds by allocating a six-word block from the front of the free block. In this example, malloc pads the block with an extra word in order to keep the free block aligned on a double-word boundary
+
+图9.34(B)。该程序要求一个五字块。Malloc的响应是从空闲块的前面分配一个六字块。在本例中，为了使空闲块在双字边界上对齐，Malloc用一个额外的字填充块
+
+Figure 9.34(c) . The program requests a six-word block and malloc responds by carving out a six-word block from the free block.
+
+图9.34(C)。程序请求一个六字的块，而Malloc的响应是从空闲块中切出一个六字的块。
+
+Figure 9.34(d) . The program frees the six-word block that was allocated in Figure 9.34(b) . Notice that after the call to free returns, the pointer p2 still points to the freed block. It is the responsibility of the application not to use p2 again until it is reinitialized by a new call to malloc .
+
+图9.34(D)。该程序释放了图9.34(B)中分配的六字块。注意，在对Free的调用返回之后，指针p2仍然指向freed块。在通过对Malloc的新调用重新初始化P2之前，应用程序有责任不再使用P2。
+
+Figure 9.34(e) . The program requests a two-word block. In this case, malloc allocates a portion of the block that was freed in the previous step and returns a pointer to this new block.
+
+图9.34(E)。该程序请求一个两个字的块。在这种情况下，Malloc分配在上一步中释放的块的一部分，并返回指向这个新块的指针。
+
