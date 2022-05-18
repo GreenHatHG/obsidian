@@ -480,3 +480,35 @@ When the fork returns in the new process, the new process now has an exact copy 
 
 当fork在新进程中返回时，新进程现在拥有了调用该fork时存在的虚拟内存的确切副本。当其中一个进程执行任何后续写操作时，即写即拷机制将创建新页面，从而为每个进程保留一个私有地址空间的抽象。
 
+### 9.8.3 The execve Function Revisited
+
+Virtual memory and memory mapping also play key roles in the process of loading programs into memory. Now that we understand these concepts, we can understand how the execve function really loads and executes programs. Suppose that the program running in the current process makes the following call:
+
+虚拟内存和内存映射在将程序加载到内存的过程中也起着关键作用。既然我们理解了这些概念，我们就可以理解execute函数是如何真正加载和执行程序的。假设在当前进程中运行的程序进行了以下调用:
+
+execve("a.out", NULL, NULL);
+
+As you learned in Chapter 8 , the execve function loads and runs the program contained in the executable object file a.out within the current process, effectively replacing the current program with the a.out program. Loading and running a.out requires the following steps:
+
+正如您在第8章中所学到的，执行函数在当前进程中加载并运行可执行对象文件a.out中包含的程序，从而有效地将当前程序替换为a.out程序。加载和运行a.out需要以下步骤:
+
+Delete existing user areas. Delete the existing area structs in the user portion of the current process's virtual address.
+
+删除已有用户区域。删除当前进程虚拟地址的用户部分中的现有区域结构。
+
+Map private areas. Create new area structs for the code, data, bss, and stack areas of the new program. All of these new areas are private copy-on-write. The code and data areas are mapped to the .text and .data sections of the a.out file. The bss area is demand-zero, mapped to an anonymous file whose size is contained in a.out . The stack and heap area are also demand-zero, initially of zero length. Figure 9.31 summarizes the different mappings of the private areas.
+
+映射私人区域。为新程序的代码、数据、bss 和堆栈区域创建新的区域结构。所有这些新区域都是私有的写时复制。代码和数据区域映射到 a.out 文件的 .text 和 .data 部分。 bss 区域的需求为零，映射到一个匿名文件，其大小包含在 a.out 中。堆栈和堆区域也是零需求，最初的长度为零。图 9.31 总结了私有区域的不同映射。
+
+Map shared areas. If the a.out program was linked with shared objects, such as the standard C library libc.so , then these objects are dynamically linked into the program, and then mapped into the shared region of the user's virtual address space.
+
+映射共享区域。如果 a.out 程序与共享对象链接，例如标准 C 库 libc.so ，那么这些对象会动态链接到程序中，然后映射到用户虚拟地址空间的共享区域。
+
+Set the program counter (PC). The last thing that execve does is to set the program counter in the current process's context to point to the entry point in the code area.
+
+设置程序计数器 (PC)。 execve 做的最后一件事是设置当前进程上下文中的程序计数器指向代码区的入口点。
+
+The next time this process is scheduled, it will begin execution from the entry point. Linux will swap in code and data pages as needed.
+
+下次安排此进程时，它将从入口点开始执行。 Linux 将根据需要交换代码和数据页。
+

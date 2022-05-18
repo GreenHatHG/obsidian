@@ -157,15 +157,17 @@ write.PTEs in private areas are flagged as read-only.
 
 fork时候会提供一个几乎一样但是独立的虚拟地址空间，如果将所有页表都复制一遍效率很低，COW就提供了一个高效的方法。
 
- To create virtual address for new new process：
+- VM and memory mapping explain how fork provides private 
+address space for each process. 
 
-- Create exact copies of current mm_struct, vm_area_struct, and page tables.内核只拷贝所有的内核数据结构，无法避免，但是不大。
-- Flag each page in both processes as read-only.
-- Flag each vm_area_struct in both processes as private COW.
+- To create virtual address for new new process：
+  - Create exact copies of current mm_struct, vm_area_struct, and page tables.内核只拷贝所有的内核数据结构，无法避免，但是不大。
+  - Flag each page in both processes as read-only.
+  - Flag each vm_area_struct in both processes as private COW.
 
-On return, each process has exact copy of virtual memory
+- On return, each process has exact copy of virtual memory
 
-Subsequent writes create new pages using COW mechanism.
+- Subsequent(*后续*) writes create new pages using COW mechanism.
 
 本质是让copy延迟了，只有在写时候才复制。
 
