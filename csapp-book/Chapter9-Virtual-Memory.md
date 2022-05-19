@@ -658,3 +658,53 @@ Dynamic memory allocation is a useful and important programming technique. Howev
 
 动态内存分配是一种有用且重要的编程技术。然而，为了正确有效地使用分配器，程序员需要了解它们是如何工作的。在第9.11节中，我们将讨论一些由于不恰当地使用分配器而导致的可怕错误。
 
+### 9.9.3 Allocator Requirements and Goals
+
+Explicit allocators must operate within some rather stringent constraints:
+
+显式分配器必须在一些相当严格的约束下操作:
+
+Handling arbitrary request sequences. An application can make an arbitrary sequence of allocate and free requests, subject to the constraint that each free request must correspond to a currently allocated block obtained from a previous allocate request. Thus, the allocator cannot make any assumptions about the ordering of allocate and free requests. For example, the allocator cannot assume that all allocate requests are accompanied by a matching free request, or that matching allocate and free requests are nested.
+
+处理任意请求序列。应用程序可以发出任意序列的分配和释放请求，受制于每个释放请求必须对应于从先前分配请求获得的当前分配块的约束。因此，分配器不能对分配和释放请求的顺序做出任何假设。例如，分配器不能假设所有的分配请求都伴随着一个匹配的空闲请求，或者匹配的分配和空闲请求是嵌套的。
+
+Making immediate responses to requests. The allocator must respond immediately to allocate requests. Thus, the allocator is not allowed to reorder or buffer requests in order to improve performance.
+
+立即响应请求。分配器必须立即响应分配请求。因此，分配器不允许重新排序或缓冲请求以提高性能。
+
+Using only the heap. In order for the allocator to be scalable, any nonscalar data structures used by the allocator must be stored in the heap itself.
+
+只使用堆。为了使分配器可伸缩，分配器使用的任何非标量数据结构都必须存储在堆本身中。
+
+Aligning blocks (alignment requirement). The allocator must align blocks in such a way that they can hold any type of data object.
+
+对齐块（对齐要求）。分配器必须对齐块，以便它们可以容纳任何类型的数据对象。
+
+Not modifying allocated blocks. Allocators can only manipulate or change free blocks. In particular, they are not allowed to modify or move blocks once they are allocated. Thus, techniques such as compaction of allocated blocks are not permitted.
+
+不修改分配的块。分配器只能操作或更改空闲块。特别是，一旦分配了块，就不允许它们修改或移动块。因此，不允许使用诸如压缩分配块的技术。
+
+Working within these constraints, the author of an allocator attempts to meet the often conflicting performance goals of maximizing throughput and memory utilization.
+
+在这些限制条件下，分配器的作者试图满足经常相互冲突的性能目标，即最大化吞吐量和内存利用率。
+
+Goal 1: Maximizing throughput. Given some sequence of n allocate and free requests
+
+目标 1：最大化吞吐量。给定一些 n 分配和释放请求的序列
+
+we would like to maximize an allocator's throughput, which is defined as the number of requests that it completes per unit time. For example, if an allocator completes 500 allocate requests and 500 free requests in 1 second, then its throughput is 1,000 operations per second. In general, we can maximize throughput by minimizing the average time to satisfy allocate and free requests. As we'll see, it is not too difficult to develop allocators with reasonably good performance where the worst-case running time of an allocate request is linear in the number of free blocks and the running time of a free request is constant.
+
+我们希望最大化分配器的吞吐量，其定义为单位时间内完成的请求数。例如，如果一个分配器在1秒内完成500个分配请求和500个空闲请求，则其吞吐量为每秒1,000个操作。通常，我们可以通过最小化满足分配和释放请求的平均时间来最大化吞吐量。正如我们将看到的，开发具有相当好的性能的分配器并不是太困难，其中分配请求的最坏情况下的运行时间与空闲块的数量成线性关系，而空闲请求的运行时间是恒定的。
+
+Goal 2: Maximizing memory utilization. Naive programmers often incorrectly assume that virtual memory is an unlimited resource. In fact, the total amount of virtual memory allocated by all of the  processes in a system is limited by the amount of swap space on disk. Good programmers know that virtual memory is a finite resource that must be used efficiently. This is especially true for a dynamic memory allocator that might be asked to allocate and free large blocks of memory.
+
+目标2：最大限度地提高内存利用率。天真的程序员经常错误地认为虚拟内存是一种无限的资源。事实上，系统中所有进程分配的虚拟内存总量受磁盘上的交换空间量的限制。优秀的程序员知道，虚拟内存是一种有限的资源，必须得到有效利用。对于可能被要求分配和释放大量内存块的动态内存分配器而言，情况尤其如此。
+
+There are a number of ways to characterize how efficiently an allocator uses the heap. In our experience, the most useful metric is peak utilization. As before, we are given some sequence of n allocate and free requests
+
+有许多方法可以表征分配器使用堆的效率。根据我们的经验，最有用的指标是峰值利用率。与前面一样，我们得到n个分配请求和空闲请求的一些序列
+
+The objective of the allocator, then, is to maximize the peak utilization U over the entire sequence. As we will see, there is a tension between maximizing throughput and utilization. In particular, it is easy to write an allocator that maximizes throughput at the expense of heap utilization. One of the interesting challenges in any allocator design is finding an appropriate balance between the two goals.
+
+因此，分配器的目标是最大化整个序列上的峰值利用率U。正如我们将看到的，在最大化吞吐量和利用率之间存在着矛盾。特别是，很容易编写一个以牺牲堆利用率为代价来最大化吞吐量的分配器。在任何分配器设计中，一个有趣的挑战是在这两个目标之间找到适当的平衡。
+
