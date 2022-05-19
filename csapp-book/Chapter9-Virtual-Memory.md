@@ -640,3 +640,21 @@ Figure 9.34(e) . The program requests a two-word block. In this case, malloc all
 
 图9.34(E)。该程序请求一个两个字的块。在这种情况下，Malloc分配在上一步中释放的块的一部分，并返回指向这个新块的指针。
 
+### 9.9.2 Why Dynamic Memory Allocation?
+
+The most important reason that programs use dynamic memory allocation is that often they do not know the sizes of certain data structures until the program actually runs. For example, suppose we are asked to write a C program that reads a list of n ASCII integers, one integer per line, from stdin into a C array. The input consists of the integer n, followed by the n integers to be read and stored into the array. The simplest approach is to define the array statically with some hard-coded maximum array size:
+
+程序使用动态内存分配的最重要原因是，在程序实际运行之前，它们通常不知道某些数据结构的大小。例如，假设我们被要求编写一个C程序，从stdin读入一个包含n个ASCII整数的列表，每行一个整数。输入包括整数n，后跟要读取并存储到数组中的n个整数。最简单的方法是用一些硬编码的最大数组大小静态定义数组:
+
+Allocating arrays with hard-coded sizes like this is often a bad idea. The value of MAXN is arbitrary and has no relation to the actual amount of available virtual memory on the machine. Further, if the user of this program wanted to read a file that was larger than MAXN, the only recourse would be to recompile the program with a larger value of MAXN. While not a problem for this simple example, the presence of hard-coded array bounds can become a maintenance nightmare for large software products with millions of lines of code and numerous users.
+
+像这样分配具有硬编码大小的数组通常不是一个好主意。MAXN的值是任意的，与机器上可用虚拟内存的实际数量无关。而且，如果该程序的用户想要读取大于MAXN的文件，惟一的办法就是用更大的MAXN值重新编译该程序。虽然对于这个简单的示例来说不是问题，但硬编码的数组边界的存在可能成为拥有数百万行代码和众多用户的大型软件产品的维护噩梦。
+
+A better approach is to allocate the array dynamically, at run time, after the value of n becomes known. With this approach, the maximum size of the array is limited only by the amount of available virtual memory.
+
+更好的方法是在运行时，在n的值已知之后动态分配数组。使用这种方法，数组的最大大小仅受可用虚拟内存数量的限制。
+
+Dynamic memory allocation is a useful and important programming technique. However, in order to use allocators correctly and efficiently, programmers need to have an understanding of how they work. We will discuss some of the gruesome errors that can result from the improper use of allocators in Section 9.11 .
+
+动态内存分配是一种有用且重要的编程技术。然而，为了正确有效地使用分配器，程序员需要了解它们是如何工作的。在第9.11节中，我们将讨论一些由于不恰当地使用分配器而导致的可怕错误。
+
