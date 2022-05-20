@@ -82,3 +82,28 @@ SELECT *,
 |53666|15-721|C|2|
 |53688|15-826|B|1|
 
+使用窗口函数的好处是能够看到表的其他列，如果只是用聚合函数，则不能得到别的列：
+
+```sql
+SELECT MIN(grade) FROM enrolled GROUP BY cid;
+```
+
+## Common Table Expressions
+
+with子句会在执行正常查询之前执行
+
+Find student record with the highest id that is enrolled  in at least one course：
+
+```sql
+WITH cteSource (maxId) AS (
+  SELECT MAX(sid) FROM enrolled
+) 
+SELECT name FROM student, cteSource
+  WHERE student.sid = cteSource.maxId
+```
+
+CTE特别之处是可以进行递归，嵌套查询则不能，但是很少用CTE来实现递归
+
+<img src="CMU445-2-Advanced-SQL/02-advancedsql_69.JPG" width="50%">
+
+上图生成1~10序列，counter会将上一个结果作为参数传递给下一查询。
