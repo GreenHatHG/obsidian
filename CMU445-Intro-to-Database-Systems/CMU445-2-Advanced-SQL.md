@@ -50,3 +50,35 @@ SELECT cid, sid,
 |15-721|53666|2|
 |15-826|53688|1|
 
+### RANK
+
+You can also include an `ORDER BY` in the window  grouping to sort entries in each group.
+
+Find the student with the highest grade for each course:
+
+<img src="CMU445-2-Advanced-SQL/02-advancedsql_63.JPG" width="50%">
+
+|sid|cid|grade|rank|
+|:----|:----|:----|:----|
+|53655|15-445|B|1|
+|53688|15-721|A|1|
+|53688|15-826|B|1|
+
+RANK：分组排序后对组内进行排名。如果没有事先排序，则输出的rank列的值都是1
+
+```sql
+SELECT *, 
+    RANK() OVER (
+        PARTITION BY cid 
+        ORDER BY grade ASC) AS rank
+    FROM enrolled
+```
+
+|sid|cid|grade|rank|
+|:----|:----|:----|:----|
+|53655|15-445|B|1|
+|53666|15-445|C|2|
+|53688|15-721|A|1|
+|53666|15-721|C|2|
+|53688|15-826|B|1|
+
