@@ -90,3 +90,35 @@ How the DBMS represents the  database in files on disk.
 
 ### Page Directory
 
+![png](CMU445-Database-Storage1/03-storage1_37.JPG)
+
+DBMS maintains special pages that track **locations of data pages** along with(*以及*) the mount of **free space on each page**.
+
+如果数据库用的page比较大，那么page directory记录的个数就会变少，查找就会变快，并且类似于缓存一样，出现cache miss的次数就会变少(承载的数据变多了)，但是写入代价就会变大，需要硬件只保证小page的原子性。
+
+## Page Layout
+
+- Every page includes a **header** that records meta-data about the page’s contents
+  - Page size
+  - Checksum
+  - DBMS version: 不同版本的layout可能不一样
+  - Transaction visibility
+  - Compression Information
+  - Some systems require pages to be self-contained (e.g oracle)
+
+### Tuple Storage
+
+#### strawman idea
+
+![png](CMU445-Database-Storage1/03-storage1_45.JPG)
+
+Strawman(*稻草人*) Idea: 统计Num Tuples，就可以知道下一个tuple插到哪个位置。但是删除中间的tuple的时候，只能将被删除点之后的tuple往上移动，或者是释放掉被删除点，然后插入新的数据，但是释放后的空间可能存不下新数据。
+
+#### slotted pages
+
+![png](CMU445-Database-Storage1/03-storage1_47.JPG)
+
+- tuple由page id和slot number确定的
+- The page is considered full when the slot array and the tuple data meet.
+  ![png](CMU445-Database-Storage1/2022-05-23_162101.png)
+- 有时候剩下部分空间太小不足以存储数据，我们可以进行vaccum(postgresql中的一个操作，用于整理数据库)或者compaction。
