@@ -12,7 +12,7 @@
 
 - The buffer pool manager will ensure that the page is there while the execution engine is operating on that memory.
 
-<img src="CMU445-Database-Storage1/03-storage1_16.JPG" width="50%">
+![png](CMU445-Database-Storage1/03-storage1_16.JPG)
 
 ## why not use the os
 
@@ -79,7 +79,7 @@ How the DBMS represents the  database in files on disk.
 
 ### Linked List
 
-<img src="CMU445-Database-Storage1/03-storage1_36.JPG" width="50%">
+![png](CMU445-Database-Storage1/03-storage1_36.JPG)
 
 - Maintain a **header page** at the beginning of the file that stores two pointers:
   - HEAD of the **free page** list.
