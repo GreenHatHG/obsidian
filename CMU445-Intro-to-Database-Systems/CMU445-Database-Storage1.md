@@ -122,3 +122,85 @@ Strawman(*稻草人*) Idea: 统计Num Tuples，就可以知道下一个tuple插�
 - The page is considered full when the slot array and the tuple data meet.
   ![png](CMU445-Database-Storage1/2022-05-23_162101.png)
 - 有时候剩下部分空间太小不足以存储数据，我们可以进行vaccum(postgresql中的一个操作，用于整理数据库)或者compaction。
+- 一般一个page只放一个表的tuple以及尽量将整个tuple放在一个page。
+
+#### Record ids
+
+- Each tuple is assigned a unique **record identifier**. 一般用`page_id + offset/slot number`表示。
+
+- 好处是不管移动page还是page内移动数据，只要更新page directory和slot array即可，上层依旧可以用page_id和slot number去定位tuple的位置。
+
+在PostgreSQL中用`ctid`表示某一个tuple的物理位置，输出格式为`(page_id, slot number)`
+
+```sql
+SELECT ctid, * FROM enrolled
+```
+
+|ctid|sid|cid|grade|
+|:----|:----|:----|:----|
+|(0,1)|53666|15-445|C|
+|(0,2)|53688|15-721|A|
+|(0,3)|53688|15-826|B|
+
+第一个tuple放在page 0的slot 1处，实际上并没有保存这个数据，在执行查询的时候产生的。
+
+删除掉第二个数据后
+|ctid|sid|cid|grade|
+|:----|:----|:----|:----|
+|(0,1)|53666|15-445|C|
+|(0,3)|53688|15-826|B|
+
+插入一条新数据
+
+|ctid|sid|cid|grade|
+|:----|:----|:----|:----|
+|(0,1)|53666|15-445|C|
+|(0,3)|53688|15-826|B|
+|(0,4)|53655|15-445|B|
+
+在PostgreSQL中会将数据插在后面，放着空slot不管。SQL server则会在插入之前先整理page，比如`(0,0),(0,2)`插入一条数据会变成`(0,0),(0,1),(0,2)`，`(0,3)`为新插入的数据
+
+使用vacuum可以整理page
+
+```sql
+VACUUM FULL;
+```
+
+|ctid|sid|cid|grade|
+|:----|:----|:----|:----|
+|(0,1)|53666|15-445|C|
+|(0,2)|53688|15-826|B|
+|(0,3)|53655|15-445|B|
+
+## Tuple Layout
+
+- A tuple is essentially(*本质上*) **a sequence of bytes**. It is DBMS’s job to interpret those bytes into **attribute types and values**. So we have to define the schema.
+
+### Tuple Header
+
+- Each tuple is prefixed with a **header** that contains meta-data about it.
+  - **Visibility information** for the DBMS’s concurrency control protocol (i.e., information about which
+transaction created/modified that tuple).
+  - Bit Map for **NULL** values.
+  ![png](CMU445-Database-Storage1/03-storage1_55.JPG)
+
+### Tuple Data
+
+- Tuple Data: Actual data for attributes.
+
+- Most DBMSs do not allow a tuple to exceed(*超过*) the size of a page.
+
+![png](CMU445-Database-Storage1/2022-05-24_175646.png)
+
+### Denormalized(*非规范化*) Tuple Data
+
+If two tables are related, the DBMS can “pre-join” them, so the tables end up
+on the **same page**.
+
+This makes **reads faster** since the DBMS only has to load in one page rather than two separate pages, but it makes **updates more expensive** since the DBMS needs more space for each tuple.
+
+应用程序看来是两张表，但是实际上是存在同一个page中。
+
+![png](CMU445-Database-Storage1/20220524180841.png)
+
+现实中一般不会这样做，按照规范，将数据拆分到不同的表就好。
