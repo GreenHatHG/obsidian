@@ -179,13 +179,15 @@ VACUUM FULL;
 ![png](CMU445-Database-Storage1/04-storage2_7.JPG)
 
 - 方便回滚（比如1000行只修改了一行只需要删除这条修改记录），写入快（有一个更新语句需要更新10个page，但是一条日志只需要写一个page就行，disk顺序访问也比随机访问快）
-- 读取慢，需要在日志中查找对应的tuple并计算结果。但是可以建立索引直接跳转到特定位置，并且定期压缩日志提高速度。
+- 读取慢，需要在日志中查找对应的tuple并计算结果。但是可以建立索引直接跳转到特定位置，并且定期压缩日志变成只插入日志以提高速度。
   ![png](CMU445-Database-Storage1/04-storage2_9.JPG)
   ![png](CMU445-Database-Storage1/04-storage2_11.JPG)
 
 ## Tuple Layout
 
-- A tuple is essentially(*本质上*) **a sequence of bytes**. It is DBMS’s job to interpret those bytes into **attribute types and values**. So we have to define the schema.
+- A tuple is essentially(*本质上*) **a sequence of bytes**. It is DBMS’s job to interpret those bytes into **attribute types and values**.
+
+- The DBMS's catalogs contain the schema information about tables that the system uses to figure out the tuple's layout.
 
 ### Tuple Header
 
