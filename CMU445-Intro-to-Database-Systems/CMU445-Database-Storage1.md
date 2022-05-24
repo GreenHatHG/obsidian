@@ -106,7 +106,9 @@ DBMS maintains special pages that track **locations of data pages** along with(*
   - Compression Information
   - Some systems require pages to be self-contained (e.g oracle)
 
-### Tuple Storage
+- How to organize the data stored inside of the page: Tuple-oriented / Log-structured
+
+### Tuple-oriented
 
 #### strawman idea
 
@@ -171,6 +173,15 @@ VACUUM FULL;
 |(0,1)|53666|15-445|C|
 |(0,2)|53688|15-826|B|
 |(0,3)|53655|15-445|B|
+
+### Log-structured
+
+![png](CMU445-Database-Storage1/04-storage2_7.JPG)
+
+- 方便回滚（比如1000行只修改了一行只需要删除这条修改记录），写入快（有一个更新语句需要更新10个page，但是一条日志只需要写一个page就行，disk顺序访问也比随机访问快）
+- 读取慢，需要在日志中查找对应的tuple并计算结果。但是可以建立索引直接跳转到特定位置，并且定期压缩日志提高速度。
+  ![png](CMU445-Database-Storage1/04-storage2_9.JPG)
+  ![png](CMU445-Database-Storage1/04-storage2_11.JPG)
 
 ## Tuple Layout
 
