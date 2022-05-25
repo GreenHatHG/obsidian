@@ -49,3 +49,68 @@ A **data representation** scheme is how a DBMS stores the bytes for a value.
   - DBMSs also have non-standard shortcuts to retrieve(*检索*) this information.
   ![png](CMU445-Database-Storage2/04-storage2_26.JPG)
   ![png](CMU445-Database-Storage2/04-storage2_27.JPG)
+
+## Workloads
+
+HTAP: hyper transaction analytical processing，比如查询分析推荐
+
+![png](CMU445-Database-Storage2/20220525231405.png)
+
+- 对于传统的NoSQL数据库MongoDB、Cassandra、Redis属于OLTP那块。在某些分析方面，MongoDB也做了一些支持，但是比不上列存储数据库。
+
+- MySQL、PostgreSQL支持一些属于OLAP的查询，但也比不上列存储数据库
+
+- 谷歌推出了NoSQL数据库HBase(OLTP)、BigTable(OLTP)、Hadoop(OLAP)，不支持SQL、事务处理、Join操作。
+
+- NewSQL：为OLTP提供NoSQL的特性，但是又支持传统事务的ACID保证。
+
+## Data Storage Models
+
+The DBMS can store tuples in different ways that  are better for either OLTP or OLAP workloads.
+
+Row stores are usually better for OLTP, while column stores ar better for OLAP.
+
+### n-ary storage model(NSM)
+
+- The DBMS stores all of the attributes for a single tuple contiguously, so NSM is also known as a “row store.”
+
+- Ideal for(*适合*) OLTP workloads where transactions tend to(*倾向*) operate only an individual entity and insert heavy workloads. 
+
+查询根据索引给出的page_id和slot number定位到tuple，插入时候数据连续放在一起。
+
+![png](CMU445-Database-Storage2/20220525234515.png)
+
+统计每个月的主机名以.gov结尾的用户登录数量，我们要对整个用户账号表进行循序扫描，根据他们的hostname，以此来找到所有的.gov结尾的账号。
+
+![png](CMU445-Database-Storage2/04-storage2_43.JPG)
+
+磁盘读取是以page为单位，没办法直接拿到hostname和lastLogin那列，为了读取两列，需要将整个page放到内存(buffer pool)中，而大部分列是没有用到的。
+
+- Advantages
+  - Fast inserts, updates, and deletes.
+  - Good for queries that need the entire tuple.
+- Disadvantages
+  - Not good for scanning large portions of the table and/or a subset of the attributes.
+
+### Decompositio(*分散*) Storage Model (DSM)
+
+- The DBMS stores a single attribute (column) for all tuples contiguously in a block of data. Also known as a “column store.”
+
+- Ideal for OLAP workloads where read-only queries perform large scans over a subset of the table’s attributes.
+
+![png](CMU445-Database-Storage2/04-storage2_47.JPG)
+
+- To put the tuples back together(*重新组合*) when we are using a column store, we can use:
+
+  - **Fixed-length Offsets(most commonly)**
+    - Each value is the same length for an attribute.  
+    - Then when the system wants the attribute for a specific tuple, it knows how to jump to that spot in the file. 对于可变的数据，可以压缩或者填充变为同样大小的。
+  - Embedded Tuple Ids
+    - Each value is stored with its tuple id in a column.
+    - The system would also need extra information to tell it how to jump to every attribute that has that id.
+
+- Advantages
+  - Reduces the amount of wasted work during query execution because the DBMS only reads the data that it needs for that query.
+  - Enables better compression because all of the values for the same attribute are stored contiguously.
+- Disadvantages
+  - Slow for point queries, inserts, updates, and deletes because of tuple splitting/stitching.
