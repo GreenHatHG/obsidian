@@ -25,9 +25,13 @@ A **data representation** scheme is how a DBMS stores the bytes for a value.
 
 - An array of bytes of arbitrary length.
 - Has a header that keeps track of the length of the string to make it easy to jump to the next value.
-- 大多数 DBMS 不允许tuple超过单个page的大小，因此它们通过将值写入overflow(*溢出*) page并让tuple包含对该page的引用来解决此问题。
-- Some systems will let you store these large values in an external file, and then the tuple will contain a pointer to that file. One downside(*缺点*) of this is that the DBMS cannot manipulate(*操作*) the contents of this file.
-- For example, if our database is storing photo information, we can store the photos in the external files rather than having them take up large amounts of space in the DBMS. 
+- 大多数 DBMS 不允许tuple超过单个page的大小，因此它们通过将值写入overflow(*溢出*) page并让tuple包含对该page的引用来解决此问题。如果一个overflow page不够则再指向另外一个。
+  ![png](CMU445-Database-Storage2/04-storage2_21.JPG)
+
+- Some systems will let you store these large values in an external file, and then the tuple will contain a pointer to that file.
+  - For example, if our database is storing photo information, we can store the photos in the external files rather than having them take up large amounts of space in the DBMS.
+  - One downside(*缺点*) of this is that the DBMS cannot manipulate(*操作*) the contents of this file.
+    ![png](CMU445-Database-Storage2/04-storage2_22.JPG)
 - Example: `VARCHAR`, `VARBINARY`, `TEXT`, `BLOB`.
 
 ### Dates and Times
@@ -35,3 +39,13 @@ A **data representation** scheme is how a DBMS stores the bytes for a value.
 - Usually, these are represented as the number of (micro/milli)seconds since the unix epoch(从1970-01-01开始).
 - Example: `TIME`, `DATE`, `TIMESTAMP`.
 
+## System catalog
+
+- In order for the DBMS to be able to read these values, it maintains an internal **catalog** to tell it meta-data about the databases. 
+  - Tables, columns, indexes, views, users, permissions, internal statistics(多少个唯一值等)
+  - 很多数据库系统都会将它们的Catalog用另一张表来保存
+- You can query the DBMS’s internal **INFORMATION_SCHEMA** catalog to get info about the database.
+  - ANSI standard set of read-only views that provide info about all of the tables, views, columns, and procedures in a database.
+  - DBMSs also have non-standard shortcuts to retrieve(*检索*) this information.
+  ![png](CMU445-Database-Storage2/04-storage2_26.JPG)
+  ![png](CMU445-Database-Storage2/04-storage2_27.JPG)
