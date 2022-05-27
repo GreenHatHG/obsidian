@@ -57,3 +57,19 @@ Threads set this flag when it modifies a page. This indicates to storage manager
   - `Hashing`: 对record id进行hash，通过Hash(x)确定在pool中的哪个位置，通过`Hash(x)%n`(num buffer pool)确定在哪个buffer pool。
   ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_23.JPG)
   
+#### Pre-Fetching
+
+The DBMS can also prefetch pages based on a query plan.
+
+即减少从磁盘读取产生的停顿，额外加载多一点数据到内存。mmap本身就支持prefetch功能，但是只在Sequential Scans的情况下才生效，因为读取是顺序的，正好操作系统也把要读的下一page提前加载到了内存。
+
+如下，读取到page1的时候，page1没有在内存，把page1加载到内存的时候，顺便把page2，3也加载进内存
+
+![png](CMU445-Buffer-Pools/20220527123642.png)
+
+但是遇到Index Scans就不生效了，因为读取可能是跳跃的。index-page: 0->1->3->5。所以得数据库系统自己处理内存那一块，并不能直接完全用系统的虚拟内存。
+
+![png](CMU445-Buffer-Pools/20220527124354.png)
+
+#### Scan Sharing
+
