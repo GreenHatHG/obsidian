@@ -56,7 +56,7 @@ Threads set this flag when it modifies a page. This indicates to storage manager
   ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_22.JPG)
   - `Hashing`: 对record id进行hash，通过Hash(x)确定在pool中的哪个位置，通过`Hash(x)%n`(num buffer pool)确定在哪个buffer pool。
   ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_23.JPG)
-  
+
 #### Pre-Fetching
 
 The DBMS can also prefetch pages based on a query plan.
