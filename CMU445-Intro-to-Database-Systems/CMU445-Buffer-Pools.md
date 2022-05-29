@@ -95,14 +95,14 @@ If a query wants to scan a table and another query is already doing this, then t
 ### OS Page Cache
 
 - Most disk operations go through the OS API.
-  - Unless you tell it not to, the OS maintains its own filesystem cache.
+  - Unless you tell it not to, the OS maintains its own filesystem cache. 比如使用fread读取文件，如果有cache，则直接返回cache。fwrite时候是写入到page cache，使用sync才写入到disk。
   - Most DBMSs use `direct I/O` (O_DIRECT)to bypass the OS's cache.
     - 减少page副本的数量以避免浪费和数据不同步
     - DBMS能够更好的处理这部分
 
 #### PgSQL Demo
 
-在主流数据库中利用os page cache的只有PostgreSQL，从工程师的角度来看，无需再管理一个额外的缓存（也有自己的buffer pool，不过没有那么大，不会像MySQL/Oracle那样去使用系统中所有的内存），实际上可以减少维护的成本。
+在主流数据库中利用os page cache的只有PostgreSQL，从工程师的角度来看，无需再管理一个额外的缓存（也有自己的buffer pool，不过没有那么大，不会像MySQL/Oracle那样去使用系统中所有的内存），实际上这样可以减少维护的成本。
 
 测试PostgreSQL buffer实际使用情况，假设表testreals只有ab两列，1000w行，每列都是浮点数(例如12.432564635)。
 
@@ -112,11 +112,33 @@ If a query wants to scan a table and another query is already doing this, then t
 - `\timing`
 - `SET max_parallel_workers_per_gather=0`
 
-
 测试语句: `EXPLAIN (ANALYZE, BUFFERS) SELECT sum(a+b) FROM testreals`。
+
+---
 
 第一次执行，因为刚将数据库重启，buffer pool也清空了，所以需要从disk中读取所有的page。
 
+![png](CMU445-Buffer-Pools/2022-05-29-17-08-47.png)
 
-`SELECT pg_prewarm('testreals');`将该表所有的page放入buffer pool
+如果再执行一次，hit会变为32，即有32个page放到buffer pool，剩下的还在disk。因为PostgreSQL维护了一个小buffer pool，每个查询会有一个小buffer pool，它里面有32个page。
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-13-40.png)
+
+如果再执行一次则变为64，随着一遍又一遍执行这个查询，buffer pool里的page数量也在变大，因为它意识到所需要数据不在buffer pool。
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-15-52.png)
+
+执行`SELECT pg_prewarm('testreals');`扩展程序pg_prewarm将该表所有的page放入buffer pool
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-17-15.png)
+
+再次执行查询，显示已经有1w多个page在buffer pool中了，`16316*8/1024=128MB`，正好达到了数据库设定的上限，加载所有的page需要`44248*8、1024=345MB`。
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-18-06.png)
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-20-57.png)
+
+在`/etc/postgresql/10/main/postgresql.conf`中修改buffer pool上限为360MB：`shared_buffers = 360MB`。然后重新执行下测试前的几个步骤并主席pg_prewarm加载所有page到buffer pool。执行一次查询，现在有足够的内存存放page了。此处查询无需从disk中加载数据，而是从page table中查找frame。
+
+![png](CMU445-Buffer-Pools/2022-05-29-17-25-03.png)
 
