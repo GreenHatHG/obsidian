@@ -92,7 +92,7 @@ If a query wants to scan a table and another query is already doing this, then t
 
 使用的这个优化方法的条件是操作的是中间结果和扫描的数据量不是很大，能够暂存于local memory。
 
-### OS Page Cache
+## OS Page Cache
 
 - Most disk operations go through the OS API.
   - Unless you tell it not to, the OS maintains its own filesystem cache. 比如使用fread读取文件，如果有cache，则直接返回cache。fwrite时候是写入到page cache，使用sync才写入到disk。
@@ -100,7 +100,7 @@ If a query wants to scan a table and another query is already doing this, then t
     - 减少page副本的数量以避免浪费和数据不同步
     - DBMS能够更好的处理这部分
 
-#### PgSQL Demo
+### PgSQL Demo
 
 在主流数据库中利用os page cache的只有PostgreSQL，从工程师的角度来看，无需再管理一个额外的缓存（也有自己的buffer pool，不过没有那么大，不会像MySQL/Oracle那样去使用系统中所有的内存），实际上这样可以减少维护的成本。
 
@@ -141,4 +141,69 @@ If a query wants to scan a table and another query is already doing this, then t
 在`/etc/postgresql/10/main/postgresql.conf`中修改buffer pool上限为360MB：`shared_buffers = 360MB`。然后重新执行下测试前的几个步骤并主席pg_prewarm加载所有page到buffer pool。执行一次查询，现在有足够的内存存放page了。此处查询无需从disk中加载数据，而是从page table中查找frame。
 
 ![png](CMU445-Buffer-Pools/2022-05-29-17-25-03.png)
+
+## Buffer Replacement Policies
+
+A replacement policy is an algorithm that the DBMS implements that makes a decision on which pages to evict from buffer pool when it needs space.
+
+目标：
+
+- 正确性(Correctness)：某个数据并没有真正地使用完，不能将它写出或移除
+- 准确性(Accuracy)：确保所移除的page是在未来不太会被用到的，减少访问disk影响
+- 速度(Speed)：修改page table会申请latch，决策速度要快，避免一直持有latch
+- 元数据开销(Meta-data overhead)：元数据过多时间和空间开销也会变大，所以元数据数量得控制好
+
+### LRU
+
+Maintain a timestamp of when each page was last accessed.
+
+When the DBMS needs to evict a page, select the  one with the oldest timestamp.
+
+Keep the pages in sorted order to reduce the search time  on eviction. 可以用队列实现，从队列头取page，处理完放到末尾。
+
+### Clock
+
+- Approximation of LRU without needing a separate timestamp per page.
+  - Each page has a reference bit(*标志位*)
+  - When a page is accessed, set to 1
+- Organize the pages in a circular buffer with a “clock hand”
+  - Upon sweeping(*扫描时*) check if a pages bit is set to 1
+  - If yes, set to 0, if no, then evict
+
+当我们可以移除page的时候，不会去精确地移除最近最少使用的那个page。
+
+---
+
+- 某些查询访问了page1，ref=1
+  ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_56.JPG)
+- Buffer pool中空间不足，需要移除page。此时先从page1开始检查，page1的ref=1，置为0。page2 ref=0，可以将其移除，换入page5。
+  ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_60.JPG)
+- 假设page3和page4被访问过
+  ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_61.JPG)
+- 此时再一次需要移除，扫描将page3和page4 ref=0。此时page1的ref=0，可以移除。
+  ![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_62.JPG)
+
+### Problem
+
+LRU和Clock都容易收到`sequential flooding`的影响
+
+![png](CMU445-Buffer-Pools/20220529234607.png)
+
+执行Q1将page0加载进buffer pool，执行Q2因为空间不足，需要将page0移除，但是执行Q3时候需要从disk拿page0。
+
+有时候最近使用过的可能是最不需要的，遍历过一次就完事了，后续不需要了，但是可能会把别的需要的page移除。
+
+解决方法如下
+
+#### LRU-k
+
+记录每个page最后K次引用的时间戳，估计下一次访问该page的时间，以此来决定移除哪个page。
+
+#### Localization
+
+使用多个buffer pool，不是将要扫描的表的page放到全局buffer，而是将查询的某一些page放到某个buffer pool，从单独一个查询的角度去决定要移除那个，而不是整个全局的角度。
+
+比如之前pg执行多个一样的查询时候，buffer hit由32变成64，因为有一个ring buffer(环形buffer)专属于该查询，里面存放了查询所访问的page，然后DBMS会根据查询去判断应该移除哪一个。
+
+#### Priority hints
 
