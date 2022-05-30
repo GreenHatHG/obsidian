@@ -9,6 +9,8 @@ How the DBMS manages its memory and move data back-and-forth from disk.
   - When to read pages into memory, and when to write them to disk.
   - The goal is minimize the number of stalls(*停顿*) from having to  read data from disk.
 
+Buffer pool重点在于如何去管理内存，并做的比os要好。因为我们知道查询所在做的事情，知道page中有什么，知道page如何被访问，这样可以做出更好的决定。
+
 ## Buffer Pool Organization
 
 ![png](CMU445-Buffer-Pools/05-bufferpool_12.JPG)
@@ -207,3 +209,24 @@ LRU和Clock都容易收到`sequential flooding`的影响
 
 #### Priority hints
 
+当有索引的时候，就可以查询是如何进行扫描的，也就知道哪些page被访问，为此可以使用这个信息来决定移除哪些page。
+
+![png](CMU445-Buffer-Pools/05-bufferpool%20(2)_75.JPG)
+
+如上，假设该表有一个自增键id，如果我们根据这个id从小到大排序，那么每次插入的时候的id始终比上一次插入的id大1，这意味着始终是沿着树的右侧往下走去拿到page，进一步提示这些page应该呆在内存中。
+
+同样的，根据不同的id/索引查询，始终得从page0作为入口查询，那么page0就应该一直在buffer pool。
+
+## Dirty Pages
+
+FAST: If a page in the buffer pool is not dirty, then  the DBMS can simply "drop" it. 
+
+SLOW: If a page is dirty, then the DBMS must  write back to disk to ensure that its changes are  persisted.
+
+### Background writing
+
+The DBMS can periodically(*定期*) walk through(*遍历*) the page  table and write dirty pages to disk.
+
+When a dirty page is safely written, the DBMS can  either evict the page or just unset the dirty flag.
+
+在该dirty page对应的修改操作还没有写入到日志之前，不能将这些dirty pages写出到磁盘。
