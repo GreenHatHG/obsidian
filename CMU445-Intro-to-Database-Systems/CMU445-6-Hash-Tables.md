@@ -82,3 +82,28 @@ This is the most basic hashing scheme. It is also typically the fastest.
 
 需要对更多的条件进行检查，看看能否将一个放到另一个的位置上，就要做更多的写入操作，这导致更多的缓存无效，实际上比不过开地址法。
 
+#### Cuckoo Hashing
+
+Instead of using a single hash table, this approach maintains **multiple hash tables** with different hash functions. The hash function are the same algorithm (e.g., XXHash, CityHash); they generate different hashes for the same key by **using different seed values**. 大多数只使用两个Hash Table。
+
+![](CMU445-6-Hash-Tables/20220602090914.png)
+
+1. 插入A时候，hash1(A)和hash2(A)算出要插入的位置，两个位置都是空的，随机插一个（也可以用更高级的做法，比如从整体出发，不过随机已经足够了）
+2. hash1(B)算出的位置不是空闲，只能插入hash2(B)的位置
+3. hash1(C)和hash2(C)的位置都不是空闲，随机选择一个插入，替换掉Hash Table2中的B。B要放到Hash Table1，通过hash1(B)算出位置，替换掉A，A通过hash2(A)插入到Hash Table2。
+
+If we find a cycle, then we can rebuild all of the hash tables with new hash function seeds (less common) or rebuild the hash tables using larger tables (more common).
+
+Look-ups and deletions are always `O(1)` because only one location per hash table is checked.
+
+### Dynamic Hashing Schema
+
+Dynamic hashing schemes are able to resize the hash table on demand without needing to rebuild the entire table. The schemes perform this resizing in different ways that can either maximize reads or writes.
+
+#### Chained Hashing
+
+This is the most common dynamic hashing scheme. The DBMS maintains a linked list of buckets for each slot in the hash table.
+
+If bucket is full, add another bucket to that chain. The hash table can grow infinitely because the DBMS keeps adding new buckets.
+
+![](CMU445-6-Hash-Tables/06-hashtables_53.JPG)
