@@ -2,7 +2,7 @@
 
 ## Data structures
 
-How  to support the DBMS's execution  engine to read/write data from pages.
+How  to support the DBMS's execution engine to read/write data from pages.
 
 Two types of data structures: Hash Tables/Trees
 
@@ -17,6 +17,7 @@ Design Decisions:
 - Operation Complexity:
   - Average: `O(1)`
   - Worst: `O(n)`
+- 用于执行查询，page table等，通常不会在表索引上面使用hash table。
 
 ### Design
 
@@ -107,3 +108,42 @@ This is the most common dynamic hashing scheme. The DBMS maintains a linked list
 If bucket is full, add another bucket to that chain. The hash table can grow infinitely because the DBMS keeps adding new buckets.
 
 ![](CMU445-6-Hash-Tables/06-hashtables_53.JPG)
+
+每个bucket就是一个page，可以在内存，也可以是磁盘
+
+#### Extendible Hashing
+
+Improved variant(*改进*) of chained hashing that **splits buckets** instead of letting chains to grow forever. This approach allows multiple slot locations in the hash table to point to the **same bucket chain**.
+
+global counter：检查生成的hash值的前几位，以此决定跳到哪个slot位置
+
+local counter：需要看几个bit才能找到bucket
+
+![](CMU445-6-Hash-Tables/20220603095643.png)
+
+- Find A：global counter为2，需要查看hash(A)前两位01，定位到第二个slot，由此定位到bucket
+
+- Insert B：根据hash值前两位10定位到第三个slot，对应的bucket还有空间，可插入
+- Insert C：对应的bucket没有多余空间
+- 拆分：global count增加1变为3（slot array扩容2倍，如果local counter小于global counter则不需要扩容），同时需要拆分的bucket的local counter+1。增加一个新的bucket，移动一部分数据过去并reshuffle
+
+slot array扩容的时候，需要用latch锁住，直到扩容拆分成功，这会成为一个性能瓶颈。
+
+#### Linear Hashing
+
+- The hash table maintains a **split pointer** that tracks the  next bucket to split. **When any bucket overflows, split the bucket at the pointer location**. 无需使用latch锁住。
+
+- Use multiple hashes(相同算法不同seed) to find the right bucket for a given key.
+- The overflow criterion(*标准*) is left up to(*由...决定*) the implementation.
+
+![](CMU445-6-Hash-Tables/20220603225943.png)
+
+- 添加一个split pointer指向slot 0，跟踪想要拆分的bucket（不管是哪个bucket是溢出）。此时`hash(key) = key % n`，n为num slot array
+- Insert 17：bucket空间不足，创建一个新的bucket，然后插入17。
+  - 并且对spilt pointer处触发一次拆分，往slot array中添加一个entry，此时`hash(key) = key % 2n`。split pointer会帮助我们决定是使用第一个hash函数还是第二个。
+  - 拆分之后将split pointer往下移动一个单位
+- Find 20：使用第一个函数计算，如果结果小于等于split pointer所在的位置，代表对应的bucket已经被拆分过。此时需要使用第二个函数计算
+- Find 9：大于splint pointer的位置，对应的bucket还没有被拆分，直接使用hash结果查找即可。
+
+删除就是插入的相反操作。
+
