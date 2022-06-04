@@ -17,7 +17,7 @@ Design Decisions:
 - Operation Complexity:
   - Average: `O(1)`
   - Worst: `O(n)`
-- 用于执行查询，page table等，通常不会在表索引上面使用hash table。
+- 用于执行查询（比如join连接使用构建临时hash table），page table，Internal Meta-data，Core Data Storage（只用到点对点查询，并没有范围查询）等，通常不会在表索引上面使用hash table。
 
 ### Design
 
