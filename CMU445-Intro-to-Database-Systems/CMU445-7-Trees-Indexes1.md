@@ -23,4 +23,6 @@
 
 ![](CMU445-7-Trees-Indexes1/07-trees1_16.JPG)
 
-pageID指向兄弟节点
+上图为教科书式结构，key和value存储在一起，pageID指向兄弟节点。但在实际数据库中是以下面的形式将数据分开存储的，存在像slot header的内容，可以从中知道树的高度，还有多少个空闲的slot，前一个和后一个节点是什么。分开存储key和value，有效利用缓存，当查找的时候，只使用到key，可以只把key加载到内存，如果像上面key和value一样混在一起，则还把value加载进来，浪费缓存。
+
+![](CMU445-7-Trees-Indexes1/07-trees1_18.JPG)
