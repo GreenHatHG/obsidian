@@ -68,19 +68,21 @@ https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
 - Find key=(*, B)：根据第二个key多次找出所有的可能叶子，然后将所有符合结果整合。查找过程中会用不同的实际值代替`*`，并对数据进行多次遍历。oracle称为skip scan。
   ![](CMU445-7-Trees-Indexes1/07-trees1_32.JPG)
 
-## Node Size
+## B+Tree Design Decisions
+
+### Node Size
 
 - 一般可以将B+Tree中的node当作表中的page来思考，存储设备越慢，B+Tree 的最佳节点大小就越大。HDD ~1MB、SSD: ~10KB 、In-Memory: ~512B
 
 - 对于Leaf Node Scans，node大小适合大点，可以进行更多的循序扫描。对于Root-to-Leaf Traversals，node大小适合小点。
 
-## Merge Threshold
+### Merge Threshold
 
 有时候节点并未达到half full的情况就得对节点进行合并。但是在实际上并不会立即进行合并操作，因为可能下次操作适合，又往节点中插入了些数据，又得将它进行拆分，合并的代价是昂贵的。
 
 可以放宽要求，在后台定期调整树的平衡。甚至有时候会直接重建整一棵树，修复所有的问题，比如银行每周日早上关闭服务，可能做的一件事情就是重建索引。
 
-## Variable Length keys
+### Variable Length keys
 
 - Pointers：节点保存的是指向属性或者tuple的指针（比如record id），得重新拿page看下实际保存的值，速度很慢。
 - Variable Length Nodes：允许一个节点的大小根据它所保存的东西来变化，因为我们想让page大小在buffer pool和磁盘中始终是一样，就无须去担心该如何找到空闲空间将数据放进去，这是个糟糕的想法。
@@ -91,3 +93,63 @@ https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
 
 ​		指针数据每个元素一般有16bit大小，空间充足，可以将每个字符串的首字母放到数组，如果第一个字符没有一样，则可以直接遍历下一个，这些都是在内存中做的（node的大小和磁盘中的page大小可能不一样）。
 ​		![](CMU445-7-Trees-Indexes1/07-trees1_39.JPG)
+
+### Non-Unique Indexes
+
+#### Duplicate Keys
+
+Use the same leaf node layout but store duplicate keys multiple times.
+
+![](CMU445-7-Trees-Indexes1/07-trees1_42.JPG)
+
+#### Value Lists
+
+Store each key only once and maintain a linked list of unique values.
+
+![](CMU445-7-Trees-Indexes1/07-trees1_43.JPG)
+
+### Intra-Node Search
+
+![](CMU445-7-Trees-Indexes1/07-trees1_49.JPG)
+
+- 线性查找：遍历key数组直到找到想要的key
+- 二分
+- Interpolation: 使用某种数学方式估计key所大概要搜索的起点，比如offset: `7-(10-8)=5`，7为key的个数，key最大值为10，要找的是8，计算出来5，第五个位置就是起点。不适用于字符串。
+  （上述公式只是示例，实际可见：https://en.wikipedia.org/wiki/Interpolation_search）
+
+##  Optimizations
+
+### Prefix Compression
+
+![](CMU445-7-Trees-Indexes1/07-trees1_51.JPG)
+
+如果保存record id在根节点，这会节省大量空间，因为在同一个page的record id都是类似的，只需要保存offset即可。
+
+### Suffix Truncation
+
+- The keys in the inner nodes are only used to “direct traffic”, we do not need the entire key.
+- Store a minimum prefix that is needed to correctly route probes into the index.
+
+![](CMU445-7-Trees-Indexes1/2022-06-07_073930.png)
+
+叶子节点依旧保存完整的整个key。在实际应用上，prefix compression更常用。
+
+### Bulk Inserts
+
+- The fastest way to build a B+Tree from scratch(*从头*) is to first sort the keys and then build the index from the bottom up(*自下而上*).
+
+- This will be faster than inserting one-by-one since there are no splits or merges.
+
+![](CMU445-7-Trees-Indexes1/2022-06-07_074955.png)
+
+### Pointer Swizzling
+
+![](CMU445-7-Trees-Indexes1/07-trees1_58.JPG)
+
+在根节点处保存了下一个节点的page id，然后从buffer pool中查到拿到指针，兄弟节点也是如此，将page id转变为指针。
+
+这个过程效率不高，因为得实用latch保护buffer pool中的hash table。
+
+如果一个page固定在buffer pool，那么可以直接存储原始指针，而不是page id，避免查buffer pool的开销。
+
+![](CMU445-7-Trees-Indexes1/07-trees1_59.JPG)
