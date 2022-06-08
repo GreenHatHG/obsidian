@@ -100,13 +100,29 @@ https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
 
 Use the same leaf node layout but store duplicate keys multiple times.
 
+如何快速确定这个key对应的value就是所需的，因为key都是一样的，可以添加个record id精准匹配。同时如果没有添加record id，插入时候可能会形成两个数值一样的page，这样得扫描过去，效率就很低，如果有record id，可以定位到是哪个page。
+
+Add the tuple's unique record id as part of the key to  ensure that all keys are unique.The DBMS can still use partial keys to find tuples.根据key和record id确定，这个有点傻逼，有了record id为什么还要查索引呢。
+
 ![](CMU445-7-Trees-Indexes1/07-trees1_42.JPG)
+
+对于更高级的层次来看
+
+![](CMU445-7-Trees-Indexes1/20220608082509.png)
+
+添加一个record id好处是不用对树结构进行修改，缺点是会增加索引大小
 
 #### Value Lists
 
 Store each key only once and maintain a linked list of unique values.
 
 ![](CMU445-7-Trees-Indexes1/07-trees1_43.JPG)
+
+如果数量太多，则需要挂链
+
+Allow leaf nodes to spill into overflow nodes that contain  the duplicate keys.This is more complex to maintain and modify.
+
+![](CMU445-7-Trees-Indexes1/20220608082744.png)
 
 ### Intra-Node Search
 
