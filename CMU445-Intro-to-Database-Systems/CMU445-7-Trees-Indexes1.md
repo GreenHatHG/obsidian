@@ -55,7 +55,17 @@ https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
 
 数据库默认情况是以任何顺序将tuple插入到任何的page中，有时想让数据（比如主键）以某种形式进行排列，创建表的时候可以创建一个聚簇索引，数据库系统会排序存储数据在磁盘上，这样只读取一部分page能找到对应的数据，对于某些任务（比如根据主键进行范围查询）会很有用。
 
-某些系统会默认使用，比如MySQL将tuple保存到叶子节点上（索引在磁盘上保存），保证磁盘上的page中的tuple都是以主键顺序排序的，如果没有主键，MySQL会自动以record id（tuple实际位置）之类的创建一个主键。
+某些系统会默认使用（当创建表的时候会自动使用），比如MySQL将tuple保存到叶子节点上（索引在磁盘上保存），保证磁盘上的page中的tuple都是以主键顺序排序的，如果没有主键，MySQL会自动以record id（tuple实际位置）之类的创建一个主键。
+
+但是在其他DBMS中，比如SQL Server，Oracle，可以指定CLUSTER按哪些列去排序。
+
+```sql
+CREATE TABLE emails(id SERIAL PRIMARY KEY, email VARCHAR(128))
+CREATE INDEX idx_emails_tree ON emails USING BTREE(email)
+CLUSTER emails USING idx_emails_tree
+```
+
+强制Postgre根据索引定义来对整个表进行重新排序（对于pg来讲CLUSTER是一次性操作，对后续的插入不影响，其他DBMS则不是），允许能在表上进行二分查找，在不使用索引的情况下复杂度是log(n)。
 
 ## Select Conditions
 
