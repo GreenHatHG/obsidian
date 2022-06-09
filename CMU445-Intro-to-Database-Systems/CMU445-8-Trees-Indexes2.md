@@ -61,5 +61,46 @@ CREATE INDEX idx_user_login ON users (EXTRACT(dow FROM login));
 CREATE INDEX idx_user_login ON foo (login) WHERE EXTRACT(dow FROM login) = 2;
 ```
 
+# Trie Index
 
+The inner node keys in a B+Tree cannot tell you  whether a key exists in the index. You must always  traverse to the leaf node. 因为inner node中可能会保存那些不再存在于tree中的
+key的拷贝，删除节点时候取决于拆分和合并的方式，inner node可能使用已经删除了的key作为路标。如果能够在inner node中就能决定key存在不存在就很好。这就是Trie Index（Digital Search Tree, Prefix Tree）能做的。
 
+![](CMU445-8-Trees-Indexes2/08-trees2 (1)_36.JPG)
+
+底部和B+Tree一样，可以是record id，也可以是tuple。
+
+Trie的形状取决于key的分布以及它们的长度，不管key插入的顺序（B+Tree会根据插入的顺序决定树的形态，取决于合并和拆分操作），也不需要再平衡操作。
+
+所有操作的时间复杂度都是O(k)，k指key的长度。
+
+span是树的每层每个节点中digit的个数
+
+![](CMU445-8-Trees-Indexes2/20220609073925.png)
+
+这里很明显可以不需要空间去表示0和1，这个是水平压缩，减少每个trie节点的大小
+
+![](CMU445-8-Trees-Indexes2/08-trees2 (1)_46.JPG)
+
+垂直压缩：Omit(*忽略*) all nodes with only a single  child. 以移除下面没有其他明显区分路径的所有节点（移除无用分支路径，即真实情况是看似多条路线，但只有一条存储了明确key的路线），所以需要查看原始tuple决定是否匹配
+
+![](CMU445-8-Trees-Indexes2/20220609075502.png)
+
+# Radix Tree
+
+Trie并不像B+Tree那样，它并没有任何标准的方式来进行维护（插入，删除。更新）
+
+![](CMU445-8-Trees-Indexes2/20220609080448.png)
+
+删除HAT只是将原来位置的slot变为空的slot。
+
+可以把数据压实，不同的实现做不同的事情。
+
+# Inverted Indexes
+
+- The tree indexes that we've discussed so far are useful for "point" and "range" queries:
+  - Find all customers in the 15217 zip code.
+  - Find all orders between June 2018 and September 2018.
+- They are not good at keyword searches:
+  - Find all Wikipedia articles that contain the word "Pavlo"
+  - `SELECT pageID FROM revisions WHERE content LIKE '%Pavlo%';`这样是不对的，即使给content建立了索引，也只能循序扫描所有数据，而且content可能会很大，整个树很大。而且查询语句不太符合要求，是要找到Pavlo相关信息，这里可能会查出AndyPavlo相关信息。
