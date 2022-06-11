@@ -107,3 +107,41 @@ two slots per page，在page header就可以知道有哪些key和其位置在哪
 - But it increases the storage and computational(*计算的*) overhead of accessing the table because threads have to acquire a latch for every slot they access. The DBMS can use a single mode latch (i.e., Spin Latch) to reduce meta-data and computational overhead.
 
 ![](CMU445-9-Index-Concurrency-Control/20220611084456.png)
+
+# B+Tree Latching
+
+- We want to allow multiple threads to read and  update a B+Tree at the same time.
+
+- We need to protect from two types of problems:
+  - Threads trying to modify the contents of a node at the same time.
+  - One thread traversing the tree while another thread  splits/merges nodes. （叶子节点的位置可能会发生变化，甚至之前的已经得到的某个指针可能会指向无效区域）
+
+![](CMU445-9-Index-Concurrency-Control/20220611102018.png)
+
+1. Delete 44，删除后应该要再平衡，这里再平衡采取的措施是将兄弟节点的值移动过去，而不是合并。但是此时OS调度到另外一个线程执行。
+2. Find 41，遍历树执行到D位置时候，系统调度刚才那个线程执行再平衡操作，把41从H区域移动到I区域
+3. 此时调度到Find 41那个线程，41继续遍历，发现H区域没有41，造成了一个没有41的假象。如果是合并的话，甚至下一步要找的内存区域都不存在，引发程序错误。
+
+## Lock crabbing/coupling
+
+- Lock crabbing / coupling is a protocol to allow multiple threads to access/modify B+Tree at the same time
+
+- Basic Idea
+  - Get latch for parent.
+  -  Get latch for child.
+  - Release latch for parent if `safe`. A safe node is one that will not split or merge when updated (not full on insertion or more than half full on deletion).
+
+## Find
+
+**Find**: Start at root and go down, repeatedly acquire **read latch** on child and then unlatch parent.
+![](CMU445-9-Index-Concurrency-Control/20220611104147.png)
+
+## Insert/Delete
+
+**Insert/Delete**: Start at root and go down, obtaining **write latches** as needed. Once child is latched, check if it is safe. If the child is safe, release latches on all its ancestors(*祖先*).
+
+![](CMU445-9-Index-Concurrency-Control/20220611113449.png)
+
+![](CMU445-9-Index-Concurrency-Control/20220611113709.png)
+
+![](CMU445-9-Index-Concurrency-Control/20220611114137.png)
