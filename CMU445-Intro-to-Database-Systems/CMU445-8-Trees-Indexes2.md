@@ -6,11 +6,11 @@ Most DBMSs automatically create an index to  enforce integrity constraints(*完�
 
 创建表的时候自动创建索引
 
-![](CMU445-8-Trees-Indexes2/08-trees2 (1)_16.JPG)
+![](CMU445-8-Trees-Indexes2/08-trees2_16.JPG)
 
 对于外键来讲，则不会自动创建，在没有索引的情况，不能使用引用约束，所以得使用unique关键字，自动创建一个索引。每当插入数据到bar表的时候，为了确保能匹配到foo表的数据，可以在索引中查找是否有匹配的数据。
 
-![](CMU445-8-Trees-Indexes2/08-trees2 (1)_20.JPG)
+![](CMU445-8-Trees-Indexes2/08-trees2_20.JPG)
 
 ## Partial Indexes
 
@@ -66,7 +66,7 @@ CREATE INDEX idx_user_login ON foo (login) WHERE EXTRACT(dow FROM login) = 2;
 The inner node keys in a B+Tree cannot tell you  whether a key exists in the index. You must always  traverse to the leaf node. 因为inner node中可能会保存那些不再存在于tree中的
 key的拷贝，删除节点时候取决于拆分和合并的方式，inner node可能使用已经删除了的key作为路标。如果能够在inner node中就能决定key存在不存在就很好。这就是Trie Index（Digital Search Tree, Prefix Tree）能做的。
 
-![](CMU445-8-Trees-Indexes2/08-trees2 (1)_36.JPG)
+![](CMU445-8-Trees-Indexes2/08-trees2_36.JPG)
 
 底部和B+Tree一样，可以是record id，也可以是tuple。
 
@@ -80,7 +80,7 @@ span是树的每层每个节点中digit的个数
 
 这里很明显可以不需要空间去表示0和1，这个是水平压缩，减少每个trie节点的大小
 
-![](CMU445-8-Trees-Indexes2/08-trees2 (1)_46.JPG)
+![](CMU445-8-Trees-Indexes2/08-trees2_46.JPG)
 
 垂直压缩：Omit(*忽略*) all nodes with only a single  child. 以移除下面没有其他明显区分路径的所有节点（移除无用分支路径，即真实情况是看似多条路线，但只有一条存储了明确key的路线），所以需要查看原始tuple决定是否匹配
 
