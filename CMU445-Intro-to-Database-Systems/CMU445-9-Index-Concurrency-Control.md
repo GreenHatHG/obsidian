@@ -145,3 +145,43 @@ two slots per page，在page header就可以知道有哪些key和其位置在哪
 ![](CMU445-9-Index-Concurrency-Control/20220611113709.png)
 
 ![](CMU445-9-Index-Concurrency-Control/20220611114137.png)
+
+## Better Latching
+
+- The problem with the basic latch crabbing algorithm is that transactions **always** acquire an **exclusive latch** on the root for every insert/delete operation. **This limits parallelism**.
+
+- Instead, we can assume that having to resize (i.e., split/merge nodes) is rare, and thus transactions can acquire **shared latches** down to the leaf nodes.  Each transaction will assume that the path to the target leaf node is safe, and use READ latches and crabbing to reach it, and verify.
+- If any node in the path is not safe, then do previous algorithm (i.e., acquire WRITE latches). （从root节点开始获取write latch）
+
+![](CMU445-9-Index-Concurrency-Control/20220612101606.png)
+
+![](CMU445-9-Index-Concurrency-Control/09-indexconcurrency_83.JPG)
+
+# Leaf Node Scans
+
+Leaf node scans are susceptible(*容易*) to deadlocks because now we have threads trying to acquire locks in **two different directions at the same time** (i.e., left-to-right and right-to-left). Index latches do not support deadlock detection or avoidance.
+
+![](CMU445-9-Index-Concurrency-Control/20220612102345.png)
+
+同时持有read latch不会造成死锁。
+
+If a thread tries to acquire a latch on a leaf node but that latch is unavailable, then it will **immediately abort its operation** (releasing any latches that it holds) and then **restart the operation**.
+
+![](CMU445-9-Index-Concurrency-Control/20220612103546.png)
+
+# Delayed Parent Updates
+
+- Every time a leaf node overflows, we must update  at least three nodes. 
+  - The leaf node being split.
+  - The new leaf node being created.
+  - The parent node. 
+- Blink-Tree Optimization: When a leaf node  overflows, delay updating its parent node. (Blink-Tree是第一个发明了叶子节点有兄弟指针的结构，现在每个B+Tree都使用这个兄弟指针)
+
+拆分后并不会去更新父节点，而是使用树的一个全局表中记录父节点要更新的值。当下次遍历这棵树拿到write latch的时候，会去额外的工作，并执行更新操作。这样就不用重新从根节点拿write latch并更新树。
+
+![](CMU445-9-Index-Concurrency-Control/20220612105538.png)
+
+![](CMU445-9-Index-Concurrency-Control/20220612105701.png)
+
+![](CMU445-9-Index-Concurrency-Control/20220612105817.png)
+
