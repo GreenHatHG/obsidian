@@ -1,6 +1,6 @@
 # CMU 15-445/645-Intro-to-Database-Systems
 
-- [Schedule](https://15445.courses.cs.cmu.edu/fall2019/schedule.html)
+- [Schedule](https://15445.courses.cs.cmu.edu/fall2020/schedule.html)
 - Course Outline
   ![](CMU445-Database-Storage1/03-storage1_4.JPG)
 
