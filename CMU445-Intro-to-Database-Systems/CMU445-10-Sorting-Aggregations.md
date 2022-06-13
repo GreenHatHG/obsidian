@@ -41,3 +41,29 @@ Data set is broken up into **N** pages. The DBMS has a finite(*有限的*) numbe
 
 2-PAGE runs：一个run有两个page大
 
+This algorithm only requires three buffer pages to  perform the sorting (B=3). 
+
+But even if we have more buffer space available  (B>3), it does not effectively utilize(*利用*) them if the  worker must block on disk I/O.
+
+The generalized version of the algorithm allows the DBMS to take advantage of using more than three buffer pages. Let B be the total number of buffer pages available. Then, during the sort phase, the algorithm can **read B pages at a time and write N/B sorted runs back to disk**.
+
+### Double Buffering Optimization
+
+- One optimization for external merge sort is **prefetching** the next run in the background and storing it in a second buffer while the system is processing the current run. 
+- This **reduces the wait time for I/O requests** at each step by continuously utilizing(*连续利用*) the disk. 
+- This optimization requires the use of multiple threads, since the prefetching should occur while the computation for the current run is happening.
+
+## Using B+Tree
+
+如果想要排序的key和B+Tree上索引中的key是一样的，那么就可以复用B+Tree。对于聚簇索引和非聚簇索引来讲是不一样的。
+
+聚簇索引指的是page中的tuple的物理位置和索引中定义的顺序相匹配。
+
+获得排序的key的列表的方式
+
+- 对于聚簇索引：遍历最左边的叶子节点，然后从所有节点检索tuple。这总是比外部排序好，因为没有计算成本，而且所有磁盘访问都是顺序的。
+
+- 对于非聚簇索引：已经使用该key创建B+Tree索引，但是tuple存储的顺序和排序顺序不一样，需要随机读取每个page，读取效率慢。
+
+# Aggregations
+
