@@ -67,3 +67,34 @@ The generalized version of the algorithm allows the DBMS to take advantage of us
 
 # Aggregations
 
+two implementation choices: sorting, hashing
+
+## Sorting
+
+![](CMU445-10-Sorting-Aggregations/10-sorting_24.JPG)
+
+- The DBMS first sorts the tuples on the `GROUP BY` key(s). It can use either an in-memory sorting algorithm or the external merge sort algorithm. 
+- Then performs a sequential scan over the sorted data to compute the aggregation.
+
+- What if we do not need the data to be ordered
+  - GROUP BY(no ordering)
+  - DISTINCT(no ordering)
+  - Hashing is a better alternative in this scenario(*在这种情况下*).
+    - Only need to remove duplicates, no need for ordering.
+    - Can be computationally cheaper(*计算占用更小*) than sorting.
+
+## Hashing
+
+- Populate an ephemeral(*填充到一个临时的*) hash table as the DBMS  scans the table. For each record, check whether there is already an entry in the hash table.
+- If the size of the hash table is too large to fit in memory, then the DBMS has to spill it to disk(external hashing aggregate).
+
+### External Hashing Aggregate
+
+- Phase1 **Partition**: 将tuple使用hash函数拆分到不同的partition，partition满了后可以写到磁盘中。A partition is one or more pages that contain the set of  keys with the same hash value. 如果一个page满了写出到磁盘，分配一个新的page继续写数据。
+  ![](CMU445-10-Sorting-Aggregations/10-sorting_29.JPG)
+
+- Phase2 **Rehash**: For each partition on disk, read its pages into memory and build an in-memory hash table based on a second hash function. Then go through(*遍历*) each bucket of this hash table to bring together matching tuples to compute the aggregation. This assumes that each partition fits in memory.
+  ![](CMU445-10-Sorting-Aggregations/10-sorting_31.JPG)
+  当移动下一个partition时候就把上一个partition的hash table扔掉。
+- During the ReHash phase, the DBMS can store pairs of the form (`GroupByKey→RunningValue`) to compute the aggregation. The contents of `RunningValue` depends on the aggregation function. 
+  ![](CMU445-10-Sorting-Aggregations/10-sorting_33.JPG)
