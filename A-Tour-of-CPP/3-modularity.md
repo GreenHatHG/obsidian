@@ -104,3 +104,39 @@ int& bad()
 
 Fortunately, all major C++ compilers will catch the obvious error in ``bad()`.
 
+How do we pass large amounts of information out of a function:
+
+```c++
+Matrix operator+(const Matrix& x, const Matrix& y)
+{
+    Matrix res;
+    // ... for all res[i,j], res[i,j] = x[i,j]+y[i,j] ...
+    return res;
+}
+
+Matrix m1, m2;
+// ...
+Matrix m3 = m1+m2; // no copy
+```
+
+Returning large objects by returning a pointer to it is common in older code and a major source of hard-to-find errors. Don’t write such code. 
+
+```c++
+Matrix∗ add(const Matrix& x, const Matrix& y) // complicated and error-prone 20th century style
+{
+    Matrix∗ p = new Matrix;
+    // ... for all *p[i,j], *p[i,j] = x[i,j]+y[i,j] ...
+    return p;
+}
+
+Matrix m1, m2;
+// ...
+Matrix∗ m3 = add(m1,m2); // just copy a pointer
+// ...
+delete m3; // easily forgotten
+```
+
+Note that `operator+()` is as efficient as `add()`, but far easier to define, easier to use, and less error-prone(*易于出错的*).
+
+https://en.wikipedia.org/wiki/Copy_elision
+
