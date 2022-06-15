@@ -140,3 +140,31 @@ Note that `operator+()` is as efficient as `add()`, but far easier to define, ea
 
 https://en.wikipedia.org/wiki/Copy_elision
 
+# Structured Binding
+
+```c++
+struct Entry {
+    string name;
+    int value;
+};
+
+Entr y read_entr y(istream& is){
+    string s;
+    int i;
+    is >> s >> i;
+    return {s,i};
+}
+
+auto [n,v] = read_entry(cin);
+cout << "{ " << n << " , " << v << " }\n";
+```
+
+```c++
+map<string,int> m;
+// ... fill m ...
+for (const auto [key,value] : m)
+    cout << "{" << key "," << value << "}\n";
+
+for (const auto& [key,value] : m)
+    cout << "{" << key "," << value << "}\n";    
+```
