@@ -53,11 +53,14 @@ void increment()
 
 `&` means "reference to". A reference is similar to a pointer,except that you don’t need to use a prefix `*` to access the value referred to by the reference. Also, a reference cannot be made to refer to a different object after its initialization.
 
-```c++
-T& r //T&: r is a reference to T
-```
-
 There is no "null reference". A reference must refer to a valid object.
+
+```c++
+int x = 7;
+int& r = x; // bind r to x (r refers to x)
+
+int& r2; // error : uninitialized reference
+```
 
 # The Null Pointer
 
