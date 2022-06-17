@@ -44,7 +44,7 @@ match: join条件和where条件是否符合
 
 ### Block Nested Loop Join
 
- ![](CMU445-11-Joins-Algorithms/11-joins_18.JPG)
+![](CMU445-11-Joins-Algorithms/11-joins_18.JPG)
 
 上面是让outer的每个tuple和inner的每个tuple join，现在是每个page join。
 
@@ -79,3 +79,51 @@ M+2：2代表innner table和output of join。`B>M+2`代表可以一下子把oute
 
 ## Sort-Merge Join
 
+- Phase1 Sort: Sort both input tables on the join attribute. We can use the external merge sort algorithm.
+- Phase2 Merge: Scan the two sorted tables in parallel, and emit matching tuples. 可能会触发inner table的回溯（扫描指针向上走），但是outer table不会。
+
+![](CMU445-11-Joins-Algorithms/11-joins_30.JPG)
+
+没有遇到需要回溯的情况
+
+![](CMU445-11-Joins-Algorithms/20220617073301.png)
+
+遇到需要回溯的情况（这里需要回溯的原因可能是内存不够，丢弃了上一个page，所以回溯需要重新获取上一次的page）
+
+![](CMU445-11-Joins-Algorithms/20220617073527.png)
+
+最坏的情况是两个表需要join的列的值都是一样的，排序没有什么作用，变成了nested loop join。一般数据库可以识别这种，直接做笛卡尔积即可。
+
+![](CMU445-11-Joins-Algorithms/20220617074300.png)
+
+什么情况下使用：
+
+- 要join的列已经排好序，比如聚簇索引的情况，这样就省去了排序的开销
+- 查询语句order by要join的列
+
+可以使用scan share，可以共享排序好的结果，但是MySQL/PostgreSQL不支持该特性，但是支持sort-merge，一般一些嵌入式数据库不支持sort-merge，只支持nested loop join和hash join。
+
+## Hash Join
+
+核心思想是通过hash区分到不同的partition，减少比较次数。如果数据都能放在内存，就可以使用linear hash table，否则可以使用bucket chain hash table。
+
+- Phase1 **Build**: Scan the outer relation and populate a hash table using  the hash function `h1` on the join attributes.
+
+- Phase2 **Probe**: Scan the inner relation and use `h1` on each tuple to jump  to a location in the hash table and find a matching tuple.
+
+![](CMU445-11-Joins-Algorithms/11-joins_59.JPG)
+
+key: join的列的值
+
+value: 取决于需要往查询计划上传递什么信息。Full tuple/Tuple ID(适用于列存储，不会从磁盘中获取不需要的信息)
+
+### Probe Phase Optimization
+
+可以添加一个布隆过滤器，在没有查看hash table的情况下判断key是否位于table。
+
+只有两个操作：
+
+- Insert(x): Use k hash functions to set bits in the filter to 1.
+- Lookup(x): Check whether the bits are 1 for each hash function.
+
+![](CMU445-11-Joins-Algorithms/20220617083311.png)
