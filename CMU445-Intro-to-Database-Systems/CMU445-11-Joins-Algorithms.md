@@ -119,11 +119,42 @@ value: 取决于需要往查询计划上传递什么信息。Full tuple/Tuple ID
 
 ### Probe Phase Optimization
 
-可以添加一个布隆过滤器，在没有查看hash table的情况下判断key是否位于table。
+可以添加一个布隆过滤器，在没有查看hash table的情况下判断key是否位于table，布隆过滤器速度很快，而且占用不大，可以放到内存中。
 
-只有两个操作：
+布隆过滤器只有两个操作：
 
 - Insert(x): Use k hash functions to set bits in the filter to 1.
 - Lookup(x): Check whether the bits are 1 for each hash function.
 
 ![](CMU445-11-Joins-Algorithms/20220617083311.png)
+
+## Grace Hash Join
+
+When the tables do not fit on main memory, you do not want the buffer pool manager constantly(*不断地*) swapping tables in and out.
+
+- Phase1Build: Hash both tables(outer/inner table) on the join  attribute into partitions.
+- Phase2 Probe: Compares tuples in  corresponding(*对应的*) partitions for each table. （取出同一个分区的所有bucket，循环遍历。提前partition，就可以知道tuple位于哪个partition）
+
+![](CMU445-11-Joins-Algorithms/10-joins_118.JPG)
+
+hash table是bucket chain hash table。
+
+If the buckets do not fit in memory, then use  **recursive partitioning** to split the tables into  chunks that will fit(*将表分成适合内存的块*).
+
+- Build another hash table for bucketR,i using hash  function h2 (with h2≠h1). （进行第二轮partition）
+- Then probe it for each tuple of the other table's bucket **at  that level**.
+
+![](CMU445-11-Joins-Algorithms/20220618080610.png)
+
+![](CMU445-11-Joins-Algorithms/20220618080957.png)
+
+# Observation
+
+- If the DBMS knows the size of the outer table,  then it can use a static hash table: Less computational overhead for build / probe  operations.
+- If we do not know the size, then we have to use a  dynamic hash table or allow for overflow pages. (多个操作之间所产生的临时中间表大小，比如join多个表)
+
+- Hashing is almost always better than sorting for operator execution.
+  - Sorting is better on non-uniform(*不均匀分布*) data.
+  - Sorting is better when result needs to be sorted.
+
+![](CMU445-11-Joins-Algorithms/10-joins_136.JPG)
