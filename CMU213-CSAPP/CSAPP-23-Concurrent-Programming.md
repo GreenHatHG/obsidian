@@ -153,3 +153,74 @@ void command(void)
 }
 ```
 
+1. Using `FD_ZERO` to create an empty read set
+   ![image-20220621065832291](CSAPP-23-Concurrent-Programming/image-20220621065832291.png)
+
+2. We define the read set to consist of descriptor 0 (standard input) and descriptor 3 (the listening descriptor)
+   ![image-20220621065910451](CSAPP-23-Concurrent-Programming/image-20220621065910451.png)
+
+3. We call the `select` function, which blocks until either the listening descriptor or standard input is ready for reading. Here is the value of ready_set that `select` would return if the user hit the enter key.
+   ![image-20220621070058338](CSAPP-23-Concurrent-Programming/image-20220621070058338.png)
+4. Once `select` returns, we use the `FD_ISSET` macro to determine which descriptors are ready for reading.
+
+上述存在的问题是如果在标准输入输入，在服务器完成客户端操作之前（直到客户端关闭连接，`echo`有while循环），不会得到响应。解决的方法是使用更细粒度的多路复用，每次只echo一行文本。
+
+Pros and Cons:
+
+- Runs in the context of a single process. This makes it easy to share data between flows. （弄清楚要做什么去处理每个事件，比如客户端只发送了一半http请求就断网了，那么不能直接一次io就处理整个请求，否则整个程序都会被阻塞，可以每次只处理一部分，这样在某个阻塞的时候也可以处理别的io事件）
+- Can single-step with a debugger
+- No process or thread control overhead. Design of choice for high-performance Web servers and search  engines. e.g., Node.js, nginx, Tornado. （如果想每秒处理超过1w的请求，必须使用io多路复用）
+- More complex to code than process- or threadbased designs.
+- Cannot take advantage of multi-core. Single thread of control. （想要获得高性能的方法是创建多个副本）
+
+## Thread-based
+
+### Thread
+
+![](CSAPP-23-Concurrent-Programming/20220621073818.png)
+
+You can think of threads as **pools of concurrent flows** that access the same code and data. And then the kernel is responsible for scheduling those flows.
+
+![23-concprog_24](CSAPP-23-Concurrent-Programming/23-concprog_24.JPG)
+
+### Vs Process
+
+- How threads and processes are similar
+
+  - Each has its own logical control flow
+  -  Each can run concurrently with others (possibly on different cores)
+  - Each is context switched
+
+- How threads and processes are different
+
+  - Threads share all code and data (except local stacks). Processes (typically) do not. （线程的local stack本质也是从同一个进程的虚拟地址空间中划分出来的，可以相互访问也是可能的）
+
+  - Threads are somewhat less expensive than processes. （进程控制(creating and reaping)的开销是线程控制的两倍）
+
+### Posix Threads
+
+Posix threads (Pthreads) is a standard interface for manipulating threads from C programs.
+
+#### Create
+
+```c
+#include <pthread.h>
+typedef void*(func)(void*);
+
+// Returns: 0 if OK, nonzero on error
+int pthread_create(pthread_t* tid, pthread_attr_t* attr,
+    				func* f, void* arg);
+```
+
+The `pthread_create` function creates a new thread and runs the `thread routine f` in the context of the new thread and with an input argument of `arg`. The `attr` argument can be used to change the default attributes of the newly created thread.
+
+The new thread can determine its own thread ID by calling the `pthread_self` function
+
+```c
+#include <pthread.h>
+// Returns: thread ID of caller
+pthread_t pthread_self(void);
+```
+
+#### Terminate
+
