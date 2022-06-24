@@ -48,3 +48,54 @@ This approach is ideal for OLAP queries that have to scan a large number of tupl
 
 对于面向磁盘数据库采用第一种更好，面向内存采用第二种更好
 
+# Access Methods
+
+An access method is a way that the  DBMS can access the data stored in a  table.
+
+## Sequential Scan
+
+- For each page in the table
+
+  - Retrieve it from the buffer pool.
+
+  - Iterate over each tuple and check whether to include it.
+
+    ```c
+    for page in table.pages:
+        for t in page.tuples:
+            if evalPred(t):
+                // Do Something!
+    ```
+
+- Optimizations:
+
+  - **Prefetching**: Fetches next few pages in advance(*提前*) so that the DBMS does not have to block when accessing each page.
+
+  - **Parallelization**: Execute the scan using multiple threads/processes in parallel.
+
+  - **Buffer Pool Bypass**: The scan operator stores pages that it fetches from disk in its local memory instead of the buffer pool. This avoids the sequential flooding problem.
+
+  - **Zone Map**
+    ![12-queryexecution1_28](CMU445-12-Query-Execution1/12-queryexecution1_28.JPG)
+    查询val>600之前发现MAX最大为400，所以不用遍历该page。有些系统把zone map保存到专属的page中，上面保存了不同page的zone map，有些则是在buffer中，或者page中。
+
+    一般不会再OLTP中使用，因为得维护zone map，对于OLAP读多写少来说则会更好
+
+  - **Late Materialization**: Each operator passes the minimal amount of information needed to by the next operator (e.g., record id). This is only useful in column-store systems (i.e., DSM).
+
+    ![12-queryexecution1_32](CMU445-12-Query-Execution1/12-queryexecution1_32.JPG)
+    在列式存储中，为了获取单个tuple所有的数据，得做一大堆读操作，因为tuple的列被拆散了，想要尽可能延迟读取这些额外的列。对于a>100，只需要将tuple对应的b列的offset值上传即可，该a列中的数据最终其实并不需要的，对于b同理。对于c则需要从磁盘中获取这一列计算。
+
+  - **Clustering Index**: Tuples are sorted in the heap's pages  using the order specified by a  clustering index. If the query accesses tuples using the  clustering index's attributes, then the  DBMS can jump directly to the pages  that it needs.
+
+## Index Scan
+
+The DBMS picks an index (or indexes) to find the tuples that the query needs.
+
+![12-queryexecution1_35](CMU445-12-Query-Execution1/12-queryexecution1_35.JPG)
+
+If there are multiple indexes that the DBMS can  use for a query. Postgres calls this Bitmap Scan
+
+![](CMU445-12-Query-Execution1/20220624083441.png)
+
+组织id可以使用bitmaps, hash tables, or Bloom filters等
