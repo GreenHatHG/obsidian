@@ -99,3 +99,26 @@ If there are multiple indexes that the DBMS can  use for a query. Postgres calls
 ![](CMU445-12-Query-Execution1/20220624083441.png)
 
 组织id可以使用bitmaps, hash tables, or Bloom filters等
+
+# Expression Evaluation
+
+The DBMS represents a query plan as a **tree**. Inside of the operators will be an expression tree. For example, the WHERE clause for a filter operator.
+
+The nodes in the tree represent different expression types:
+
+-  Comparisons (`=, <, >, !=`)
+- Conjunction (`AND`), Disjunction (`OR`)
+- Arithmetic Operators (`+, -, *, /, %`)
+- Constant and Parameter Values
+- Tuple Attribute References
+
+![](CMU445-12-Query-Execution1/20220630085946.png)
+
+To evaluate an expression tree at runtime, the DBMS maintains a context handle that contains metadata for the execution, such as the current tuple, the parameters, and the table schema. The DBMS then walks the tree to evaluate its operators and produce a result.
+
+对每个tuple都深度优先遍历一下树，以此决定tuple是否符合条件（这是没有优化的方法），因为DBMS必须弄清楚operator是什么操作，这个就很慢（实际上没人会这样做，每个tuple遍历一下树）。
+
+相反，想做的事情是JIT(just-in-time)编译，将树变成一个指令，比如`where 1=1`，直接转成cpu指令1=1，而不是要遍历树。（部分数据库才支持这个功能，比如Postgresql12）
+
+
+

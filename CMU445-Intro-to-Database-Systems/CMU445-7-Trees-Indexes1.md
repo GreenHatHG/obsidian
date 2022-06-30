@@ -66,6 +66,7 @@ CLUSTER emails USING idx_emails_tree
 ```
 
 强制Postgre根据索引定义来对整个表进行重新排序（对于pg来讲CLUSTER是一次性操作，对后续的插入不影响，其他DBMS则不是），允许能在表上进行二分查找，在不使用索引的情况下复杂度是log(n)。
+![](CMU445-7-Trees-Indexes1/2022-06-30_081942.png) 
 
 ## Select Conditions
 
