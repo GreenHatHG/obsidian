@@ -1,5 +1,7 @@
 # Join Operator
 
+operator：运算符
+
 ![](CMU445-11-Joins-Algorithms/11-joins_4.JPG)
 
 ## Operator Output
