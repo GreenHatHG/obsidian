@@ -49,11 +49,14 @@ The DBMS is comprised of more or more `workers` that are responsible for executi
 - The DBMS inserts an `exchange` operator into the  query plan to coalesce(*合并*) results from children operators.（所有DBMS都是通过这种方式来做到并行执行，甚至分布式DBMS也是按照这种套路来并行执行）
 - In general, there are three types of exchange operators
   - **Gather**: Combine the results from multiple workers into a single output stream. This is the most common type used in parallel DBMSs.
-  - 
+  - **Repartition**: Reorganize multiple input streams across multiple output streams. This allows the DBMS take inputs that are partitioned one way and then redistribute(*重新分配*) them in another way.
+  - **Distribute**: Split a single input stream into multiple output streams.
 
 对A循序扫描，然后将结果传入filter operator。为了做到并行执行查询，将这个查询计划分为3个不同的fragment，每个fragment中都有一个scan operator以及filter operator。它们会在同一时间在不同的CPU core上并行执行这些任务。
 
-![](CMU445-13-Query-Execution2/20220707091430.png)
+![](CMU445-13-Query-Execution2/20220709131402.png)
 
+对A并行扫描，分配三个不同的worker线程执行，在查询计划任务的fragment中，对fragment进行scan操作，然后filter操作，接着会去构建hashtable。在例子中，hashtable是全局的，由worker一起维护，因为扫描的时候不知道表中有哪些数据，如果hashtable是分开的，join的时候需要去查看所有的hashtable。接着对B并行扫描，完事后多线程进行join操作。
 
+![](CMU445-13-Query-Execution2/20220709132946.png)
 
