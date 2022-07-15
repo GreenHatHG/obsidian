@@ -42,8 +42,6 @@ The DBMS is comprised of more or more `workers` that are responsible for executi
 
 ## Intra-Query Parallelism
 
-### Intra-Operator Parallelism
-
 - Decompose(*分解*) operators into independent fragments that  perform the same function on different subsets of data.
 
 - The DBMS inserts an `exchange` operator into the  query plan to coalesce(*合并*) results from children operators.（所有DBMS都是通过这种方式来做到并行执行，甚至分布式DBMS也是按照这种套路来并行执行）
@@ -60,3 +58,38 @@ The DBMS is comprised of more or more `workers` that are responsible for executi
 
 ![](CMU445-13-Query-Execution2/20220709132946.png)
 
+## I/O Parallelism
+
+Using additional processes/threads to execute queries in parallel will not improve performance if the disk is always the main bottleneck(*瓶颈*). Thus, we need a way to split the database up across multiple storage devices.
+
+### Multi-Disk Parallelism
+
+Configure OS/hardware to store the DBMS’s files across multiple storage devices.
+
+Can be done through storage appliances and RAID configuration. 
+
+This is transparent(*透明的*) to the DBMS. It cannot have workers operate on different devices because it is unaware of the underlying parallelism(*不知道底层的并行性*).
+
+![13-queryexecution2_44](CMU445-13-Query-Execution2/13-queryexecution2_44.JPG)
+
+写数据时RAID控制器根据Round-Robin(*轮流*)策略决定应该写到哪个存储设备上
+
+### File-based Partitioning
+
+Some DBMSs allow you to specify the disk location of each individual database. The buffer pool manager maps a page to a disk location. This is also easy to do at the file-system level if the DBMS stores each database in a separate directory. However, the log file might be shared.
+
+one file per database or one directory for database
+
+可以通过链接的方式将数据联系起来
+
+### Logical Partitioning
+
+Split single logical table into disjoint physical segments(*不相交的物理段*) that are stored/managed separately. Such partitioning is ideally transparent to the application. That is, the application should be able to access logical tables without caring how things are stored.
+
+#### Vertical Partitioning
+
+![13-queryexecution2_49](CMU445-13-Query-Execution2/13-queryexecution2_49.JPG)
+
+#### Horizontal Partitioning
+
+![13-queryexecution2_51](CMU445-13-Query-Execution2/13-queryexecution2_51.JPG)
