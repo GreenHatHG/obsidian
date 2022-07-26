@@ -24,9 +24,80 @@
 
 关系代数等价：
 
-Two relational algebra expressions are equivalent if they generate the same set of tuples.
+Two relational algebra expressions(*关系代数表达式*) are equivalent if they generate the same set of tuples.
 
 The DBMS can identify better query plans without  a cost model.
 
-This is often called query rewriting.
+This is often called `query rewriting`.
+
+## Predicate Push-down
+
+谓词下推：Perform filters as early as possible. 重排序谓词，以便先执行有选择性的谓词。
+
+![](CMU445-14-QueryPlanning-Optimization1/20220719085031.png)
+
+## Projections Push-down
+
+Perform them early to create smaller tuples and reduce  intermediate results. This is not important for a column store.
+
+![14-optimization1_16](CMU445-14-QueryPlanning-Optimization1/14-optimization1_16.JPG)
+
+## More
+
+- Impossible / Unnecessary Predicates:
+
+  ```sql
+  SELECT * FROM A WHERE 1 = 0;
+  SELECT * FROM A WHERE 1 = 1;
+  ```
+
+  在Postgresql中，one-time filter为false表示不会返回任何东西
+  ![image-20220721083638137](CMU445-14-QueryPlanning-Optimization1/image-20220721083638137.png)
+  1=1则是全表扫描
+
+  ![image-20220721084428105](CMU445-14-QueryPlanning-Optimization1/image-20220721084428105.png)在MySQL中，看Impossible Where
+  ![image-20220721083807685](CMU445-14-QueryPlanning-Optimization1/image-20220721083807685.png)
+  ![image-20220721084539367](CMU445-14-QueryPlanning-Optimization1/image-20220721084539367.png)
+
+- Join Elimination(*消除*)
+
+  id不能为NULL的情况下，NULL != NULL
+
+  ```sql
+  SELECT A1.*
+  	FROM A AS A1 JOIN A AS A2
+  		ON A1.id = A2.id;
+  ```
+
+  ```sql
+  SELECT * FROM A;
+  ```
+
+- Ignoring Projections
+
+  ```sql
+  SELECT * FROM A AS A1
+  	WHERE EXISTS(SELECT val FROM A AS A2
+  		WHERE A1.id = A2.id);
+  ```
+
+  ```sql
+  SELECT * FROM A;
+  ```
+
+- Merging Predicates
+
+  ```sql
+  SELECT * FROM A
+  	WHERE val BETWEEN 1 AND 100
+  		OR val BETWEEN 50 AND 150;
+  ```
+
+  ```sql
+  SELECT * FROM A
+  	WHERE val BETWEEN 1 AND 150;
+  ```
+
+
+
 
