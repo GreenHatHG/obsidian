@@ -141,3 +141,57 @@ GEQO：
 2nd Generation以及后面的都是这样，直到超时，并没有找到比现有最佳方案还要好的方案。
 
 ![](CMU445-15-QueryPlanning-Optimization2/20220730193512.png)
+
+## Nested Sub-Queries
+
+Two Approaches:
+
+- Rewrite
+  ```sql
+  SELECT name FROM sailors S 
+  WHERE EXISTS (
+      SELECT * FROM reserves R 
+      WHERE S.sid = R.sid 
+      	AND R.day = '2018-10-15'
+   )
+  ```
+
+  ```sql
+  SELECT name 
+  	FROM sailors AS S, reserves AS R 
+  	WHERE S.sid = R.sid 
+    		AND R.day = '2018-10-15'
+  ```
+
+- Decompose: Sub-queries are written to a temporary table that  are discarded after the query finishes.
+
+  ```sql
+  SELECT S.sid,
+         Min(R.day)
+  FROM   sailors S,
+         reserves R,
+         boats B
+  WHERE  S.sid = R.sid
+         AND R.bid = B.bid
+         AND B.color = 'red'
+         AND S.rating = (SELECT Max(S2.rating)
+                         FROM   sailors S2)
+  GROUP  BY S.sid
+  HAVING Count(*) > 1 
+  ```
+
+  ```sql
+  SELECT MAX(rating) FROM sailors
+  
+  SELECT S.sid,
+         Min(R.day)
+  FROM   sailors S,
+         reserves R,
+         boats B
+  WHERE  S.sid = R.sid
+         AND R.bid = B.bid
+         AND B.color = 'red'
+         AND S.rating = ###
+  GROUP  BY S.sid
+  HAVING Count(*) > 1 
+  ```
