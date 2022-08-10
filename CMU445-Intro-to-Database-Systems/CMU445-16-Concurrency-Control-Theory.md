@@ -13,3 +13,24 @@ A `concurrency control protocol` is how the DBMS decides the proper interleaving
 
 There are two categories of concurrency control protocols: `Pessimistic`, `Optimistic`
 
+## Interleaves Execution Anomalies
+
+交错执行异常情况
+
+### Read-Write Conflicts
+
+**Unrepeatable Reads**: A transaction is not able to **get the same value** when reading the same object multiple times.
+
+![16-concurrencycontrol_45](CMU445-16-Concurrency-Control-Theory/16-concurrencycontrol_45.JPG)
+
+### Write-Read Conflicts
+
+**Dirty Reads**: 事务在另一个事务提交其更改之前查看该事务的写效果。
+
+![16-concurrencycontrol_46](CMU445-16-Concurrency-Control-Theory/16-concurrencycontrol_46.JPG)
+
+### Write-Write conflict 
+
+Lost Updates: One transaction **overwrites** the uncommitted data of another concurrent transaction
+
+![16-concurrencycontrol_47](CMU445-16-Concurrency-Control-Theory/16-concurrencycontrol_47.JPG)
