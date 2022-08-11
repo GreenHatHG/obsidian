@@ -46,7 +46,7 @@ S-Lock、X-Lock
 
 ### Cascading Aborts
 
-When a transaction aborts and now another transaction must be rolled back, which results in wasted work(*导致无用工*).
+When a transaction aborts and now another transaction must be rolled back, which results in wasted work(*导致无用工*). 回滚的逻辑可能也得很复杂。
 
 这里的情况是T2读到了T1的值，但是T1已经abort了，单独使用2PL不会避免出现了脏读的情况。这里就会出现了依赖，T1 abort，T2也得abort。
 
@@ -54,5 +54,92 @@ When a transaction aborts and now another transaction must be rolled back, which
 
 ## Strong Strict 2PL
 
+The transaction only releases locks when it finishes. Does not incur cascading aborts. 
 
+![17-twophaselocking_37](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_37.JPG)
+
+1. T1获取X-LOCK(A)后释放
+2. T2获取S-LOCK(A)，S-LOCK(A)，打印出1900（图错误）
+
+这里出现了脏读
+
+![17-twophaselocking_40](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_40.JPG)
+
+![17-twophaselocking_42](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_42.JPG)
+
+## 2PL Deadlock Handling
+
+![17-twophaselocking_49](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_49.JPG)
+
+MySQL 2PL死锁示例：
+
+设置死锁检测和事务的隔离级别
+
+```sql
+SET GLOBAL innodb_lock wait_timeout=10;
+SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+| TXN1                                      | TXN2                                      |
+| ----------------------------------------- | ----------------------------------------- |
+| UPDATE txn_demo SET val=val+1 WHERE id=1; |                                           |
+|                                           | UPDATE txn_demo SET val=val+1 WHERE id=2; |
+| UPDATE txn_demo SET val=val+1 WHERE id=2; |                                           |
+|                                           | UPDATE txn_demo SET val=val+1 WHERE id=1; |
+
+此时出现了死锁
+
+![image-20220811090343246](CMU445-17-Two-Phase-Locking-Concurrency-Control/image-20220811090343246.png)
+
+MySQL检测到死锁和T2有关系，会重启T2，T1就会拿到锁并继续执行
+
+PostgreSQL 2PL死锁示例
+
+```SQL
+SET deadlock timeout To '10s';
+BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+![image-20220811091315623](CMU445-17-Two-Phase-Locking-Concurrency-Control/image-20220811091315623.png)
+
+### Deadlock Detection
+
+The DBMS creates a `waits-for` graph: `Nodes` are transactions, and edge from $T_i$ to $T_j$ if transaction $T_i$ is waiting for transaction $T_j$ to release a lock. 
+
+The system will periodically check for cycles in waits-for graph and then make a decision on how to break it.
+
+![17-twophaselocking_54](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_54.JPG)
+
+When the DBMS detects a deadlock, it will select a "victim" txn to rollback to break the cycle.
+
+The victim txn will either restart or abort(more common) depending on how it was invoked.
+
+Selecting the proper victim depends on a lot of  different variables:
+
+1. By age (newest or oldest timestamp).
+2. By progress (least/most queries executed). 已经执行的查询次数
+3. By the count of items already locked. 
+4. By the count of transactions that we have to rollback with it.
+5. Count of times a transaction has been restarted in the past. 事务在之前一段时间内已经重启的次数
+
+**Rollback Length**: After selecting a victim transaction to abort, the DBMS can also decide on how
+far to rollback the transaction’s changes. Can be either the entire transaction or just enough queries to
+break the deadlock. rollback的范围，整个事务或者是事务的部分语句
+
+### Deadlock Prevention
+
+When a transaction tries to acquire a lock, if that lock is currently held by another transaction, then perform some action to prevent a deadlock.
+
+Assign priorities based on timestamps: Older Timestamp = Higher Priority
+
+- Wait-Die ("Old Waits for Young"): 请求锁的txn如果older，那么需要等待锁，否则abort。也就是先来先得
+- Wound-Wait ("Young Waits for Old"): 与上面相反
+
+![17-twophaselocking_60](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_60.JPG)
+
+如果一个事务重启后，时间戳依旧是之前的时间戳，不能分配新的时间戳，避免事务饿死（比如规则是新时间戳不能获得锁，那么该事务就一直不会获得到锁，反之可能老的事务可能会一直获取不到锁）
+
+## Lock Granularities
+
+锁的粒度
 
