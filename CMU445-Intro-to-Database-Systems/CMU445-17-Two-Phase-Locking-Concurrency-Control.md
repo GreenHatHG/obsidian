@@ -25,6 +25,8 @@ S-Lock、X-Lock
 
 ### Two Phase
 
+几乎所有的系统都用到了，比如PostgreSQL、SQL server、MySQL。
+
 - Phase #1: **Growing**
   - Each transaction requests the locks that it needs from the DBMS’s lock manager.
   - The lock manager grants/denies lock requests.
@@ -55,6 +57,10 @@ When a transaction aborts and now another transaction must be rolled back, which
 ## Strong Strict 2PL
 
 The transaction only releases locks when it finishes. Does not incur cascading aborts. 
+
+![17-twophaselocking_31](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_31.JPG)
+
+示例：
 
 ![17-twophaselocking_37](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_37.JPG)
 
@@ -143,3 +149,50 @@ Assign priorities based on timestamps: Older Timestamp = Higher Priority
 
 锁的粒度
 
+- When we say that a txn acquires a “lock”, what  does that actually mean?  On an Attribute? Tuple? Page? Table?
+
+- Ideally, each txn should obtain fewest number of locks that is needed.
+- To avoid this overhead, the DBMS can use to use a lock hierarchy that allows a transaction to take more coarse-grained(*粗粒度*) locks in the system.![17-twophaselocking_65](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_65.JPG)
+
+### Intention Lock
+
+An **intention lock** allows a **higher level** node to  be locked in **shared** or **exclusive** mode without  having to check all descendent(*后代*) nodes.
+
+-  **Intention-Shared (IS)**: Indicates explicit locking at a lower level with **shared** locks.
+
+- **Intention-Exclusive (IX)**: Indicates explicit locking at a lower level with **exclusive or shared** locks.
+- **Shared+Intention-Exclusive (SIX): **适用于一个txn中又有查询又有更新的操作
+
+![17-twophaselocking_71](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_71.JPG)
+
+- Each txn obtains appropriate(*适当的*) lock at **highest level**  of the database hierarchy.
+- To get **S** or **IS** lock on a node, the txn must hold at least **IS** on parent node.
+- To get **X**, **IX**, or **SIX** on a node, must hold at least  **IX** on parent node.
+
+![](CMU445-17-Two-Phase-Locking-Concurrency-Control/20220812085757.png)
+
+T3想要全表扫描，需要S-LOCK，但是SIX无法与IS兼容，所以T3此时只能等待
+
+### Lock Escalation
+
+锁升级
+
+- Lock escalation dynamically asks for coarser-grained locks when too many low level locks acquired. 
+
+- This reduces the number of requests that the lock manager has to process.
+  - Doesn't violate(*不违反*) two-phase locking
+  - Can upgrade locks don't actually release the lock
+
+## Locking In Practice
+
+- You typically don't set locks manually in txns. 
+- Sometimes you will need to provide the DBMS  with hints to help it to improve concurrency. 
+  - Explicit locks are also useful when doing major changes(*大量的修改*) to the database.
+
+![17-twophaselocking_89](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_89.JPG)
+
+MySQL将S-LOCK和X-LOCK称为READ LOCK、WRITE LOCK
+
+![17-twophaselocking_90](CMU445-17-Two-Phase-Locking-Concurrency-Control/17-twophaselocking_90.JPG)
+
+`SELECT FOR UPDATE`: 适用于读取某个tuple，然后想对其进行更新的情况。该语句给数据库一个暗示，表示我知道数据库正在执行读操作，会去请求一个S-LOCK，之后我会执行写操作，现在可以帮我请求一个X-LOCK。简单来讲就是会告诉数据库现在去请求一个X-LOCK。
