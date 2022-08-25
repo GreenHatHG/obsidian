@@ -173,3 +173,60 @@ T2准备commit，找到所有比TS(T2)小的事务，执行验证操作
 -  Validation/Write phase bottlenecks.
 - Aborts are potentially more wasteful than in other protocols because they only occur after a transaction has already executed.
 
+在冲突很多的情况下，2PL和OCC都不太行，效果都差不多，2PL会存在大量争取锁的情况，OCC会存在做了大量工作后回滚的情况。
+
+## Partition-Based T/O
+
+当系统中存在很多的并发事务的情况下，进行验证阶段需要获取latches去保护write set和read set（验证时候需要查看数据，同时事务也在并发执行，可能也会写数据），即使事务之间的冲突率很低，但是latches的竞争也会导致很多的开销。
+
+- An alternative is to split the database up in disjoint subsets(*不相交子集*) called **horizontal partitions** (aka shards) and then only check for conflicts between transactions that are running in the same partition. 
+  - Every partition has one transaction execution thread.
+
+- Partitions are protected by a single lock. Transactions are assigned timestamps based on when they arrive at the DBMS. Each transaction is queued at the partitions it needs before it starts running.
+  - The transaction acquires a partition’s lock if it has the lowest timestamp in that partition’s queue.
+  - The transaction starts when it has all of the locks for all the partitions that it will access during execution.
+  - Transactions can read/write anything that they want at the partitions that they have locked. If a transaction tries to access a partition that it does not have the lock, it is aborted + restarted. 中止该事务，获取更多的lock并重新执行该事务
+- All updates occur in place. 直接修改数据库上的值， 不需要latches去维护一些数据结构
+  - Maintain a separate in-memory buffer to undo changes if  the txn aborts.
+  - If a txn tries to write to a partition that it does not  have the lock, it is aborted + restarted.
+
+![18-timestampordering_81](CMU445-18-Timestamp-Ordering-Concurrency-Control/18-timestampordering_81.JPG)
+
+![](CMU445-18-Timestamp-Ordering-Concurrency-Control/20220824134316.png)
+
+### Potential Issues
+
+- Partition-based T/O protocol is fast if
+  1. the DBMS knows what partitions the transaction needs before it starts and 
+  2. most (if not all) transactions only need to access a single partition
+
+- The protocol only works if
+  1. transactions are stored procedures (network communication causes the partition to idle because it has to wait for the next query to execute) and 
+  2. transactions only touch one partition (multi-partition transactions cause partitions to be idle because partitions have to wait for the next query to execute). 热点分区，别的分区没有访问到
+
+## Dynamic Databases
+
+上述只是讨论了数据的查询和更新的状态，并没有考虑到插入数据的情况。如果还是以上述的规则去处理插入数据的话，可能会遇上幻读的现象
+
+![18-timestampordering_97](CMU445-18-Timestamp-Ordering-Concurrency-Control/18-timestampordering_97.JPG)
+
+其实这里T1锁住的是已经存在的数据，对于正在插入的数据是没有锁定的（可以回去看看是数据库是怎么锁住数据的），所以就出现了这种现象。
+
+### Predicate Locking
+
+条件锁：根据status='lit'找到所有的tuple，然后锁定
+
+这样是可行的，但是开销太大而且太复杂，条件有可能是表达式，很少会有数据库使用该方法
+
+### Index Locking
+
+If there is a dense index on the status field then the  txn can lock index page containing the data with  status='lit'.
+
+插入操作都需要遍历索引然后更新索引，这样就拿不到锁
+
+### Locking Without An Index
+
+gap lock
+
+- 表的每个page加锁，避免其它记录的 status被修改成 lit
+- 表本身加锁，防止status='lit'的记录插入或者删除
