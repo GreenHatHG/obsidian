@@ -130,7 +130,7 @@ This is not recoverable  because we cannot restart T1.（猜测这里不能resta
 
 - 实现方式是确保被修改的东西不会与系统中所有其他并发执行的事务产生read write conflict或者write write conflict。
   - 维护系统中所有正在运行的事务的全局视野，便可以知道事务所做的修改，这样就可以决定事务的执行顺序
-  - Validation和Write阶段按顺序执行，确保同时只有一个事务在执行验证操作，实际上也这可以并行验证
+  - Validation和Write阶段按顺序执行，确保同时只有一个事务在执行验证操作，实际上也可以并行验证
 - 有两种验证方法：Backward Validation、Forward Validation，但是在系统中只能使用一种，不能同时使用。
 
 #### Backward Validation
@@ -230,3 +230,35 @@ gap lock
 
 - 表的每个page加锁，避免其它记录的 status被修改成 lit
 - 表本身加锁，防止status='lit'的记录插入或者删除
+
+### Repeating Scans
+
+提交事务前须确保读取到的所有数据都是在你提交事务前读取的，如果不是就重启
+
+# Isolation Levels
+
+- Serializability is useful because it allows  programmers to ignore concurrency issues. 
+  - But enforcing it may allow too little concurrency  and limit performance.  使用lock或者各种规则限制事务以此达到Serializability，如果不满足则需要重启事务。
+  - We may want to use a weaker level of consistency  to improve scalability.
+
+- Isolation levels control the extent(*程度*) that a transaction is exposed to(*暴露*) the actions of other concurrent transactions.
+
+- 暴露uncommitted changes提高并发性可能会造成以下问题
+
+  - **Dirty Read**: Reading uncommitted data.
+  - **Unrepeatable Reads**: Redoing a read results in a different result.
+  - **Phantom Reads**: Insertion or deletions result in different results for the same range scan queries.
+
+- Isolation Levels (Strongest to Weakest):
+
+  - **SERIALIZABLE**: No Phantoms, all reads repeatable, and no dirty reads.
+    - Obtain all locks first; plus index  locks, plus strict 2PL.
+  - **REPEATABLE READS**: Phantoms may happen.
+    - Same as above, but no index  locks.
+  - **READ-COMMITTED**: Phantoms and unrepeatable reads may happen.
+    - Same as above, but S locks are  released immediately.
+  - **READ-UNCOMMITTED**: All anomalies may happen
+    - Same as above, but allows  dirty reads (no S locks).
+
+  ![image-20220828112053228](CMU445-18-Timestamp-Ordering-Concurrency-Control/image-20220828112053228.png)
+
