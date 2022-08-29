@@ -50,3 +50,32 @@ main table保存每个tuple的最新版本
 
 ![](CMU445-19-Multi-Version-Concurrency-Control/20220829141148.png)
 
+## Garbage Collection
+
+The DBMS needs to remove reclaimable(*可回收的*) physical  versions from the database over time(*随着时间的推移*). 一些过时的数据和aborted txn创建的
+
+How to look for expired versions?
+
+How to decide when it is safe to reclaim memory?
+
+### Tuple Level
+
+需要sequential scan on tables，通过使用版本和现在活跃的事务列表确定是否已经过期，不仅要扫描内存中的page，还要扫描交换到磁盘的page
+
+#### Background Vacuuming
+
+查看begin和end，A100和B100不在T1和T2的时间范围内，可以回收掉
+
+![](CMU445-19-Multi-Version-Concurrency-Control/20220829192412.png)
+
+可以做的一个优化是，为数据库中所有的dirty page维护一个bitmap，每次更新数据时候可以将bit设置为1，这样清理的时候就可以知道哪些需要清理了，一旦清理完成就设置为0
+
+#### Cooperative Cleaning
+
+### Transaction Level
+
+Each transaction keeps track of its own read/write set. 
+
+When a transaction completes, the garbage collector can use that to identify what tuples to reclaim. 
+
+The DBMS determines when all versions created by a finished transaction are no longer visible.
