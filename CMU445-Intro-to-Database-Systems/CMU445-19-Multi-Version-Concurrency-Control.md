@@ -18,6 +18,8 @@ T2 W(A)时遇到了write-write confict，假设使用2PL，那么需要等待T1�
 
 # Design Decisions
 
+![19-multiversioning_67](CMU445-19-Multi-Version-Concurrency-Control/19-multiversioning_67.JPG)
+
 ## Concurrency Control Protocol
 
 遇上write-write conflict时需要使用其中一种协议：Timestamp Ordering、Optimistic Concurrency Control、Two-Phase Locking
@@ -72,6 +74,10 @@ How to decide when it is safe to reclaim memory?
 
 #### Cooperative Cleaning
 
+线程执行查询的时候会对数据的版本进行检查，并看看能否去回收这些空间，如果可以就会回收掉。只适用于从旧到新的排序。
+
+![](CMU445-19-Multi-Version-Concurrency-Control/20220830091155.png)
+
 ### Transaction Level
 
 Each transaction keeps track of its own read/write set. 
@@ -79,3 +85,23 @@ Each transaction keeps track of its own read/write set.
 When a transaction completes, the garbage collector can use that to identify what tuples to reclaim. 
 
 The DBMS determines when all versions created by a finished transaction are no longer visible.
+
+## Index Management
+
+Indexes always point to the head of the chain.  如何去维护index和version chain呢
+
+### Physical Pointers
+
+物理地址由pageid和offset组成，每当创建某个数据的新版本时，都得更新索引。当workload是OLTP时候，可能会有数十个索引，每次更新version chain的时候都得更新所有对应的索引，这种做法成本很高。
+
+![](CMU445-19-Multi-Version-Concurrency-Control/20220830094756.png)
+
+### Logical Pointers
+
+一种方案是只保存Primary index到version chain的关系，Secondary index得通过Primary index查找version chain，每次更新tuple和version chain关系时候只需要更新Primary index就行
+
+![19-multiversioning_65](CMU445-19-Multi-Version-Concurrency-Control/19-multiversioning_65.JPG)
+
+另外一种方式是使用中间层，每个tuple都有一个唯一id，使用hash tabl将tuple id和物理位置映射，发生改变时只需要修改中间层即可
+
+![19-multiversioning_66](CMU445-19-Multi-Version-Concurrency-Control/19-multiversioning_66.JPG)
