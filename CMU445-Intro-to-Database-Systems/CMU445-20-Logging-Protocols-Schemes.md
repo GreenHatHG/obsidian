@@ -69,6 +69,7 @@ T2 commit时，因为No-Steal策略，需要将page复制一份，只提交T2修
 
   - Updates are only made in the shadow copy. 
   - When a transaction commits, atomically switch the shadow to become the new master.
+  - This is an example of a **NO-STEAL** + **FORCE** system.
 
 - Implementation
 
@@ -94,7 +95,20 @@ T2 commit时，因为No-Steal策略，需要将page复制一份，只提交T2修
   - **Undo**: Remove the shadow pages. Leave the  master and the DB root pointer alone. 不用理会
   - **Redo**: Not needed at all.
 
-缺点：复制成本太高，即使是采用了树形结构只复制变化的部分；提交事务的成本也高，需要将修改过的每个page、page table以及db root写到磁盘；数据碎片化，需要gc；
+缺点：复制成本太高，即使是采用了树形结构只复制变化的部分；提交事务的成本也高，需要将修改过的每个page、page table以及db root写到磁盘；数据碎片化，需要gc；Only supports one writer txn at a time or txns in a batch.一次性提交一个事务或者一次性提交一批事务。
 
+# Write-Ahead Logging
 
+- The DBMS records all the changes made to the database in a log file (on stable storage) before the change is made to a disk page. 
+  - The log contains sufficient(*足够的*) information to perform the necessary undo and redo actions to restore the database after a crash. 
+    -  Each log entry contains information about the change to a single object：
+    - Transaction ID、Object ID、Before V alue (used for UNDO，该对象被修改前的值)、After V alue (used for REDO).
+  - 在将数据库对象刷新到磁盘之前，DBMS必须将与数据库对象所做的更改相对应的日志文件记录写入磁盘
+  - When the transaction starts, write a  record to the log for each transaction to mark its starting point.
+  - When a transaction finishes, write a  record to the log and make sure all log records are flushed before it returns an acknowledgment(*确定*) to the application.
+- This is an example of a STEAL + NO-FORCE system. 
+  - Steal：在事务被实际提交前，只要这些事务所对应的日志先落地到磁盘，就能够将这些dirty page写出到磁盘
+  - No-Force：不要求事务对这些对象所做的所有修改都落地到磁盘，只要求这些日志记录被写入到磁盘
 
+- Almost every DBMS uses write-ahead logging (WAL) because it has the fastest runtime performance.
+  - But the DBMS’s recovery time with WAL is slower than shadow paging because it has to replay the log.
