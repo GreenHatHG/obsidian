@@ -112,3 +112,22 @@ T2 commit时，因为No-Steal策略，需要将page复制一份，只提交T2修
 
 - Almost every DBMS uses write-ahead logging (WAL) because it has the fastest runtime performance.
   - But the DBMS’s recovery time with WAL is slower than shadow paging because it has to replay the log.
+
+![](CMU445-20-Logging-Protocols-Schemes/20220902085331.png)
+
+## Group Commit
+
+When should the DBMS write log entries to disk: Log entries to disk should be done when transaction commits. You can use group commit to batch multiple log flushes together to amortize(*分摊*) overhead.
+
+When should the DBMS write dirty records to disk?
+
+有两个WAL buffer，类似于shadow paging，一开始先往第一个WAL buffer中添加数据。当第一个满了的时候，会调用FSync写出到磁盘。当⼀个WAL buffer中的数据被刷出到磁盘时，就会去往另⼀个WAL buffer中填充数据。在上⼀次数据刷出到磁盘之后，过了⼀定的时间，此时WAL buffer 并没有满，依然可以将 buffer内的数据刷出到磁盘，算是某种调优，比如知道FSync的耗时，可以设置个超时，到点就可以继续刷出到磁盘。
+
+![](CMU445-20-Logging-Protocols-Schemes/20220902092405.png)
+
+![19-logging_119](CMU445-20-Logging-Protocols-Schemes/19-logging_119.JPG)
+
+## Logging Schemes
+
+实现记录日志的方案，上面只是讲到了每个日志中应该包含什么
+
