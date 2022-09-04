@@ -131,3 +131,50 @@ When should the DBMS write dirty records to disk?
 
 实现记录日志的方案，上面只是讲到了每个日志中应该包含什么
 
+### Physical Logging
+
+- Record the changes made to a specific location in the database.
+  - Example: Position of a record in a page
+
+### Logical Logging
+
+- Record the high level operations executed by transactions. Not necessarily restricted to single page.
+  - Example: The UPDATE, DELETE, and INSERT queries  invoked by a txn.
+- Requires less data written in each log record than physical logging. 比如使用⼀条更新语句去更新10亿条tuple
+- Difficult to implement recovery with logical  logging if you have concurrent txns.
+  - 难以去弄清楚在系统发生崩溃前，对数据库所做的修改实际有哪些已经被写入到磁盘。比如更新了10亿个page上的10亿个tuple，可能只有⼀半的tuple被写入到了磁盘，如何知道重启后该更新哪个page，该重新执行哪些操作？
+  - Also takes longer to recover because you must reexecute every txn all over again.
+
+### Physiological Logging
+
+- Hybrid approach where log records target a  single page but do not specify organization of  the page. 其实就是记录到了page层次，但是没有具体记录page中的某个位置的变化，只记录了相对路径。
+  - Identify tuples based on their slot number 
+  - Allows DBMS to reorganize pages after a log record has  been written to disk
+
+![19-logging_126](CMU445-20-Logging-Protocols-Schemes/19-logging_126.JPG)
+
+# Checkpoints
+
+The main problem with write-ahead logging is that the log file will grow forever.
+
+After a crash, the DBMS has to replay the entire log, which can take a long time if the log file is large. 
+
+Thus, the DBMS can periodically takes a **checkpoint** where it flushes all buffers out to disk. 将buffer pool中所有dirty page刷出到磁盘
+
+如果使用的是Steal+No-Force策略，并不要求在事务被提交前，该事务所修改的dirty page被刷出到磁盘，所以如果崩溃了，并不清楚这些page是否被刷出到磁盘。如果使用checkpoint，就知道在这个点所有东西都已经写入到磁盘
+
+## Blocking Checkpoint
+
+- The DBMS stops accepting new transactions and waits for all active transactions to complete.
+- Flush all log records and dirty blocks currently residing in main memory to stable storage. 
+- Write a  `<CHECKPOINT>` entry to the log and flush to stable storage.
+
+![19-logging_133](CMU445-20-Logging-Protocols-Schemes/19-logging_133.JPG)
+
+- We have to stall all txns when take a checkpoint to ensure a consistent snapshot.sss
+
+- Scanning the log to find uncommitted txns can take a long time.
+
+- Not obvious how often the DBMS should take a checkpoint.
+  - Checkpointing too often causes the runtime performance to degrade.System spends too much time flushing buffers.
+  - But waiting a long time is just as bad: The checkpoint will be large and slow. Makes recovery time much longer.
