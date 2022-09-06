@@ -1,3 +1,11 @@
+# Crash Recovery
+
+- Recovery algorithms are techniques to ensure database consistency, transaction atomicity, and durability despite failures(*故障时的持久性*). 
+
+- Recovery algorithms have two parts
+  - Actions during normal txn processing to ensure that the DBMS can recover from a failure
+  - Actions after a failure to recover the database to a state that ensures atomicity, consistency, and durability.
+
 # Failure Classification
 
 ## Transaction Failures
