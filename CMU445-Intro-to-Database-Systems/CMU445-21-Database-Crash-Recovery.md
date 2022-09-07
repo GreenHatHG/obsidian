@@ -51,3 +51,43 @@ Once the COMMIT record is safely stored on disk, the DBMS returns an acknowledgm
 当事务commit记录被持久化到磁盘，可以告诉外界已经成功提交了，但是事务内部并未完全完成，依旧可以去维护一些内部元数据，比如维护bookkeeping代表所有活跃的事务，当添加TXN-END的时候就看不到与该事务相关的任何信息，可以从内部的bookkeeping中移除。
 
 ![](CMU445-21-Database-Crash-Recovery/20220906095621.png)
+
+## Transaction Abort
+
+- Aborting a transaction is a special case of the ARIES undo operation applied to only one transaction. *undo的一种特殊情况*
+
+- We need to add another field to our log records
+  - prevLSN: The previous LSN for the txn. 为了避免通过反复扫描日志来弄清楚需要撤销哪些操作，可以通过prevLSN找到与某个txn相关的所有操作（并没有记录往磁盘中写入了哪些page）
+  - This maintains a linked-list for each txn that makes it easy to walk through its records.
+  - The DBMS adds CLRs to the log like any other record but they never need to be undone.
+
+在BEGIN语句中，并没有prevLSN，设置为nil
+
+![](CMU445-21-Database-Crash-Recovery/20220907084412.png)
+
+如何记录abort的动作：compensation log record (CLR)，CLR描述了为撤销前一个更新记录的操作而采取的操作。
+
+![](CMU445-21-Database-Crash-Recovery/20220907091552.png)
+
+处理事务的abort操作时会创建一个CLR日志，会和该事务执行的一个更新操作相关联。日志中有一个undoNext字段指向需要撤销的下一条日志，在这里指向的是begin，所以不需要继续撤销了，添加TXN-END即可。
+
+# Checkpointing
+
+The first two blocking checkpoint methods discussed below pause transactions during the checkpoint process. 
+
+This pausing is necessary to ensure that the DBMS does not miss updates to pages during the checkpoint.
+
+Then, a better approach that allows transactions to continue to execute during the checkpoint but requires the DBMS to record additional information to determine what updates it may have missed is presented.
+
+## Blocking Checkpoints
+
+The DBMS halts(*暂停*) the execution of transactions and queries when it takes a checkpoint to ensure that it writes a consistent snapshot of the database to disk.
+
+1. Halt the start of any new transactions.
+2. Wait until all active transactions finish executing.
+3. Flush dirty pages to disk.
+
+## Slightly Better Blocking Checkpoints
+
+与之前的检查点方案类似，不同之处在于DBMS不需要等待active transactions完成执行。
+
