@@ -87,7 +87,53 @@ The DBMS halts(*暂停*) the execution of transactions and queries when it takes
 2. Wait until all active transactions finish executing.
 3. Flush dirty pages to disk.
 
+This is bad for runtime performance but makes recovery trivially easy.
+
 ## Slightly Better Blocking Checkpoints
 
-与之前的检查点方案类似，不同之处在于DBMS不需要等待active transactions完成执行。
+与之前的检查点方案类似，不同之处在于DBMS不需要等待active transactions完成执行，但是会阻塞写事务。
+
+假设在内存中有3个page，有一个事务在运行，已经修改了page3，在要更新page1前checkpoint开始了，此时事务获取不到page1的write latch，该事务暂停下来，checkpoint会扫描每个page和buffer pool，将它们刷出到磁盘。这里会将page1、2和已经修改的page3刷出到磁盘。
+
+![](CMU445-21-Database-Crash-Recovery/20220908092842.png)
+
+然后checkpoint结束，事务接着运行，开始更新page1，此时会出现一个问题，checkpoint包含了一个无法确定是否可以完成的事务的数据，这时候checkpoint和实际的数据就不一致了。checkpoint其实就是数据库某个时间点的数据快照，但是这个快照里面包含了一些不确定的数据，这些数据可能会被回滚，也可能有最新值，即使有wal，崩溃后撤销这些脏修改会特别慢，因为得对一个个单独页面进行更新，通过记录更多的元数据，可以避免这样的开销。
+
+为了解决这个不一致的问题，需要记录一些状态：
+
+- **Active Transaction Table (ATT)**
+  - The ATT represents the state of transactions that are actively running in the DBMS. 
+  - A transaction’s entry is removed after the DBMS completes the commit/abort process for that transaction.  所以没有finished之类的状态
+  - For each transaction entry, the ATT contains the following information:
+    - transactionId: Unique transaction identifier
+    -  status: The current mode of the transaction (Running, Committing, Undo Candidate). Candidate表示到达TXN-END之前，遇到⼀些情况不得不做undo操作
+    - lastLSN: Most recent LSN written by transaction
+- **Dirty Page Table (DPT)**
+  - The DPT contains information about the pages in the buffer pool that were modified by uncommitted transactions.
+  - One entry per dirty page in the buffer pool
+    - recLSN: The LSN of the log record that first caused the page to be dirty
+
+![](CMU445-21-Database-Crash-Recovery/20220908192250.png)
+
+## Fuzzy Checkpoint
+
+- A fuzzy checkpoint is where the DBMS allows active txns to continue the run while the system flushes dirty pages to disk.
+
+- New log records to track checkpoint boundaries
+  - **CHECKPOINT-BEGIN**: Indicates start of checkpoint 
+  - **CHECKPOINT-END**: Contains **ATT** + **DPT**.
+
+checkpoint成功完成时，MasterRecord指向checkpoint-begin记录的LSN。
+
+在checkpoint之后启动的任何txn都不会记录在checkpoint-end记录中的ATT中。
+
+![20-recovery_90](CMU445-21-Database-Crash-Recovery/20-recovery_90.JPG)
+
+#  ARIES Recovery
+
+Upon start-up after a crash, the DBMS will execute the following phases
+
+- **Analysis**: Read WAL from last CHECKPOINT-END to identify dirty pages in the buffer pool and active txns at the time of the crash. 通过MasterRecord获得到最后一个checkpoint-begin的位置，然后扫描到checkpoint-end，就可以弄清楚需要abort哪些事务，哪些事务需要重新提交
+- **Redo**: Repeat **all** actions starting from an appropriate point(*适当的位置*) in the log.
+- **Undo**: Reverse the actions of transactions that did not commit before the crash.
 
