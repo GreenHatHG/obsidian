@@ -133,7 +133,55 @@ checkpoint成功完成时，MasterRecord指向checkpoint-begin记录的LSN。
 
 Upon start-up after a crash, the DBMS will execute the following phases
 
-- **Analysis**: Read WAL from last CHECKPOINT-END to identify dirty pages in the buffer pool and active txns at the time of the crash. 通过MasterRecord获得到最后一个checkpoint-begin的位置，然后扫描到checkpoint-end，就可以弄清楚需要abort哪些事务，哪些事务需要重新提交
+- **Analysis**: Read WAL from last CHECKPOINT-END to identify dirty pages in the buffer pool and active txns at the time of the crash.  当log刷出去的时候，不一定也会将buffer pool中的page也刷出去，所以没有将DPT记录在log之内，所以从log找不到dirty page，需要在恢复阶段重新构建。
 - **Redo**: Repeat **all** actions starting from an appropriate point(*适当的位置*) in the log.
 - **Undo**: Reverse the actions of transactions that did not commit before the crash.
 
+![20-recovery_101](CMU445-21-Database-Crash-Recovery/20-recovery_101.JPG)
+
+1. The DBMS starts the recovery process by examining(*检查*) the log starting from the last BEGIN-CHECKPOINT found via MasterRecord
+2. It then begins the Analysis phase by scanning forward through time to build out ATT and DPT.
+3. In the Redo phase, the algorithm jumps to the smallest recLSN, which is the oldest log record that may have modified a page not written to disk. The DBMS then applies all changes from the smallest recLSN.
+4. The Undo phase starts at the oldest log record of a transaction active at crash and reverses all changes up to that point.
+
+## Analysis Phase
+
+Start from last checkpoint found via the database’s MasterRecord LSN.
+
+1. Scan log forward from the checkpoint.
+2. If the DBMS finds a TXN-END record, remove its transaction from ATT.
+3. All other records, add transaction to ATT with status UNDO, and on commit, change transaction status to COMMIT. 沿着时间线往前走，不知道是否被中止
+4. For UPDATE log records, if page P is not in the DPT, then add P to DPT and set P ’s recLSN to the log record’s LSN.
+
+![](CMU445-21-Database-Crash-Recovery/20220913112736.png)
+
+根据第三条规则，填充T96日志
+需要abort T97，未在log中看到相关日志，不确定这些page是否写出到磁盘了。
+
+## Redo Phase
+
+- The goal of this phase is for the DBMS to repeat history to reconstruct(*重建*) its state up to the moment of the crash(*崩溃时的状态*). 
+
+- It will reapply all updates (even aborted transactions) and redo CLRs.
+- The DBMS scans forward from log record containing smallest **recLSN** in the DPT. 修改page的第一条记录，可能还没有将对应的数据写出到磁盘
+
+## Undo Phase
+
+- Undo all txns that were active at the time of crash and therefore will never commit.
+  - These are all the txns with **U** status in the ATT after the Analysis Phase.
+- Once the last transaction has been successfully aborted, the DBMS flushes out the log and then is ready to start processing new transactions.
+
+![](CMU445-21-Database-Crash-Recovery/20220914093821.png)
+
+- T1 abort后会创建一个CLR代表想要undo T1的修改
+
+- 在analysis phase，填充ATT和DPT，有两个活跃的事务T2和T3，这两个都是处于undo status，所以这两个不会被提交，选出lastLSN大于recLSN并且最大的那个，会先添加一个CLR然后undo T2
+
+- 添加undoNext指向下一个要undo的log
+- 为T3添加一条CLR，undo T3
+
+- 添加txn-end日志后，可以将所有的dirty pages刷出到磁盘，所有的修改信息已经写入到WAL并刷出到磁盘了
+
+
+
+假设后面又crash，
