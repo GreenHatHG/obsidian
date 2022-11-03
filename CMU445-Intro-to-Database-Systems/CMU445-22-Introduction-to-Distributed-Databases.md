@@ -64,5 +64,31 @@ Mongodb使用的是这种架构，有一些特殊用途的节点，负责处理�
 
 ![](CMU445-22-Introduction-to-Distributed-Databases/20221102102849.png)
 
+# Data Transparency
 
+数据透明度
 
+- Users should not be required to know where data is physically located, how tables are partitioned or replicated.
+
+- A query that works on a single-node DBMS should work the same on a distributed DBMS.
+
+# Partitioning Schemes
+
+- Distributed system must partition the database across multiple resources, including disks, nodes, processors.
+
+- This process is sometimes called sharding in NoSQL systems.
+- When the DBMS receives a query, it first analyzes the data that the query plan needs to access. The DBMS may potentially send fragments of the query plan to different nodes, then combines the results to produce a single answer.
+
+- The goal of a partitioning scheme is to maximize single-node transactions, or transactions that only access data contained on one partition. 
+  - This allows the DBMS to not need to coordinate the behavior of concurrent transactions running on other nodes. 
+  - On the other hand, a distributed transaction accesses data at one or more partitions. This requires expensive, difficult coordination.
+
+## Naive Data Partitioning
+
+- Each node stores one table, assuming enough storage space for a given node.
+
+- This is easy to implement because a query is just routed to a specific partitioning. 
+- This can be bad, since it is not scalable. 
+- One partition’s resources can be exhausted(*耗尽*) if that one table is queried on often, not using all nodes available.
+
+![21-distributed_53](CMU445-22-Introduction-to-Distributed-Databases/21-distributed_53.JPG)
