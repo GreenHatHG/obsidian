@@ -92,3 +92,22 @@ Mongodb使用的是这种架构，有一些特殊用途的节点，负责处理�
 - One partition’s resources can be exhausted(*耗尽*) if that one table is queried on often, not using all nodes available.
 
 ![21-distributed_53](CMU445-22-Introduction-to-Distributed-Databases/21-distributed_53.JPG)
+
+## Horizontal Partitioning
+
+- More commonly used is horizontal partitioning, which splits a table’s tuples into disjoint subsets.
+- Choose column(s) that divides the database equally in(*平均*) terms of size, load, or usage, called the partitioning key(s).
+- The DBMS can partition a database physically (shared nothing) or logically (shared disk) via hash partitioning or range partitioning.
+
+![](CMU445-22-Introduction-to-Distributed-Databases/20221116095053.png)
+
+hash(tuple)% number of partitions
+
+在某个分区找不到数据时候，会路由到别的分区
+
+缺点是进行范围查询会很麻烦，因为无法对一个范围进行hash并放到同一个分区。如果要更新partitioning key，需要移动数据，比如新增一个分区，可能会移动整个数据库的每一条数据，需要使用一致性hash（Consistent Hashing）处理这个问题。
+
+## Consistent Hashing
+
+
+
