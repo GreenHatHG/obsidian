@@ -105,9 +105,46 @@ hash(tuple)% number of partitions
 
 在某个分区找不到数据时候，会路由到别的分区
 
-缺点是进行范围查询会很麻烦，因为无法对一个范围进行hash并放到同一个分区。如果要更新partitioning key，需要移动数据，比如新增一个分区，可能会移动整个数据库的每一条数据，需要使用一致性hash（Consistent Hashing）处理这个问题。
+缺点是进行范围查询会很麻烦，因为无法对一个范围进行hash并放到同一个分区。
 
-## Consistent Hashing
+如果要更新partitioning key，需要移动数据，比如新增一个分区，可能会移动整个数据库的每一条数据，需要使用一致性hash（Consistent Hashing）处理这个问题。
 
+### Consistent Hashing
 
+它允许在不移动任何数据的情况下，能够对集群中的分区进行增量更新和移除
+
+![](CMU445-22-Introduction-to-Distributed-Databases/20221124181148.png)
+
+顺时针找到第一个分区
+
+增加一个分区D，BD区域的结果原本是发到C，现在需要发到D，只需要更新环，每个分区的数据不需要移动
+
+---
+
+![21-distributed_84](CMU445-22-Introduction-to-Distributed-Databases/21-distributed_84.JPG)
+The Replication Factor (RF) is equivalent to the number of nodes where data (rows and partitions) are replicated.
+
+比如AFB三个副本，读的话可以任意读其中一个，但是需要保证一致性
+
+### Logical And Physical Partitioning
+
+![](CMU445-22-Introduction-to-Distributed-Databases/20221125110712.png)
+
+# Transaction Coordination
+
+If our DBMS supports multi-operation and distributed txns, we need a way to coordinate their execution in the system. 以某种⽅式来决定允许谁去做哪些事情，以及什么时候去提交事务，当所有⼈都赞同的话，就会进⾏提交。
+
+Two different approaches: Centralized and Decentralized
+
+## Centralized coordinator
+
+The centralized coordinator acts as a global “traffic cop”(*交通警察*) that coordinates all the behavior. 所有⼈都会跑到某个中心，这个地⽅能看到系统中所发生的一切，它会去判断是否允许进行提交。
+
+![](CMU445-22-Introduction-to-Distributed-Databases/20221125115407.png)
+
+A TP Monitor is an example of a centralized coordinator for distributed DBMSs.
+
+1. 请求lock，获得p1，p3，p4的lock
+2. application对这些分区进行修改，然后询问coordinator是否可以提交
+3. coordinator会和这些分区确认，如果都ok就可以提交
 
