@@ -14,3 +14,17 @@ git remote add origin url
 git push -u origin master -f
 ```
 https://stackoverflow.com/questions/4981126/how-to-amend-several-commits-in-git-to-change-author/69947947#69947947
+
+# Git Merge One Commit History
+
+```shell
+git merge --squash branch --allow-unrelated-histories
+```
+
+# Submodule
+
+```shell
+git submodule add -f -b master repo_url folder_name
+git submodule update --init --recursive
+git submodule update --remote
+```

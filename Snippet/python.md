@@ -64,4 +64,3 @@ for (id, failed_info_new, error_info_new) in cursor:
             dict = ast.literal_eval(error_info_new)
             update_list[id] = json.dumps(dict, ensure_ascii=False)
 ```
-
