@@ -131,3 +131,14 @@ def _hook_methods(self):
         setattr(self.obj, method, prefix_function(getattr(self.obj, method),
                                                             start_step_function_desc))
 ```
+
+# Find Files Recursively
+
+Python 3.5
+
+```python
+from pathlib import Path
+
+for path in Path('src').rglob('*.c'):
+    print(path.name)
+```
