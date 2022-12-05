@@ -64,3 +64,70 @@ for (id, failed_info_new, error_info_new) in cursor:
             dict = ast.literal_eval(error_info_new)
             update_list[id] = json.dumps(dict, ensure_ascii=False)
 ```
+
+# Run Shell
+
+```python
+import subprocess
+
+def run_shell_command(command_line, timeout=None):
+    """执行shell命令，阻塞运行"""
+    logger.info('Subprocess: "' + command_line + '"')
+
+    try:
+        command_line_process = subprocess.Popen(
+            command_line,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            shell=True
+        )
+
+        # process_output is now a string, not a file
+        process_output, _ = command_line_process.communicate(timeout=timeout)
+        res = command_line_process.wait(timeout=timeout)
+        process_output = process_output.decode("utf-8")
+        logger.info(f"process_output: {process_output}")
+    except (OSError, subprocess.CalledProcessError) as exception:
+        logger.info('Exception occured: ' + str(exception))
+        logger.info('Subprocess failed')
+        return False
+    else:
+        # no exception was raised
+        logger.info('Subprocess finished')
+
+    return process_output
+```
+
+# Hook Obj All Function
+
+```python
+def _hook_methods(self):
+    methods = [method_name for method_name in dir(self.obj)
+                            if callable(getattr(self.obj, method_name)) and not method_name.startswith('_')]
+
+    def start_step_function_desc(f, *args, **kwargs):
+        lines = str(f.__doc__).splitlines()
+        desc = ''
+        for line in lines:
+            if line:
+                desc = line.strip()
+                break
+        desc = f"obj-{desc}"
+        self.start_step(desc)
+        self.logger.info(f"{desc} args: {args}")
+        self.logger.info(f"{desc} kwargs: {kwargs}")
+
+    def prefix_function(function, pre_function):
+        @functools.wraps(function)
+        def run(*args, **kwargs):
+            pre_function(function, *args, **kwargs)
+            return function(*args, **kwargs)
+        return run
+
+    skip_list = ['ping']
+    for method in methods:
+        if method in skip_list:
+            continue
+        setattr(self.obj, method, prefix_function(getattr(self.obj, method),
+                                                            start_step_function_desc))
+```
