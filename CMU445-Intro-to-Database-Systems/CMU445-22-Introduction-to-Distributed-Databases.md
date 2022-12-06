@@ -130,7 +130,7 @@ The Replication Factor (RF) is equivalent to the number of nodes where data (row
 
 ![](CMU445-22-Introduction-to-Distributed-Databases/20221125110712.png)
 
-# Transaction Coordination
+# Distributed Concurrency Control
 
 If our DBMS supports multi-operation and distributed txns, we need a way to coordinate their execution in the system. 以某种⽅式来决定允许谁去做哪些事情，以及什么时候去提交事务，当所有⼈都赞同的话，就会进⾏提交。
 
@@ -148,3 +148,22 @@ A TP Monitor is an example of a centralized coordinator for distributed DBMSs.
 2. application对这些分区进行修改，然后询问coordinator是否可以提交
 3. coordinator会和这些分区确认，如果都ok就可以提交
 
+## Middleware
+
+More common is to use a centralized coordinator as a middleware.
+
+middleware会弄清楚查询所涉及的数据分别哪个分区，所做的事情和 TP monitor⼀样，会先和分区服务器沟通。
+
+![21-distributed_118](CMU445-22-Introduction-to-Distributed-Databases/21-distributed_118.JPG)
+
+这个方式很普遍，Facebook有世界最大的MySQL集群，Google广告业务，Youtube等都是以这种形式
+
+## Decentralized coordinator
+
+![](CMU445-22-Introduction-to-Distributed-Databases/20221206121547.png)
+
+- In a decentralized approach, nodes organize themselves. 
+
+- The client directly sends queries to one of the partitions. 
+  - This *home partition* will send results back to the client. The home partition is in charge of(*负责*) communicating with other partitions and committing accordingly(相应的).
+- 可以将所有查询请求直接发送到主节点或其他节点
