@@ -18,6 +18,8 @@ This single node executes workers on a local CPU(s) with its own local memory ad
 
 ## Shared Disk
 
+这种⽅案在云架构中变得越来越常⻅
+
 - In a shared disk architecture, all CPUs can read and write to a single logical disk directly via an interconnect, but each have their own private memories. This approach is more common in cloud-based DBMSs.
 - DBMS的执行层可以独立于存储层进行扩展。添加新的存储节点或执行节点不会影响其他层中数据的布局或位置。
 - Nodes must send messages between them to learn about other node’s current state. That is, since memory is local, if data is modified, changes must be communicated to other CPUs.
@@ -167,3 +169,4 @@ middleware会弄清楚查询所涉及的数据分别哪个分区，所做的事�
 - The client directly sends queries to one of the partitions. 
   - This *home partition* will send results back to the client. The home partition is in charge of(*负责*) communicating with other partitions and committing accordingly(相应的).
 - 可以将所有查询请求直接发送到主节点或其他节点
+
