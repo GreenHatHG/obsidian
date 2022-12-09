@@ -142,3 +142,46 @@ from pathlib import Path
 for path in Path('src').rglob('*.c'):
     print(path.name)
 ```
+
+# Dict Nested
+
+```python
+a = ['1', '2', '3', '4']
+d = {}
+for i in reversed(a):
+    if i == a[-1]:
+        d[i] = ''
+    else:
+        key = list(d.keys())[0]
+        d[i] = dict(d)
+        d.pop(key)
+print(d)
+```
+
+```
+{'1': {'2': {'3': {'4': ''}}}}
+```
+
+# Dict Loop Recursively
+
+```python
+def dict_value_empty_recursively(dictionary, rec=1):
+    for key, value in dictionary.items():
+        if isinstance(value, str):
+            try:
+                dictionary[key] = json.loads(value)
+            except:
+                pass
+        if isinstance(dictionary[key], dict):
+            dict_value_empty_recursively(dictionary[key], rec+1)
+        else:
+            if rec == 1:
+                dictionary[key] = '{}'
+            else:
+                dictionary[key] = ''
+```
+
+```
+{'a': {'b': '123', 'c': '123'}}
+{'a': {'b': '', 'c': ''}}
+```
