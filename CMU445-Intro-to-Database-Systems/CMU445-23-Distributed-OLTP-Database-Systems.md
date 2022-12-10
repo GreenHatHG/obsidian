@@ -75,3 +75,30 @@ Transactions can update data objects at any replica. Replicas must synchronize w
 
 # CAP Theorem
 
+It is impossible for a distributed system to always be **Consistent**, **Available**, and **Partition Tolerant**. Only two of these three properties can be chosen.
+
+![22-distributedoltp_96](CMU445-23-Distributed-OLTP-Database-Systems/22-distributedoltp_96.JPG)
+
+- **Consistent**：强一致性。Once a write completes, all future reads should return the value of that write applied or a later write applied. Additionally, once a read has been returned, future reads should return that value or the value of a later applied write.
+  - 写操作确定后，以后所有的读要么是读到修改后的值，要么是后面修改的值（这个写之后可能还有写，两个写完成后读到的值）。读操作确定后，以后所有的读要么返回的这个值（上次确定读到的值），要么是后面修改的值（读之后的写操作覆盖值）。总体意思是时间只能往前走。
+    ![](CMU445-23-Distributed-OLTP-Database-Systems/20221210151400.png)
+
+- **Availability**：any client making a request for data gets a response, even if one or more nodes are down
+  ![](CMU445-23-Distributed-OLTP-Database-Systems/20221210154635.png)
+- **Partition tolerance**：the cluster continues to function even if there is a "partition" (communication break) between two nodes (both nodes are up, but can't communicate).
+
+NoSQL系统倾向AP（最终一致性，即使不能相互通信，节点也会保持在线可处理查询，分区恢复后重新同步数据，可能会获取到旧的数据），其他倾向CP（强一致性，当分区发生在任意两个节点之间时，必须关闭不一致的节点直到恢复一致）或者CA（如果系统中出现了分区，就无法实现C和A）
+
+# Federated Databases
+
+Distributed architecture that connects together multiple DBMSs into a single logical system. 不同的DBMS
+
+A query can access data at any location.
+
+![22-distributedoltp_128](CMU445-23-Distributed-OLTP-Database-Systems/22-distributedoltp_128.JPG)
+
+middleware重写和拆分sql中的部分内容，以使用不同的api在不同的DBMS上执行
+
+![22-distributedoltp_129](CMU445-23-Distributed-OLTP-Database-Systems/22-distributedoltp_129.JPG)
+
+PostgreSQL有⼀种叫做Foreign Data Wrappers的东西，可以连接不同的数据源，但是对外则是一个普通的PG数据库
