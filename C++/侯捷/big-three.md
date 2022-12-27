@@ -76,3 +76,9 @@ scope: 函数作用域
 ![](Big-Three/20221224152050-167198711162013.png)
 
 ![](Big-Three/20221224152227-167198711162012.png)
+
+# Delete Default
+
+![cpp11_50](Big-Three/cpp11_50.JPG)
+
+![cpp11_54](Big-Three/cpp11_54.JPG)
