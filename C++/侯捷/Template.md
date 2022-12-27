@@ -70,3 +70,31 @@ no args
 */
 ```
 
+```c++
+#include <iostream>
+
+template<typename... values> class Tuple;
+template<> class Tuple<> {};
+
+template<typename Head, typename... Tail>
+class Tuple<Head, Tail...>: private Tuple<Tail...>{
+    typedef Tuple<Tail...> inherited;
+public:
+    Tuple() = default;;
+    explicit Tuple(Head v, Tail... vtail): m_head{std::move(v)}, inherited(vtail...){};
+
+    auto head() {return m_head;};
+    inherited& tail() {return *this;};
+protected:
+    Head m_head;
+};
+
+int main(){
+    Tuple<int, float, std::string> t {41, 6.3, "nico"};
+    std::cout << t.head() << std::endl; //41
+    std::cout << t.tail().head() << std::endl; //6.3
+    std::cout << t.tail().tail().head() << std::endl; //nico
+}
+```
+
+![20221226220848](Template/20221226220848.png)
