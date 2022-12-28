@@ -98,3 +98,47 @@ int main(){
 ```
 
 ![20221226220848](Template/20221226220848.png)
+
+# Template Template Parameter + Aias Template
+
+```c++
+#include <iostream>
+#include <vector>
+#include <list>
+
+//container：以T为类型的模板
+template<typename T, template<class> class Container>
+class XCLs{
+private:
+    Container<T> c;
+public:
+    XCLs(){
+        for(size_t i = 0; i < 10000; ++i){
+            c.insert(c.end(), T());
+        }
+        std::cout << *(c.begin()) << std::endl;
+    }
+};
+
+template<typename T>
+using Vec = std::vector<T, std::allocator<T>>;
+
+template<typename T>
+using Lst = std::list<T, std::allocator<T>>;
+
+class Rand{
+private:
+    int num;
+public:
+    Rand(): num{rand()}{};
+    friend std::ostream& operator << (std::ostream& os, const Rand& r){
+        return os << '(' << r.num << ')' << std::endl;
+    }
+};
+
+int main(){
+    XCLs<Rand, Vec> c1;
+    XCLs<Rand, Lst> c2;
+}
+```
+
