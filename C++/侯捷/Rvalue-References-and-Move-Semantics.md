@@ -21,6 +21,8 @@ void function1(T1&& t1, T2&& t2){
 
 # Move Aware Class
 
+![20230112002423](Rvalue-References-and-Move-Semantics/20230112002423.png)
+
 ```c++
 #include <iostream>
 #include <cstring>
