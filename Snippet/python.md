@@ -185,3 +185,15 @@ def dict_value_empty_recursively(dictionary, rec=1):
 {'a': {'b': '123', 'c': '123'}}
 {'a': {'b': '', 'c': ''}}
 ```
+
+# Override function param value
+
+```python
+def b(param1, param2, param3=3, param4=4):
+    pass
+
+def a(self, param1, *args, param2=2, **kwargs):
+    self.b(param1, *args, **{"param2": param2, "param3": 1, **kwargs})
+
+a(1, 2, param2=3, param3=4, param4=4)
+```
