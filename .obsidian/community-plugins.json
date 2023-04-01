@@ -1,9 +1,8 @@
 [
-  "obsidian-git",
   "obsidian-carry-forward",
-  "obsidian-markmind",
   "obsidian-annotator",
-  "ProxyGithub",
   "Enhanced-editing",
-  "markdown-prettifier"
+  "markdown-prettifier",
+  "obsidian-booknote-plugin",
+  "ProxyGithub"
 ]

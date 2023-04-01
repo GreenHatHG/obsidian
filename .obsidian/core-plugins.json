@@ -4,6 +4,7 @@
   "switcher",
   "graph",
   "backlink",
+  "canvas",
   "page-preview",
   "daily-notes",
   "note-composer",
@@ -14,7 +15,6 @@
   "markdown-importer",
   "outline",
   "word-count",
-  "open-with-default-app",
   "workspaces",
   "file-recovery"
 ]

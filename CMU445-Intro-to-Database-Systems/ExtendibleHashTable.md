@@ -76,3 +76,28 @@ https://emunix.emich.edu/~shaynes/Papers/ExtendibleHashing/extendibleHashing.htm
 https://www.geeksforgeeks.org/extendible-hashing-dynamic-approach-to-dbms/
 
 https://zhuanlan.zhihu.com/p/537292608
+
+
+
+
+
+
+# Paper
+## Concepts
+[**P12**](obsidian://booknote?type=open-book&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&page=12)
+1. $h$: fixed hash function
+2. $K$: is a key
+3. $K'$: $h(K)$, also $pseudokey$. 
+	- We choose pseudokeys to be of fixed length, such as 32 bits. [**P12**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=31bfbe22-c540-21f1-bfa2-a21ee9a0d5d0&page=12&rect=60.958,172.824,408.193,196.702)
+	- The pseudokeys are of fixed length, the keys need not be. [**P12**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=dfade0d3-6e2a-8310-196b-beb3f4b6bc65&page=12&rect=61.196,113.275,410.934,136.316)
+4. $I(K)$: is associated information: either the record associated with $K$, or a pointer to the record. [**P12**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=d7530e75-96b9-f0bd-3094-284915de09d6&page=12&rect=61.438,77.064,409.815,100.942)
+## Struct 
+![[booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r101.660,457.940,369.200,655.660z2i(a0b5b3dc-bb5a-59ea-8c9a-7a66868630e8).png#center|446]]
+1. **Two levels**: $directory$ and $leaves$
+	- The leaves contain pairs$(K, I(K))$
+	- The directory contains pointers to leaf pages [**P13**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=f4c60f3e-505f-3d82-22db-0f38ccc4fbe6&page=13&rect=194.397,423.355,382.881,434.396)
+2. **Depth d**: the depth $d$ of the directory. [**P13**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=366e571c-8305-06c0-a668-88c22396655f&page=13&rect=56.156,423.355,404.496,447.262)
+3. **Directory pointers**:
+	- There is a pointer to a leaf that stores all keys $K$ for which the pseudokey $K’ = h(K)$ starts with $d$ consecutive zeros. [**P13**](obsidian://booknote?type=annotation&book=CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf&id=c6d6830d-1b0d-8e26-1c2e-b2f35367c4d9&page=13&rect=56.396,399.384,403.876,422.636)
+	  每个leaf中的$K$都有下面的特征：$K'$前$d$位都是0
+	  

@@ -1,6 +1,9 @@
 {
-  "baseFontSize": 18,
+  "baseFontSize": 16,
   "cssTheme": "Blue Topaz",
   "theme": "moonstone",
-  "translucency": false
+  "translucency": false,
+  "accentColor": "",
+  "interfaceFontFamily": "Microsoft YaHei",
+  "textFontFamily": "Microsoft YaHei"
 }

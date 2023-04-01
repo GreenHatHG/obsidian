@@ -55,5 +55,77 @@
       ],
       "key": "C"
     }
+  ],
+  "Enhanced-editing:cuti-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "B"
+    }
+  ],
+  "Enhanced-editing:xieti-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "I"
+    }
+  ],
+  "Enhanced-editing:add-daima": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "`"
+    }
+  ],
+  "Enhanced-editing:biaoti1-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "1"
+    }
+  ],
+  "Enhanced-editing:biaoti2-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "2"
+    }
+  ],
+  "Enhanced-editing:biaoti3-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "3"
+    }
+  ],
+  "Enhanced-editing:biaoti4-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "4"
+    }
+  ],
+  "Enhanced-editing:biaoti5-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "5"
+    }
+  ],
+  "Enhanced-editing:biaoti6-text": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "6"
+    }
   ]
 }
