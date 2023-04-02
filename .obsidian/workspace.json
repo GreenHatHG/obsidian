@@ -4,60 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "b0746d2525d7942d",
-        "type": "split",
-        "children": [
-          {
-            "id": "f926d3c020b44905",
-            "type": "tabs",
-            "dimension": 70.67307692307693,
-            "children": [
-              {
-                "id": "afabfa0baec815c1",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
-                    "mode": "source",
-                    "source": false
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "id": "3ec05349ae5ce296",
-            "type": "tabs",
-            "dimension": 29.326923076923077,
-            "children": [
-              {
-                "id": "2a3b295b9da2ef74",
-                "type": "leaf",
-                "state": {
-                  "type": "outline",
-                  "state": {
-                    "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md"
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "direction": "horizontal"
-      },
-      {
-        "id": "12d199a3417902ce",
+        "id": "b11704ede38564a0",
         "type": "tabs",
         "children": [
           {
-            "id": "3ad35f983d9e19f2",
+            "id": "0408f372c9079598",
             "type": "leaf",
-            "pinned": true,
             "state": {
-              "type": "book-view",
-              "state": {},
-              "pinned": true
+              "type": "markdown",
+              "state": {
+                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -118,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 374.5,
-    "collapsed": true
+    "width": 374.5
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -175,10 +133,15 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "afabfa0baec815c1",
+  "active": "0408f372c9079598",
   "lastOpenFiles": [
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r101.660,457.940,369.200,655.660z2i(a0b5b3dc-bb5a-59ea-8c9a-7a66868630e8).png",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 1 页.jpg",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 2 页.jpg",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash.drawio",
+    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r111.580,151.380,377.160,420.220z2i(bd1718b0-a251-355c-816e-f15241f8970f).png",
+    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r114.190,421.530,377.820,655.790z2i(5dd2a543-b45c-f558-4ca9-c2a0417c0607).png",
+    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r101.660,457.940,369.200,655.660z2i(a0b5b3dc-bb5a-59ea-8c9a-7a66868630e8).png",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r107.190,531.980,371.510,658.620z2i(c4485553-9b14-0712-17f2-990646fac215).png",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/yin.css",
@@ -192,7 +155,6 @@
     "你是你吃出来的/笔记.canvas",
     "booknote/books-data/你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf.xml",
     "booknote/books-data/你是你吃出来的",
-    "booknote/books-data",
     "保险.md",
     "你是你吃出来的/未命名思维导图.md",
     "simpread/simpread-买保险？先确认预算很重要.md",
