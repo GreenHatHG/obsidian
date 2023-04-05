@@ -133,4 +133,6 @@ https://zhuanlan.zhihu.com/p/537292608
 5. 涉及到删除操作应该怎么处理
 
 # overfill
+$d>d'$，只拆分leaf，不double directory，可以根据里面所有的key找到对应的directory index再重新映射到leaf
+
 ![[hash-第 1 页.jpg]]

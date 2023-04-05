@@ -4,19 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "b11704ede38564a0",
+        "id": "171940940cbf54eb",
         "type": "tabs",
         "children": [
           {
-            "id": "0408f372c9079598",
+            "id": "208ffa3b5ac40e6b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
+                "file": "你是你吃出来的/笔记.md",
                 "mode": "source",
                 "source": false
               }
+            }
+          }
+        ]
+      },
+      {
+        "id": "2bd2d6ec8e8d9f58",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "165abf07264f1362",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "book-view",
+              "state": {},
+              "pinned": true
             }
           }
         ]
@@ -77,7 +93,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 374.5
+    "width": 296.5,
+    "collapsed": true
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -93,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
+                "file": "你是你吃出来的/笔记.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,7 +127,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md"
+                "file": "你是你吃出来的/笔记.md"
               }
             }
           }
@@ -133,10 +150,13 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "0408f372c9079598",
+  "active": "208ffa3b5ac40e6b",
   "lastOpenFiles": [
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 1 页.jpg",
+    "你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf",
+    "未命名.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
+    "你是你吃出来的/笔记.md",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 1 页.jpg",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 2 页.jpg",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash.drawio",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r111.580,151.380,377.160,420.220z2i(bd1718b0-a251-355c-816e-f15241f8970f).png",
@@ -151,14 +171,11 @@
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf",
     "pdf/raft-extended.pdf",
     "pdf/raft-extended-annotation.md",
-    "你是你吃出来的/笔记.md",
     "你是你吃出来的/笔记.canvas",
     "booknote/books-data/你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf.xml",
-    "booknote/books-data/你是你吃出来的",
     "保险.md",
     "你是你吃出来的/未命名思维导图.md",
     "simpread/simpread-买保险？先确认预算很重要.md",
-    "未命名.md",
     "CMU213/11-The-Memory-Hierarchy.md",
     "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
     "MIT6.824/Lab3-KVRaft.md",
