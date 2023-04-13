@@ -4,16 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "171940940cbf54eb",
+        "id": "f1678cfd93b3ca64",
         "type": "tabs",
+        "dimension": 52.51798561151079,
         "children": [
           {
-            "id": "208ffa3b5ac40e6b",
+            "id": "2941417c3f2c9f74",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "你是你吃出来的/笔记.md",
+                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
                 "mode": "source",
                 "source": false
               }
@@ -22,11 +23,12 @@
         ]
       },
       {
-        "id": "2bd2d6ec8e8d9f58",
+        "id": "88f58e6d223c24cf",
         "type": "tabs",
+        "dimension": 47.482014388489205,
         "children": [
           {
-            "id": "165abf07264f1362",
+            "id": "fa724af3090d2e54",
             "type": "leaf",
             "pinned": true,
             "state": {
@@ -93,7 +95,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 296.5,
+    "width": 452.5,
     "collapsed": true
   },
   "right": {
@@ -110,7 +112,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "你是你吃出来的/笔记.md",
+                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +129,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "你是你吃出来的/笔记.md"
+                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md"
               }
             }
           }
@@ -140,39 +142,41 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-booknote-plugin:书库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "command-palette:打开命令面板": false,
       "markdown-importer:打开 Markdown 格式转换器": false,
-      "workspaces:管理工作区布局": false
+      "workspaces:管理工作区布局": false,
+      "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "208ffa3b5ac40e6b",
+  "active": "2941417c3f2c9f74",
   "lastOpenFiles": [
-    "你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf",
-    "未命名.md",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable.md",
     "你是你吃出来的/笔记.md",
+    "你是你吃出来的/思维导图.md",
+    "你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
+    "booknote/books-data/book/Database-System-Concepts.pdf.xml",
+    "book/Database-System-Concepts.pdf",
+    "book/未确认 472123.crdownload",
+    "book/Database-System-Concepts-7th-Edition.pdf",
+    "booknote/books-data/book/zookeeper.pdf.xml",
+    "booknote/books-data/book",
+    "CMU445-Intro-to-Database-Systems/Database-System-Concepts-7th-Edition.pdf",
+    "book/dbms-concepts-7th.pdf",
+    "book/dbm.pdf",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project0-primer.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 1 页.jpg",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 2 页.jpg",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash.drawio",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r111.580,151.380,377.160,420.220z2i(bd1718b0-a251-355c-816e-f15241f8970f).png",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r114.190,421.530,377.820,655.790z2i(5dd2a543-b45c-f558-4ca9-c2a0417c0607).png",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r101.660,457.940,369.200,655.660z2i(a0b5b3dc-bb5a-59ea-8c9a-7a66868630e8).png",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf",
     "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r107.190,531.980,371.510,658.620z2i(c4485553-9b14-0712-17f2-990646fac215).png",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/yin.css",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf.xml",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/p315-fagin.pdf",
-    "pdf/raft-extended.pdf",
     "pdf/raft-extended-annotation.md",
     "你是你吃出来的/笔记.canvas",
-    "booknote/books-data/你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf.xml",
     "保险.md",
     "你是你吃出来的/未命名思维导图.md",
     "simpread/simpread-买保险？先确认预算很重要.md",
