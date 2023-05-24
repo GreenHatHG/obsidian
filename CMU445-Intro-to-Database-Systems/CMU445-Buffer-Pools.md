@@ -2,10 +2,10 @@
 
 How the DBMS manages its memory and move data back-and-forth from disk.
 
-- Spatial Control
+- Spatial(空间) Control
   - Where to write pages on disk
   - 目标：使经常一起使用的page在磁盘上尽可能物理靠近。
-- Temporal Control
+- Temporal(时间) Control
   - When to read pages into memory, and when to write them to disk.
   - The goal is minimize the number of stalls(*停顿*) from having to  read data from disk.
 

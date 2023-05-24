@@ -168,7 +168,7 @@ Suppose you have this extendible hash table setup (bucket_size is 2,31obal_sapth
 $i = i_j$
 Why double:
 - only one entry in the bucket address table points to bucket j.
-- Therefore,the system needs to increase the size of the bucket address table so that it caninclude pointers to the two buckets that result from splitting bucket j.
+- Therefore,the system needs to increase the size of the bucket address table so that it can include pointers to the two buckets that result from splitting bucket j.
 - It does so by considering an additional bit of the hash value.[**P1226**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=043ae5fa-2900-379b-c167-b0ffa568dae8&page=1226&rect=179.758,435.342,530.971,488.041)
 
 How:
@@ -189,8 +189,37 @@ Why split only:
 
 How:
 1. The system **allocates a new bucket**(bucket z), and sets $i_j$ and $i_z$ to the value that results from adding 1 to the original $i_j$ value.[**P1226**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=e6c69ef9-c76b-9a94-afdf-bd50048362df&page=1226&rect=179.760,142.247,530.914,179.728)
-2. , as in the previous case, the system rehashes each record in bucket j,andallocates it either to bucket j or to the newly created bucket z.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=f58ac39c-d85a-3650-d46f-26359b8bc012&page=1227&rect=148.320,465.202,499.487,489.629)
-3. As in the previous case, the system **rehashes** each record in bucket j,and allocates it either to bucket j or to the newly created bucket z.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=8c4c39aa-b2d1-bd23-600d-5328d08a92ee&page=1227&rect=148.320,465.202,499.487,489.629)
-4. The system then reattempts the insert. In the unlikely case that it again fails, it applies one of the two cases, $i = i_j$ or $i > i_j$, as appropriate.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=04db9f46-bde3-cceb-a505-e4fca7c23c0b&page=1227&rect=148.321,437.087,499.526,463.769) 失败重试后可能需要double directory
+2. As in the previous case, the system **rehashes** each record in bucket j, and allocates it either to bucket j or to the newly created bucket z.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=8c4c39aa-b2d1-bd23-600d-5328d08a92ee&page=1227&rect=148.320,465.202,499.487,489.629)
+3. The system then reattempts the insert. In the unlikely case that it again fails, it applies one of the two cases, $i = i_j$ or $i > i_j$, as appropriate.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=04db9f46-bde3-cceb-a505-e4fca7c23c0b&page=1227&rect=148.321,437.087,499.526,463.769) 失败重试后可能需要double directory
 
 Note that, in both cases, the system needs to recompute the hash function on only the records in bucket j.[**P1227**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=1975cd5b-853e-e3c0-7aac-5e707560a286&page=1227&rect=128.880,398.661,499.474,423.149)
+
+
+```
+[FindBucket] key:16, dir_index:0
+key_bucket is full
+global_depth: 3 = local depth: 3
+before RedistributeBucket
+PrintDir:
+dir_ global depth: 4
+0 local depth(4): [4,12,]
+1 local depth(1): []
+2 local depth(2): []
+3 local depth(1): []
+4 local depth(3): [4,12,]
+5 local depth(1): []
+6 local depth(2): []
+7 local depth(1): []
+8 local depth(4): []
+9 local depth(1): []
+10 local depth(2): []
+11 local depth(1): []
+12 local depth(3): [4,12,]
+13 local depth(1): []
+14 local depth(2): []
+15 local depth(1): []
+divided_bucket_map:
+dir_index 12 pair list: (12, 0) 
+dir_index 4 pair list: (4, 0) 
+
+```

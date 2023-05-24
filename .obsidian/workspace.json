@@ -4,37 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "f1678cfd93b3ca64",
+        "id": "9d1f81982439806b",
         "type": "tabs",
-        "dimension": 52.51798561151079,
         "children": [
           {
-            "id": "2941417c3f2c9f74",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          }
-        ]
-      },
-      {
-        "id": "88f58e6d223c24cf",
-        "type": "tabs",
-        "dimension": 47.482014388489205,
-        "children": [
-          {
-            "id": "fa724af3090d2e54",
+            "id": "bba38f84f1a73fdb",
             "type": "leaf",
             "pinned": true,
             "state": {
               "type": "book-view",
               "state": {},
               "pinned": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "f39259afb9b492d3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "69416faf29003592",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "BookNotes/csapp/A-Tour-of-Computer-Systems.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -90,12 +88,20 @@
               "type": "book-explorer-view",
               "state": {}
             }
+          },
+          {
+            "id": "54833f861f41080e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 452.5,
+    "width": 321.5,
     "collapsed": true
   },
   "right": {
@@ -112,7 +118,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
+                "file": "BookNotes/csapp/A-Tour-of-Computer-Systems.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,7 +135,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md"
+                "file": "BookNotes/csapp/A-Tour-of-Computer-Systems.md"
               }
             }
           }
@@ -152,29 +158,45 @@
       "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "2941417c3f2c9f74",
+  "active": "69416faf29003592",
   "lastOpenFiles": [
+    "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf",
+    "BookNotes/csapp/A-Tour-of-Computer-Systems.md",
+    "A.md",
+    "BookNotes/csapp/A-Tour-of-Computer-Systems/image-20230524135420877.png",
+    "BookNotes/csapp/A-Tour-of-Computer-Systems",
+    "attachment/Pasted image 20230524135359.png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r70.560,497.630,540.670,672.530z2i(172f299a-1680-5baa-fc9f-4f0062bf0c28).png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r96.160,487.390,511.660,672.530z2i(a9b093eb-4f9a-bf27-4a51-14c0e4cf0565).png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r72.740,487.010,118.720,690.830z2i(3926162c-0970-c803-0dff-0720af9c8e87).png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r80.800,489.950,521.900,673.390z2i(e78d7a8d-c67c-6b4f-7c43-67bc5699decf).png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r92.360,489.750,507.250,670.470z2i(c896e4c1-b7d8-ea3f-c883-5fc09c5b3eb0).png",
+    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf",
+    "booknote/books-data/book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf.xml",
+    "CMU213-CSAPP/README.md",
+    "BookNotes/csapp",
+    "CMU213-CSAPP/2-Bits-Bytes-and-Ints.md",
+    "CMU213-CSAPP/05-machine-basics.md",
+    "CMU213-CSAPP/1-Overview.md",
+    "CMU213-CSAPP/18-Virtual-Memory-Systems.md",
+    "CMU213-CSAPP/17-Virtual-Memory-Concepts.md",
+    "BookNotes",
+    "csapp-book/README.md",
+    "csapp-book/Chapter9-Virtual-Memory.md",
+    "attachment/Pasted image 20220203115208.png",
+    "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition (Randal E. Bryant, David R. O’Hallaron) (z-lib.org).pdf",
+    "CMU445-Intro-to-Database-Systems/LRU-K随记.md",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable总结.md",
     "你是你吃出来的/笔记.md",
     "你是你吃出来的/思维导图.md",
     "你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
     "booknote/books-data/book/Database-System-Concepts.pdf.xml",
     "book/Database-System-Concepts.pdf",
-    "book/未确认 472123.crdownload",
-    "book/Database-System-Concepts-7th-Edition.pdf",
-    "booknote/books-data/book/zookeeper.pdf.xml",
-    "booknote/books-data/book",
-    "CMU445-Intro-to-Database-Systems/Database-System-Concepts-7th-Edition.pdf",
-    "book/dbms-concepts-7th.pdf",
-    "book/dbm.pdf",
-    "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Project0-primer.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 1 页.jpg",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable/hash-第 2 页.jpg",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r111.580,151.380,377.160,420.220z2i(bd1718b0-a251-355c-816e-f15241f8970f).png",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p14r114.190,421.530,377.820,655.790z2i(5dd2a543-b45c-f558-4ca9-c2a0417c0607).png",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r101.660,457.940,369.200,655.660z2i(a0b5b3dc-bb5a-59ea-8c9a-7a66868630e8).png",
-    "booknote/books-data/CMU445-Intro-to-Database-Systems/ExtendibleHashTable/(annots)p315-fagin.pdf/p13r107.190,531.980,371.510,658.620z2i(c4485553-9b14-0712-17f2-990646fac215).png",
     "pdf/raft-extended-annotation.md",
     "你是你吃出来的/笔记.canvas",
     "保险.md",
@@ -183,11 +205,6 @@
     "CMU213/11-The-Memory-Hierarchy.md",
     "MIT6.824/LEC14-Optimistic-Concurrency-Control.md",
     "MIT6.824/Lab3-KVRaft.md",
-    "Golang/Pipelines-and-cancellation.md",
-    "journal/2022-01-27.md",
-    "journal/2022-01-20.md",
-    "journal/2022-01-18.md",
-    "journal/2022-01-17.md",
-    "journal/2022-01-16.md"
+    "Golang/Pipelines-and-cancellation.md"
   ]
 }
