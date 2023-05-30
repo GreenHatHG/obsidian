@@ -1,9 +1,12 @@
 {
   "baseFontSize": 16,
-  "cssTheme": "Blue Topaz",
+  "cssTheme": "Typora-Vue",
   "theme": "moonstone",
   "translucency": false,
   "accentColor": "",
   "interfaceFontFamily": "Microsoft YaHei",
-  "textFontFamily": "Microsoft YaHei"
+  "textFontFamily": "Microsoft YaHei",
+  "enabledCssSnippets": [
+    "custom"
+  ]
 }
