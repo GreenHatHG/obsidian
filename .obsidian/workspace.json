@@ -97,8 +97,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "horizontal",
@@ -159,7 +158,7 @@
       "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "b59180447c6fcf24",
+  "active": "58716e9a0362e3e3",
   "lastOpenFiles": [
     "BookNotes/csapp/1-A-Tour-of-Computer-Systems.md",
     "BookNotes/csapp/2-Representing-and-Manipulating-Information.md",

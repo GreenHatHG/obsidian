@@ -18,4 +18,8 @@
 ### Byte Ordering Issue
 - Binary data produced by a little-endian machine to be sent to a big-endian machine. [**P73**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=bf67ca9f-1f50-840f-8cc7-e3eeb5026c65&page=73&rect=161.800,631.315,508.469,654.976)
 	- To avoid such problems, code written for networking applications must follow established conventions (既定惯例) for byte ordering to make sure the sending machine converts its internal representation to the network standard, while the receiving machine converts the network standard to its internal representation. [**P73**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=69b3357b-b875-ec02-3fd3-032eb1c57438&page=73&rect=161.800,571.539,508.538,631.066)
-- 
+## Representing Code
+- A string in C is encoded by an array of characters terminated（结尾） by the null (having value 0) character. 
+- Each character is represented by some standard encoding, with the most common being the ASCII character code. [**P78**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=9e506444-3b70-2507-8757-22c98f382da5&page=78&rect=103.498,473.338,450.216,508.954)
+- This same result would be obtained（获得） on any system using ASCII as its character code, independent（不受... 影响） of the byte ordering and word size conventions. 
+- As a consequence（因此）, text data are more platform independent than binary data. [**P78**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=e3a64e69-c45f-8a6a-22bf-eb82e447d2c7&page=78&rect=103.498,401.607,450.167,437.224)
