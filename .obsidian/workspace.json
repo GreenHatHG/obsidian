@@ -4,32 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "3250de477ddf8f42",
+        "id": "140500aa0bf97688",
         "type": "tabs",
         "children": [
           {
-            "id": "b59180447c6fcf24",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "book-view",
-              "state": {},
-              "pinned": true
-            }
-          }
-        ]
-      },
-      {
-        "id": "35030d2d49f35abe",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "58716e9a0362e3e3",
+            "id": "2b7edf587036c3ff",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "BookNotes/csapp/2-Representing-and-Manipulating-Information.md",
+                "file": "CMU213-CSAPP/05-Machine-Programming-Basics.md",
                 "mode": "source",
                 "source": false
               }
@@ -101,8 +85,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 470.5,
-    "collapsed": true
+    "width": 397.5
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -118,8 +101,8 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "BookNotes/csapp/2-Representing-and-Manipulating-Information.md",
-                "collapseAll": false,
+                "file": "CMU213-CSAPP/05-Machine-Programming-Basics.md",
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -135,16 +118,16 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "BookNotes/csapp/2-Representing-and-Manipulating-Information.md"
+                "file": "CMU213-CSAPP/05-Machine-Programming-Basics.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -158,14 +141,25 @@
       "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "58716e9a0362e3e3",
+  "active": "2b7edf587036c3ff",
   "lastOpenFiles": [
+    "BookNotes/csapp/3-Machine-Level Representation of Programs.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Buffer-Pools.md",
+    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
+    "CMU445-Intro-to-Database-Systems/LRU-K随记.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
+    "CMU213-CSAPP/05-Machine-Programming-Basics.md",
     "BookNotes/csapp/1-A-Tour-of-Computer-Systems.md",
+    "instruction set architecture.md",
     "BookNotes/csapp/2-Representing-and-Manipulating-Information.md",
+    "CMU213-CSAPP/05-Machine-Programming-Basics/05-machine-basics_8.JPG",
+    "CMU213-CSAPP/05-Machine-Programming-Basics/2022-04-29_095134.png",
+    "CMU213-CSAPP/2-Bits-Bytes-and-Ints.md",
+    "BookNotes/csapp/1-A-Tour-of-Computer-Systems/image-20230530220358927.png",
+    "BookNotes/csapp/1-A-Tour-of-Computer-Systems",
     "未命名.canvas",
     "未命名 1.canvas",
     "CMU213-CSAPP/16-System-Level-IO.md",
-    "CMU213-CSAPP/2-Bits-Bytes-and-Ints.md",
     "CMU213-CSAPP/12-Cache-Memories.md",
     "CMU213-CSAPP/14-ECF-Exceptions&Processes.md",
     "CMU213-CSAPP/CSAPP-26-Thread-Level-Parallelism.md",
@@ -185,28 +179,18 @@
     "attachment/Pasted image 20230524135359.png",
     "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r70.560,497.630,540.670,672.530z2i(172f299a-1680-5baa-fc9f-4f0062bf0c28).png",
     "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r96.160,487.390,511.660,672.530z2i(a9b093eb-4f9a-bf27-4a51-14c0e4cf0565).png",
-    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r72.740,487.010,118.720,690.830z2i(3926162c-0970-c803-0dff-0720af9c8e87).png",
-    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r80.800,489.950,521.900,673.390z2i(e78d7a8d-c67c-6b4f-7c43-67bc5699decf).png",
-    "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf/p33r92.360,489.750,507.250,670.470z2i(c896e4c1-b7d8-ea3f-c883-5fc09c5b3eb0).png",
     "booknote/books-data/book/(annots)Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf",
     "booknote/books-data/book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf.xml",
     "CMU213-CSAPP/README.md",
     "BookNotes/csapp",
-    "CMU213-CSAPP/05-machine-basics.md",
     "CMU213-CSAPP/1-Overview.md",
     "BookNotes",
     "csapp-book/README.md",
     "csapp-book/Chapter9-Virtual-Memory.md",
     "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition (Randal E. Bryant, David R. O’Hallaron) (z-lib.org).pdf",
-    "CMU445-Intro-to-Database-Systems/LRU-K随记.md",
-    "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
-    "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable总结.md",
     "你是你吃出来的/笔记.md",
-    "你是你吃出来的/思维导图.md",
     "你是你吃出来的/你是你吃出来的：吃对少生病，病了这样吃 (夏萌 [夏萌]) (Z-Library).pdf",
-    "booknote/books-data/book/Database-System-Concepts.pdf.xml",
-    "CMU445-Intro-to-Database-Systems/CMU445-Project0-primer.md",
     "你是你吃出来的/笔记.canvas"
   ]
 }

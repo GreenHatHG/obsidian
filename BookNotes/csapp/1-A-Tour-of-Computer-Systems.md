@@ -54,3 +54,10 @@ int main()
 6. Once the code and data in the hello object ﬁle are loaded into memory, the processor begins executing the machine-language instructions in the hello program's main routine.[**P41**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=a97da219-9f95-9685-b539-bc16d0ad0190&page=41&rect=103.500,326.617,450.198,362.233)
 7. These instructions copy the bytes in the `hello, world\n` string from memory to the register ﬁle, and from there to the display device, where they are displayed on the screen.[**P41**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=41d7aa2c-e67b-28bd-18e4-22cdee6e14ac&page=41&rect=103.510,302.706,450.208,338.323)
    ![image-20230526152115134](A-Tour-of-Computer-Systems/image-20230526152115134.png)
+
+---
+- we can distinguish (区分) the processor's #instruction-set-architecture （指令集结构）, describing the effect of each machine-code instruction, from its *microarchitecture*, describing how the processor is actually implemented. [**P40**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=4da12840-62a6-f41c-09cb-c24501627ba2&page=40&rect=161.800,318.411,508.489,365.983)
+
+![image-20230530220358927](1-A-Tour-of-Computer-Systems/image-20230530220358927.png)
+
+- On the processor side, the #instruction-set-architecture  provides an abstraction of the actual processor hardware. [**P57**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=5378d1bc-20aa-ff9b-5e08-bcf4cb10523d&page=57&rect=103.500,481.999,450.408,505.660)
