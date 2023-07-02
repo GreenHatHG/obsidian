@@ -56,7 +56,7 @@ int main()
    ![image-20230526152115134](A-Tour-of-Computer-Systems/image-20230526152115134.png)
 
 ---
-- we can distinguish (区分) the processor's #instruction-set-architecture （指令集结构）, describing the effect of each machine-code instruction, from its *microarchitecture*, describing how the processor is actually implemented. [**P40**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=4da12840-62a6-f41c-09cb-c24501627ba2&page=40&rect=161.800,318.411,508.489,365.983)
+- we can distinguish (区分) the processor's #instruction-set-architecture （指令集结构）, describing the effect of each machine-code instruction, from its #microarchitecture , describing how the processor is actually implemented. [**P40**](obsidian://booknote?type=annotation&book=book/Computer%20Systems.%20A%20Programmer%E2%80%99s%20Perspective%203rd%20Edition%20Global%20Edition.pdf&id=4da12840-62a6-f41c-09cb-c24501627ba2&page=40&rect=161.800,318.411,508.489,365.983)
 
 ![image-20230530220358927](1-A-Tour-of-Computer-Systems/image-20230530220358927.png)
 

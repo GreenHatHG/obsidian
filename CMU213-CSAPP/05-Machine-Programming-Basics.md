@@ -29,8 +29,8 @@
 ## Architecture Definitions
 - Architecture: (also ISA: #instruction-set-architecture ) The parts of a processor design that one needs to understand or write assembly/machine code.
 	- Examples:  instruction set specification, registers.
-	- Example ISAs: Intel: x86, IA32, Itanium, x86-64、ARM: Used in almost all mobile phones 
-- Microarchitecture: Implementation of the architecture.
+	- Example ISAs: Intel: x86, IA32, Itanium, x86-64、ARM: Used in almost all mobile phones
+- #Microarchitecture : Implementation of the architecture.
 	- Examples: cache sizes and core frequency.
 - Code Forms
 	- Machine Code: The byte-level programs that a processor executes
@@ -38,28 +38,21 @@
 
 ## Assembly/Machine Code View
 
-![png](05-Machine-Programming-Basics/2022-04-29_095134.png)
+![05-machine-basics_12](05-Machine-Programming-Basics/05-machine-basics_12.JPG)
 
-Programmer-Visible State:
-
-- PC: Program counter
-  - 下一条指令的地址，内存中的位置
-  - Called “RIP” (x86-64)
 - Register file: 存放操作要用的数据
 - Condition codes
-  - 通过几位的状态码表示最近一些指令的执行结果
-  - 主要用于实现条件分支
-- Momery
-  - 虚拟内存（cpu高速缓存不可见）
-  - Code and user data
-  - Stack to support procedures
-  >In computer programming, a procedure is a set of coded instructions that tell a computer how to run a program or calculation. Depending on the programming language, a procedure may also be called a subroutine, subprogram or function.
+	- 通过几位的状态码表示最近一些指令的执行结果
+	- 主要用于实现条件分支
+
+> In computer programming, a procedure is a set of coded instructions that tell a computer how to run a program or calculation. Depending on the programming language, a procedure may also be called a subroutine, subprogram or function.
 
 ## Turning C into Object Code
 
 ![png](05-Machine-Programming-Basics/2022-04-29_122147.png)
+- Gcc: 如果什么参数也不指定，它会生成完全未优化的代码，实际上这种代码很难阅读，-g 用来调试
 
-### Compiling Into Assembly
+## Compiling Into Assembly
 
 ![png](05-Machine-Programming-Basics/2022-04-29_123744.png)
 
@@ -68,4 +61,12 @@ Programmer-Visible State:
 - movq：将数据从一个地方复制到另外一个地方
 - call：call procedure
 - ret：从特定函数退出并将值返回
+
+## Object Code
+
+![05-machine-basics_17](05-Machine-Programming-Basics/05-machine-basics_17.JPG)
+
+## Machine Instruction Example
+
+![05-machine-basics_18](05-Machine-Programming-Basics/05-machine-basics_18.JPG)
 
