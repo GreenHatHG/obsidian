@@ -4,34 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "3b42219a1f6a8464",
+        "id": "a1ea026fd6d6e8cf",
         "type": "tabs",
-        "dimension": 59.651474530831095,
         "children": [
           {
-            "id": "ed87567e9db3f51a",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "book-view",
-              "state": {},
-              "pinned": true
-            }
-          }
-        ]
-      },
-      {
-        "id": "5e998756db844da4",
-        "type": "tabs",
-        "dimension": 40.3485254691689,
-        "children": [
-          {
-            "id": "315eea4d7a126362",
+            "id": "8b327635d0c3a41c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/Index随记.md",
+                "file": "日语/组成及五十音.md",
                 "mode": "source",
                 "source": false
               }
@@ -103,8 +85,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 252.5,
-    "collapsed": true
+    "width": 252.5
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -120,13 +101,13 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/Index随记.md",
-                "collapseAll": true,
-                "extraContext": false,
+                "file": "日语/组成及五十音.md",
+                "collapseAll": false,
+                "extraContext": true,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
+                "backlinkCollapsed": true,
                 "unlinkedCollapsed": false
               }
             }
@@ -137,16 +118,16 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/Index随记.md"
+                "file": "日语/组成及五十音.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -160,16 +141,25 @@
       "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "315eea4d7a126362",
+  "active": "8b327635d0c3a41c",
   "lastOpenFiles": [
-    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p656r111.560,81.820,540.020,311.020z2i(3454e03e-9a64-8929-beb1-2451dc8b390b).png",
-    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p656r118.470,445.200,542.900,677.280z2i(f2b19a03-8efb-d5f9-5f89-4071848c1e24).png",
-    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p654r149.570,447.500,533.690,668.060z2i(ca10f0d0-ffb9-3261-6eb3-9effa031c366).png",
-    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p654r210.620,452.110,477.820,656.550z2i(f2a813aa-0d6d-4b28-690b-7445fb177dd1).png",
+    "日语/组成及五十音/image-20231018224012253.png",
+    "日语/组成及五十音/image-20231018222808184.png",
+    "日语/组成及五十音.md",
+    "日语/组成及五十音/image-20231018222223952.png",
+    "日语/组成及五十音/image-20231018221953673.png",
+    "日语/组成及五十音/image-20231018221717886.png",
+    "日语/组成及五十音/image-20231018220636321.png",
+    "日语/组成及五十音/image-20231018220533424.png",
+    "日语/组成及五十音",
+    "日语/Pasted image 20231018214643.png",
+    "attachment/Pasted image 20231018214516.png",
+    "CMU445-Intro-to-Database-Systems/Index随记.md",
+    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p671r94.170,100.460,522.560,239.160z2i(65005674-9bce-e7d8-4683-a14421ec2798).png",
+    "booknote/books-data/book/(annots)Database-System-Concepts.pdf/p671r100.740,103.750,517.640,235.870z2i(186bad57-2c6b-a9d6-1399-1babb5fab38b).png",
     "booknote/books-data/book/(annots)Database-System-Concepts.pdf",
     "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
     "CMU445-Intro-to-Database-Systems/CMU445-6-Hash-Tables.md",
-    "CMU445-Intro-to-Database-Systems/Index随记.md",
     "CMU445-Intro-to-Database-Systems/LRU-K随记.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
     "CardNotes/E大/心态.md",
@@ -177,22 +167,15 @@
     "CMU445-Intro-to-Database-Systems/CMU445-8-Trees-Indexes2.md",
     "CMU445-Intro-to-Database-Systems/CMU445-9-Index-Concurrency-Control.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Buffer-Pools.md",
-    "CMU445-Intro-to-Database-Systems/CMU445-Database-Storage1/03-storage1_16.JPG",
     "CMU445-Intro-to-Database-Systems/CMU445-Database-Storage1.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Database-Storage2.md",
     "CMU213-CSAPP/05-Machine-Programming-Basics.md",
-    "CMU213-CSAPP/05-Machine-Programming-Basics/05-machine-basics_18.JPG",
-    "CMU213-CSAPP/05-Machine-Programming-Basics/05-machine-basics_17.JPG",
-    "CMU213-CSAPP/05-Machine-Programming-Basics/05-machine-basics_12.JPG",
-    "CMU213-CSAPP/05-Machine-Programming-Basics/2022-04-29_095134.png",
     "BookNotes/csapp/1-A-Tour-of-Computer-Systems.md",
     "BookNotes/csapp/3-Machine-Level Representation of Programs.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Project2A-ExtandibleHashTable.md",
     "instruction set architecture.md",
     "BookNotes/csapp/2-Representing-and-Manipulating-Information.md",
-    "CMU213-CSAPP/05-Machine-Programming-Basics/05-machine-basics_8.JPG",
     "CMU213-CSAPP/2-Bits-Bytes-and-Ints.md",
-    "BookNotes/csapp/1-A-Tour-of-Computer-Systems/image-20230530220358927.png",
     "BookNotes/csapp/1-A-Tour-of-Computer-Systems",
     "未命名.canvas",
     "未命名 1.canvas",
@@ -201,7 +184,6 @@
     "CMU213-CSAPP/14-ECF-Exceptions&Processes.md",
     "CMU213-CSAPP/CSAPP-26-Thread-Level-Parallelism.md",
     "CMU213-CSAPP/CSAPP-23-Concurrent-Programming.md",
-    "CMU213-CSAPP/CSAPP-21-Network-Programming.md",
     "未命名",
     "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf",
     "BookNotes/csapp/A-Tour-of-Computer-Systems",
@@ -209,7 +191,6 @@
     "booknote/books-data/book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf.xml",
     "BookNotes/csapp",
     "BookNotes",
-    "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition (Randal E. Bryant, David R. O’Hallaron) (z-lib.org).pdf",
     "你是你吃出来的/笔记.canvas"
   ]
 }

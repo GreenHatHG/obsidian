@@ -26,3 +26,13 @@
 	- The reason this design is a good trade-oﬀ(*很好的权衡*) is that the dominant cost (*主要成本*) in processing a Database request is the time that it takes to bring a block from disk into main memory. 
 	- Once we have brought in (*导入*) the block, the time to scan the entire block is negligible (*忽略不计*).  [**P656**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=0ac93e6d-4a91-836a-72b7-41459c7bdf1a&page=656&rect=215.365,324.642,530.963,336.149)
 	- We must consider the case where records for one search-key value occupy several blocks [**P657**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=de519364-baa8-8ce5-6cd0-a07750675540&page=657&rect=128.880,348.102,499.498,372.569)
+
+# B+-Tree Index Files
+- A B+-tree index takes the form of a balanced tree in which every path from the root of the tree to a leaf of the tree is of the same length. 
+- Each nonleaf node in the tree (other than the root) has between $⌈n∕2⌉$ and n children, where n is ﬁxed for a particular tree; 
+- the root has between 2 and n children. [**P663**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=76f58fca-4ab6-3af4-01c8-5496ce471cf9&page=663&rect=128.879,379.662,500.321,442.949)
+## Insert
+- In general, we take the n search-key values (the n−1 values in the leaf node plus the value being inserted), and put the ﬁrst $⌈n/2⌉$ in the existing node and the remaining values in a newly created node. [**P670**](obsidian://booknote?type=annotation&book=book/Database-System-Concepts.pdf&id=9ba56c63-9e92-0c73-c18f-8dcee0a7447e&page=670&rect=230.975,103.708,531.820,118.656)
+![[booknote/books-data/book/(annots)Database-System-Concepts.pdf/p665r53.920,571.690,525.780,677z2i(2c45d1a9-17ae-fe34-998a-e017b10ba0d7).png#center|786]]
+
+![[booknote/books-data/book/(annots)Database-System-Concepts.pdf/p671r94.170,100.460,522.560,239.160z2i(65005674-9bce-e7d8-4683-a14421ec2798).png#center|714]]
