@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "a1ea026fd6d6e8cf",
+        "id": "5862762a0b4fb05b",
         "type": "tabs",
         "children": [
           {
-            "id": "8b327635d0c3a41c",
+            "id": "cc5d85119562500e",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -85,7 +85,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 252.5
+    "width": 484.5
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -141,21 +141,23 @@
       "obsidian-booknote-plugin:书库": false
     }
   },
-  "active": "8b327635d0c3a41c",
+  "active": "cc5d85119562500e",
   "lastOpenFiles": [
+    "日语/组成及五十音/image-20231022235746472.png",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project0-primer.md",
+    "日语/组成及五十音.md",
     "日语/组成及五十音/image-20231018232202650.png",
     "日语/组成及五十音/image-20231018230723772.png",
     "日语/组成及五十音/image-20231018230522909.png",
     "日语/组成及五十音/image-20231018224012253.png",
     "日语/组成及五十音/image-20231018222808184.png",
-    "日语/组成及五十音.md",
     "日语/组成及五十音/image-20231018222223952.png",
     "日语/组成及五十音/image-20231018221953673.png",
     "日语/组成及五十音/image-20231018221717886.png",
     "日语/组成及五十音/image-20231018220636321.png",
     "日语/组成及五十音/image-20231018220533424.png",
     "日语/组成及五十音",
-    "日语/Pasted image 20231018214643.png",
     "CMU445-Intro-to-Database-Systems/Index随记.md",
     "booknote/books-data/book/(annots)Database-System-Concepts.pdf",
     "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
@@ -182,8 +184,6 @@
     "CMU213-CSAPP/16-System-Level-IO.md",
     "CMU213-CSAPP/12-Cache-Memories.md",
     "CMU213-CSAPP/14-ECF-Exceptions&Processes.md",
-    "CMU213-CSAPP/CSAPP-26-Thread-Level-Parallelism.md",
-    "CMU213-CSAPP/CSAPP-23-Concurrent-Programming.md",
     "未命名",
     "book/Computer Systems. A Programmer’s Perspective 3rd Edition Global Edition.pdf",
     "BookNotes/csapp/A-Tour-of-Computer-Systems",
