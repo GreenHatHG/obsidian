@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md",
+                "file": "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,8 +85,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 525.5,
-    "collapsed": true
+    "width": 525.5
   },
   "right": {
     "id": "48bbb5adae5e378c",
@@ -102,7 +101,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md",
+                "file": "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -119,7 +118,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md"
+                "file": "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md"
               }
             }
           }
@@ -144,6 +143,14 @@
   },
   "active": "3bcf734ea42c6cb5",
   "lastOpenFiles": [
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert/image-20231103142048397.png",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert/image-20231103140417199.png",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert/image-20231103135501993.png",
+    "CMU445-Intro-to-Database-Systems/CMU445-8-Trees-Indexes2.md",
+    "CMU445-Intro-to-Database-Systems/Index随记.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert/image-20231028153356495.png",
+    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert/image-20231028120216283.png",
     "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert",
     "日语/组成及五十音.md",
@@ -153,23 +160,15 @@
     "日语/组成及五十音/image-20231025214700883.png",
     "日语/组成及五十音/image-20231025213842225.png",
     "日语/组成及五十音/image-20231025213526725.png",
-    "日语/组成及五十音/image-20231025213129374.png",
-    "日语/组成及五十音/image-20231025212635609.png",
-    "日语/组成及五十音/image-20231025211951177.png",
-    "日语/组成及五十音/image-20231025210008206.png",
     "CMU445-Intro-to-Database-Systems/CMU445-15-QueryPlanning-Optimization2.md",
-    "CMU445-Intro-to-Database-Systems/CMU445-Project2-BPlusTree-Insert.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Project0-primer.md",
     "日语/组成及五十音",
-    "CMU445-Intro-to-Database-Systems/Index随记.md",
     "booknote/books-data/book/(annots)Database-System-Concepts.pdf",
-    "CMU445-Intro-to-Database-Systems/CMU445-7-Trees-Indexes1.md",
     "CMU445-Intro-to-Database-Systems/CMU445-6-Hash-Tables.md",
     "CMU445-Intro-to-Database-Systems/LRU-K随记.md",
     "CMU445-Intro-to-Database-Systems/ExtendibleHashTable随记.md",
     "CardNotes/E大/心态.md",
     "CMU445-Intro-to-Database-Systems/CMU445-18-Timestamp-Ordering-Concurrency-Control.md",
-    "CMU445-Intro-to-Database-Systems/CMU445-8-Trees-Indexes2.md",
     "CMU445-Intro-to-Database-Systems/CMU445-9-Index-Concurrency-Control.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Buffer-Pools.md",
     "CMU445-Intro-to-Database-Systems/CMU445-Database-Storage1.md",
