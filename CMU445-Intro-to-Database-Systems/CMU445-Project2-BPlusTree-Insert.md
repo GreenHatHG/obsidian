@@ -158,6 +158,21 @@ return reinterpret_cast成LeafPage类型;
 
 ## No Overflow
 
+### New Root
+
+如果是第一次插入，那么流程就简单点，等于是建树，不过此时树只有一个节点。
+
+```c++
+if(root_page_id_ == INVALID_PAGE_ID){
+    new_page = 从bpm申请一个新的page，reinterpret_cast成LeafPage
+    new_page->Init();
+    array_[GetSize()] = {key, value};
+    更新root_page_id;
+    unpin(new_page_id);
+    return;
+}
+```
+
 ### No New Root
 
 - 正常情况下的插入的步骤是先根据key找到leaf node，然后在对应的位置（插入后保持key的有序性）插入key和value就行。
@@ -191,24 +206,82 @@ idx = 使用lower_bound在leaf_page查找应该插入的位置;
 size++;
 ```
 
-### New Root
-
-如果是第一次插入，那么流程就简单点，等于是建树，不过此时树只有一个节点。
-
-```c++
-if(root_page_id_ == INVALID_PAGE_ID){
-    new_page = 从bpm申请一个新的page，reinterpret_cast成LeafPage
-    new_page->Init();
-    array_[GetSize()] = {key, value};
-    更新root_page_id;
-    unpin(new_page_id);
-    return;
-}
-```
-
 ## Overflow In Leaf Node
 
-如果插入后leaf node size == max_size就会发生overflow，需要执行split node操作。
+如果插入后leaf node size == max_size就会发生overflow，需要执行split node操作
+
+### Leaf Node Is Not The Root Node
+
+如果leaf node不是root node，一般流程如下：
+
+1. Split the leaf node into two nodes.
+2. First node contains ceil((m-1)/2) values.
+3. Second node contains the remaining values.
+4. Copy the smallest search key value from second node to the parent node.(Right biased)
+
+- example1：
+  ![image-20231114215250806](CMU445-Project2-BPlusTree-Insert/image-20231114215250806.png)
+
+- example2：
+  ![image-20231114215807606](CMU445-Project2-BPlusTree-Insert/image-20231114215807606.png)
+
+这里的逻辑抽出来就是：
+
+```c++
+# 已经判断出插入后得发生overflow的前提下
+leaf_node = FindLeafNode();
+leaf_node_new = 创建一个新的leaf node节点
+    
+int mid = (n_new->GetSize() + 1) / 2; # 取出一半，不一定要按照上面写的ceil来，实现类似效果就好了
+int left_node_size = mid; 
+int right_node_size = leaf_node.size()-mid;
+
+leaf_node->SetSize(left_node_size);
+leaf_node_new->SetSize(right_node_size);
+
+#将另外一半移动到另外一个节点
+#这里的移动其实就是赋值就好了，并不是真的删除然后新增，这里使用size去控制真正的长度，后面的位置虽然有值，但是插入时候会被覆盖掉
+for (int i = 0, j = left_node_size; i < right_node_size; i++, j++) {
+   leaf_node_new->arr_[i] = leaf_node->IndexAt(j));
+}
+
+更新leaf_node和leaf_node_new的NextPageId;
+
+# Copy the smallest search key value from second node to the parent node.(Right biased)
+smallest_kv = leaf_node_new->arr_[0]; # smallest search key value，因为arr_是有序的，所以直接取第一个就是最小的
+parent = leaf_node->parent; #表述比较简单，实际上需要取出parent_id，从buffer pool manager拿
+
+parent->Insert(smallest_kv, leaf_node_new->PageId);
+
+更新leaf_node_new的parent_id;
+unpin相关page;
+```
+
+### Leaf Node Is The Root Node
+
+只有一个root node的时候，这个node的类型其实是leaf node
+
+- example1:
+  ![image-20231203113800829](CMU445-Project2-BPlusTree-Insert/image-20231203113800829.png)
+
+- example2:
+  ![image-20231203114024994](CMU445-Project2-BPlusTree-Insert/image-20231203114024994.png)
+
+可以看出来，其实和上面的流程有一点类似，只是第四步将smallest kv插到parent这一步不一样，root node节点换了一个，所以流程就是
+
+```c++
+Split the leaf node into two nodes.
+First node contains ceil((m-1)/2) values.
+Second node contains the remaining values.
+
+创建一个新的root_node;
+UpdateRootPageId();
+root_node->Insert(空的key, leaf_node->page_id);
+root_node->Insert(smallest_kv, leaf_node_new->page_id);
+
+更新leaf_node和leaf_node_new的parent_id;
+unpin相关page;
+```
 
 
 
