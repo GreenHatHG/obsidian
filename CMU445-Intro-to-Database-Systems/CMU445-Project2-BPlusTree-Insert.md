@@ -1,3 +1,14 @@
+---
+title: CMU445-Project1-BPlusTree-Insert-Single-threaded
+date: 2023-12-12 22:59:43
+categories: 
+- 编程
+tags:
+- cmu445
+- BPlusTree
+mathjax: true
+---
+
 单线程版 B+树插入操作
 
 # Overview
@@ -283,11 +294,34 @@ root_node->Insert(smallest_kv, leaf_node_new->page_id);
 unpin相关page;
 ```
 
+## Overflow In Internal Node
 
+因为需要将smallest kv插入到parent node，所以这里可能会出现的一种情况就是parent node也得spilt。
 
+对于internal node，插入之前的size等于max_size的时候需要拆分，所以这里插入前不拆分的极端情况是max_size-1。流程如下：
 
+1. Split the non leaf node into two nodes.
 
- 
+2. First node contains ceil(m/2)-1 values.
+
+3. Move the smallest among remaining to the parent.
+
+4. Second node contains the remaining keys.
+
+- example1:
+
+  ![image-20231212205441303](CMU445-Project2-BPlusTree-Insert/image-20231212205441303.png)
+  
+- example2:
+  ![image-20231212214338519](CMU445-Project2-BPlusTree-Insert/image-20231212214338519.png)
+
+ 从上面可以看到，insert的时候可能会发生root node节点的变更，从而可能导致重建整个树。
+
+这一块逻辑参考教科书的逻辑即可，比较麻烦，涉及到递归。
+
+![image-20231212223704765](CMU445-Project2-BPlusTree-Insert/image-20231212223704765.png)
+
+递归的逻辑是，如果internal node发生了overflow，向parent node插入key后可能会接着发生overflow，极端情况是一直overflow到root node，然后重建整个树树，这部分的逻辑在上图是insert_in_parent函数里面。
 
 ----
 
