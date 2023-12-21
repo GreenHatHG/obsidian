@@ -1,5 +1,5 @@
 ---
-title: CMU445-Project1-BPlusTree-Insert-Single-threaded
+title: CMU445-Project2-BPlusTree-Insert-Single-threaded
 date: 2023-12-12 22:59:43
 categories: 
 - 编程
@@ -15,12 +15,10 @@ mathjax: true
 - **Index**: The index in database system is responsible for fast data retrieval without having to search through every row in a database table, providing the basis for both rapid random lookups (*快速随机查找*) and efficient access of ordered records.
 - **B+Tree dynamic index structure**:  It is a balanced tree in which the internal pages direct the search and leaf pages contains actual data entries.
 # B+ Tree properties
-1. Each node except root can have a maximum of `M` children and at least `ceil(M/2)` children.
-2. Each node can contain a maximum of `M–1` keys and a minimum of ceil `(M/2)–1` keys.
-3. The root has at least two children and at least one search key.
-4. While insertion overflow of the node occurs when it contains more than `M–1` search key values.
--  `M` is the order of B+ tree. It means every node of that Tree can have a maximum of N children.
-For more:
+1. Each **nonleaf node** in the tree (other than the root) has between `⌈n/2⌉` and `n` children, where n is fixed for a particular tree; 
+2. The **root** has between `2` and `n` children.
+3. Each **leaf** can hold up to `n−1` search-key values. We allow leaf nodes to contain as few as `⌈(n−1)/2⌉` search-key values.
+-  For more:
 [Introduction of B+ Tree - GeeksforGeeks](https://www.geeksforgeeks.org/introduction-of-b-tree/#)
 # Tree Node
 举例一个实现后的 b+ tree 如下（p表示page_id）：
