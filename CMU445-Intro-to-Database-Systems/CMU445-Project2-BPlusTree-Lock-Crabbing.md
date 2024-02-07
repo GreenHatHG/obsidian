@@ -186,7 +186,7 @@ root->RLatch
 
 1. t1通过buffer pool manager拿到page后
 2. 此时调度到t2执行，修改了root节点
-3. 然后t1接着执行RLatch和读取root节点信息操作，此时读取到的root节点是过时的。所以这里需要对另外一个latch对root节点进行保护。
+3. 然后t1接着执行RLatch和读取root节点信息操作，此时读取到的root节点是过时的。所以这里需要对另外一个latch对root节点进行保护（别的地方修改root信息也得加锁）。
 
 对于child page的操作，则不需要额外更新，比如下面（root节点已经有额外的latch保护）
 
@@ -220,4 +220,12 @@ child1->WUnLatch
 从上面的逻辑来看，正是因为这种统一的获取latch方向和螃蟹加锁算法，只要前面的page加锁了，另外一个线程就不能获取到该page的child的锁了。
 
 ### 待释放latch的page信息应该如何维护
+
+对于write latch来讲，有可能一直向下获取latch而不释放parent的latch
+
+那么释放latch的时候怎么释放之前获取的呢，所以得有个容器能够存在一些信息，等到需要释放的时候就可以从容器中拿出需要释放latch的page释放。
+
+transaction参数里面提供了一个PageSet专门用来存放insert时候获取的write latch
+
+释放latch之后需要unpin，怎么确定是否dirty呢
 
