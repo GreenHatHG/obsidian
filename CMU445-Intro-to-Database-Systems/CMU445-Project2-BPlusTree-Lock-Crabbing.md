@@ -159,65 +159,9 @@ enum class Operation {
 
 从buffer pool manager获取到一个page，然后加锁，此时buffer pool manager处理的逻辑是啥，是不允许其他线程通过FetchPage获取到该page，还是能够接着走正常流程获取？
 
-从buffer pool manager拿到page后，就对page加read latch或者write latch，因为加锁的路径都是从root节点到leaf 节点，所以这里不需要buffer pool manager做额外的操作，得上层应用保证一致性，buffer pool manager只需要专注于自己，能够处理并发就行，不需要关注是哪个地方用到，就是说不需要关注上层应用是怎么使用的（比如这里就是用来构建一颗树）
+BFM只负责page本身的处理逻辑，比如page与磁盘的交互，page的内存分配等。page内容级别的并发控制（比如加RWLatch实现的并发控制）都需要上层应用保证。所以无论page是否有加锁，FetchPage都会返回这个page。
 
-上层应用如何保证一致性，比如下面：
-```c++
-auto root = buffer_pool_manager->FetchPage(root_page_id);
-root->RLatch();
-auto child1 = buffer_pool_manager->FetchPage(child_page_id1);
-child1->RLatch();
-auto child2 = buffer_pool_manager->FetchPage(child_page_id2);
-child2->RLatch();
-```
-
-所有处理的流程都是从root节点获取latch开始，但是可能会出现下述的情况（每一行只能有一个操作能执行到）：
-
-```
-Thread1(t1)				Thread2(t2)
------------------------------------------------------------
-FetchPage(root)
-						FetchPage(root)
-						root->WLatch
-						Update Root
-						root->WUnlatch
-root->RLatch
-```
-
-1. t1通过buffer pool manager拿到page后
-2. 此时调度到t2执行，修改了root节点
-3. 然后t1接着执行RLatch和读取root节点信息操作，此时读取到的root节点是过时的。所以这里需要对另外一个latch对root节点进行保护（别的地方修改root信息也得加锁）。
-
-对于child page的操作，则不需要额外更新，比如下面（root节点已经有额外的latch保护）
-
-```
-Thread1(t1)						Thread2(t2)
------------------------------------------------------------
-GetRootAndLock
-FetchPage(child1)               GetRootAndLock *wait*
-child1->WLatch				    GetRootAndLock *wait*
-root->Ulock						
-								GetRootAndLock
-FetchPage(child2)
-								FetchPage(child1) *wait*
-child2->WLatch					FetchPage(child1) *wait*
-child1->WUnLatch				
-								FetchPage(child1)
-								FetchPage(child2) *wait*
-```
-
-1. t1获取到root节点并加锁
-1. 从buffer pool manager获取root对应的child page1后，t2接着想要获取root节点，会失败，阻塞住
-1. 对child page1加WLatch后，t2依然阻塞住
-1. child page1处于safe状态后，释放了root的锁
-1. t2可以获取到root节点并加锁
-1. t1接着从buffer pool manager获取到child2
-1. t2想要获取到child1，但是会被阻塞住
-1. t1对child2加WLatch，t2依旧阻塞在获取child1的时候
-1. child2处于safe状态，释放掉child1的WLatch
-1. t2可以获取到child1，接着想获取到child2，被阻塞了
-
-从上面的逻辑来看，正是因为这种统一的获取latch方向和螃蟹加锁算法，只要前面的page加锁了，另外一个线程就不能获取到该page的child的锁了。
+这次使用BFM实现B+Tree，用的螃蟹算法去保证page的并发安全，具体可以看上面。
 
 ### 待释放latch的page信息应该如何维护
 
